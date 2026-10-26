@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { tween, wait, type Canceler } from '../../../lib/menopausia/anim';
+import { easeInOut, tween, type Canceler } from '../../../lib/menopausia/anim';
 import { Carousel } from './Carousel';
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
   onDone: () => void;
 }
 
-/** "Analizando tu perfil": progress bar (~3s, 2 short pauses) + photo carousel below. */
+/** "Analizando tu perfil": one continuous bar (3s, single ease-in-out curve) + photo carousel below. */
 export function Loading1({ texts, onDone }: Props) {
   const [pct, setPct] = useState(0);
   const cancelers = useRef<Canceler[]>([]);
@@ -16,17 +16,12 @@ export function Loading1({ texts, onDone }: Props) {
   useEffect(() => {
     const reg = (c: Canceler) => cancelers.current.push(c);
 
-    (async () => {
-      await tween(0, 40, 700, setPct, reg);
-      await wait(300, reg);
-      await tween(40, 70, 700, setPct, reg);
-      await wait(300, reg);
-      await tween(70, 100, 1000, setPct, reg);
+    tween(0, 100, 3000, setPct, reg, easeInOut).then(() => {
       if (!done.current) {
         done.current = true;
         onDone();
       }
-    })();
+    });
 
     return () => {
       cancelers.current.forEach((c) => c.cancel());

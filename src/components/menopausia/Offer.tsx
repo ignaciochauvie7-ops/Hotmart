@@ -30,11 +30,7 @@ export function Offer({ locale }: Props) {
     const a = loadAnswers();
     const q = dict.quiz;
     if (a.age != null) {
-      let h = o.headline.replace('{age}', q.age.options[a.age]);
-      if (a.event != null && o.eventPhrases[a.event]) {
-        h = o.headlineEvent.replace('{base}', h).replace('{event}', o.eventPhrases[a.event]);
-      }
-      setHeadline(h);
+      setHeadline(o.headline.replace('{age}', q.age.options[a.age]));
     }
     const c: string[] = [];
     if (a.goal != null) c.push(q.goal.options[a.goal]);

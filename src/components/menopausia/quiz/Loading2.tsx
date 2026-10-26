@@ -1,18 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
-import { tween, wait, type Canceler } from '../../../lib/menopausia/anim';
+import { easeInOut, tween, wait, type Canceler } from '../../../lib/menopausia/anim';
 import { Check } from './icons';
 import { Carousel } from './Carousel';
 
 interface Props {
-  rows: string[]; // 3 row labels
+  rows: string[]; // 2 row labels
   onDone: () => void;
 }
 
-// Per-row fill durations + trailing pauses, tuned to ~4s total with irregular breaks.
-const FILL = [900, 1000, 1100];
-const PAUSE = [250, 450, 250];
+const FILL_MS = 2200; // per-row fill duration
+const POP_MS = 200; // check pop
 
-/** "Creando tu plan": three bars fill one after another (~4s) + photo carousel below. */
+/**
+ * "Comparando con perfiles": two rows, each with its own thin bar that fills on a
+ * single ease-in-out curve. The second row starts once the first reaches 50%, so
+ * the wait stays short (~3.5s total). Checks pop in when each bar completes.
+ */
 export function Loading2({ rows, onDone }: Props) {
   const [fills, setFills] = useState<number[]>(rows.map(() => 0));
   const [checks, setChecks] = useState<boolean[]>(rows.map(() => false));
@@ -23,13 +26,16 @@ export function Loading2({ rows, onDone }: Props) {
     const reg = (c: Canceler) => cancelers.current.push(c);
     const setFill = (i: number, v: number) =>
       setFills((prev) => prev.map((x, idx) => (idx === i ? v : x)));
+    const setCheck = (i: number) =>
+      setChecks((prev) => prev.map((x, idx) => (idx === i ? true : x)));
 
     (async () => {
-      for (let i = 0; i < rows.length; i++) {
-        await tween(0, 100, FILL[i] ?? 900, (v) => setFill(i, v), reg);
-        setChecks((prev) => prev.map((x, idx) => (idx === i ? true : x)));
-        await wait(PAUSE[i] ?? 250, reg);
-      }
+      const row0 = tween(0, 100, FILL_MS, (v) => setFill(0, v), reg, easeInOut).then(() => setCheck(0));
+      await wait(FILL_MS / 2, reg); // second row joins at the first's halfway point
+      await tween(0, 100, FILL_MS, (v) => setFill(1, v), reg, easeInOut);
+      setCheck(1);
+      await row0;
+      await wait(POP_MS, reg);
       if (!done.current) {
         done.current = true;
         onDone();

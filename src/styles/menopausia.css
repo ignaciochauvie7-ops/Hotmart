@@ -5,6 +5,17 @@
    ─────────────────────────────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap');
 
+/* Page reset for the menopausia funnel: full-bleed cream, no side strips, no
+   horizontal scroll. Only loaded on these pages (via MenoLayout). */
+html,
+body {
+  margin: 0;
+  width: 100%;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  background: #f7f2ea; /* --cream */
+}
+
 .m-root {
   --sage: #8a9a7b;
   --sage-dark: #6d7d5e;
@@ -106,33 +117,43 @@
   width: min(100% - 40px, 440px);
   min-height: 100dvh;
   margin-inline: auto;
-  padding-top: env(safe-area-inset-top);
   padding-bottom: calc(1rem + env(safe-area-inset-bottom));
 }
 
-/* Quiz stage: holds the animated screens; footer buttons anchor to the bottom. */
+/* Quiz stage: fills the space under the 64px header and vertically centers the
+   current screen. Scrolls internally when a screen is taller than the viewport
+   (small phones) so nothing is clipped; the auto margins collapse to 0 then. */
 .m-stage {
   position: relative;
   flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  min-height: 0;
 }
 
 .m-screen {
-  flex: 1;
+  margin-block: auto; /* centers vertically; collapses when content overflows */
   display: flex;
   flex-direction: column;
-  min-height: 0;
+  padding-block: 24px;
 }
 
 .m-screen__body {
   flex: 0 0 auto;
 }
 
+/* Continue button sits 28px below the last element, inside the centered block. */
 .m-screen__foot {
-  margin-top: auto;
-  padding-top: 16px;
+  margin-top: 28px;
+  padding-top: 0;
+}
+
+/* Quiz question titles are centered; the offer headline (no .m-stage) is not. */
+.m-stage .m-q {
+  margin-top: 0;
+  margin-bottom: 2rem; /* 32px to the options */
+  text-align: center;
 }
 
 .m-wide {
@@ -196,7 +217,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  min-height: 56px;
+  min-height: 64px;
   padding-top: env(safe-area-inset-top);
   background: color-mix(in srgb, var(--cream) 90%, transparent);
   backdrop-filter: blur(6px);
@@ -252,7 +273,7 @@
 .m-options {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 14px;
 }
 
 .m-option {
@@ -530,11 +551,20 @@
   text-align: center;
 }
 
-.m-hero-img {
+/* Cover media: a 4:5 card, centered. Works for the real photo and, until it is
+   uploaded, for the empty cream/sage placeholder below. */
+.m-cover-img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  max-width: 260px;
+  aspect-ratio: 4 / 5;
+  margin-inline: auto;
   object-fit: cover;
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.m-placeholder.m-cover-img {
+  aspect-ratio: 4 / 5; /* override the placeholder's default 4/3 */
   box-shadow: var(--shadow-md);
 }
 
@@ -605,14 +635,16 @@
 }
 
 .m-loader-row__bar {
-  flex: 1;
-  height: 8px;
+  display: block;
+  width: 100%;
+  height: 6px;
   border-radius: 999px;
   background: var(--sage-soft);
   overflow: hidden;
 }
 
 .m-loader-row__fill {
+  display: block;
   height: 100%;
   background: var(--sage);
   width: 0;
@@ -624,11 +656,13 @@
   height: 24px;
   color: var(--ok);
   opacity: 0;
-  transition: opacity 0.3s;
+  transform: scale(0.4);
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .m-loader-row__check.is-on {
   opacity: 1;
+  transform: scale(1);
 }
 
 /* Chips --------------------------------------------------------------------- */

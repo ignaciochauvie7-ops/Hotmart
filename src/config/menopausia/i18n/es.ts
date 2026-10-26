@@ -105,7 +105,6 @@ export const es: MenoDict = {
       rows: [
         'Analizando tus respuestas',
         'Comparando con perfiles similares al tuyo',
-        'Creando tu plan personalizado',
       ],
     },
     result: {

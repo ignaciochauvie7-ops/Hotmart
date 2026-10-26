@@ -107,7 +107,6 @@ export const pl: MenoDict = {
       rows: [
         'Analizujemy Twoje odpowiedzi',
         'Porównujemy z podobnymi do Ciebie profilami',
-        'Tworzymy Twój spersonalizowany plan',
       ],
     },
     result: {

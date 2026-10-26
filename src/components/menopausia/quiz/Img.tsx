@@ -11,9 +11,10 @@ interface Props {
 export function Img({ src, alt, className, label }: Props) {
   const [failed, setFailed] = useState(false);
   if (failed) {
+    // Plain placeholder — no broken-image icon, no visible alt text (label only if given).
     return (
       <div className={`m-placeholder ${className ?? ''}`.trim()} role="img" aria-label={alt}>
-        <span>{label ?? alt}</span>
+        {label && <span>{label}</span>}
       </div>
     );
   }

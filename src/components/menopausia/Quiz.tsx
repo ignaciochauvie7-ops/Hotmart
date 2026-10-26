@@ -7,34 +7,30 @@ import { ArrowLeft, Check, zoneIcons } from './quiz/icons';
 import { Img } from './quiz/Img';
 import { Loading1 } from './quiz/Loading1';
 import { Loading2 } from './quiz/Loading2';
-import { Result } from './quiz/Result';
 
 interface Props {
   locale: MenoLocale;
   dict: MenoDict;
 }
 
-// Step map (text-only intermediate screens removed: reassure + time reassurance).
+// Step map. 10 questions split by two loaders; no result screen (loader 2 → offer).
 const COVER = 0;
 const AGE = 1;
-const PERIOD = 2;
-const FATZONE = 3;
-const HEIGHT = 4;
-const WEIGHT = 5;
-const TARGET = 6;
-const LOADING1 = 7;
-const SYMPTOMS = 8;
-const GOAL = 9;
+const HEIGHT = 2;
+const WEIGHT = 3;
+const FATZONE = 4;
+const LOADING1 = 5;
+const GOAL = 6;
+const TARGET = 7;
+const PERIOD = 8;
+const SYMPTOMS = 9;
 const MOVEMENT = 10;
-const TIME = 11;
-const LASTGOOD = 12;
-const EVENT = 13;
-const LOADING2 = 14;
-const RESULT = 15;
-const LAST = RESULT;
+const LASTGOOD = 11;
+const LOADING2 = 12;
+const LAST = LOADING2;
 const LOADERS = new Set([LOADING1, LOADING2]);
-// Steps that count toward the progress bar (loaders and result excluded).
-const QUESTION_STEPS = [AGE, PERIOD, FATZONE, HEIGHT, WEIGHT, TARGET, SYMPTOMS, GOAL, MOVEMENT, TIME, LASTGOOD, EVENT];
+// The 10 steps that count toward the progress bar (loaders excluded).
+const QUESTION_STEPS = [AGE, HEIGHT, WEIGHT, FATZONE, GOAL, TARGET, PERIOD, SYMPTOMS, MOVEMENT, LASTGOOD];
 
 export function Quiz({ locale, dict }: Props) {
   const q = dict.quiz;
@@ -66,18 +62,23 @@ export function Quiz({ locale, dict }: Props) {
     saveStep(step);
   }, [step]);
 
-  // Pixel: QuizStep on every advance; ViewContent at step 1; Lead at result.
+  // Pixel: QuizStep on every advance; ViewContent at step 1. Lead fires when loader 2 finishes.
   useEffect(() => {
     trackCustom('QuizStep', { step, locale });
     if (step >= AGE && !firedView.current) {
       firedView.current = true;
       track('ViewContent', { content_name: 'quiz_menopausia', locale });
     }
-    if (step === RESULT && !firedLead.current) {
+  }, [step, locale]);
+
+  // End of the quiz: fire Lead once, then go straight to the offer.
+  function finish() {
+    if (!firedLead.current) {
       firedLead.current = true;
       track('Lead', { content_name: 'quiz_menopausia', locale });
     }
-  }, [step, locale]);
+    window.location.href = `/menopausia/${locale}/oferta`;
+  }
 
   function update(patch: Partial<QuizAnswers>) {
     setAnswers((prev) => {
@@ -121,7 +122,7 @@ export function Quiz({ locale, dict }: Props) {
     update({ symptoms: nextArr });
   }
 
-  const showTopbar = step >= AGE && step <= EVENT && !LOADERS.has(step);
+  const showTopbar = step >= AGE && step <= LASTGOOD && !LOADERS.has(step);
   // Percentage over question steps only — loaders and result don't count.
   const qIndex = QUESTION_STEPS.indexOf(step);
   const progress = qIndex >= 0 ? Math.round(((qIndex + 1) / QUESTION_STEPS.length) * 100) : 0;
@@ -162,9 +163,9 @@ export function Quiz({ locale, dict }: Props) {
     switch (step) {
       case COVER:
         return (
-          <div className="m-center" style={{ paddingTop: '1.5rem' }}>
+          <div className="m-center m-cover">
             <h1 className="m-q" style={{ marginTop: 0, marginBottom: '1.5rem' }}>{q.cover.title}</h1>
-            <Img src="/menopausia/portada.jpg" alt={q.cover.photoAlt} label="Portada" className="m-hero-img" />
+            <Img src="/menopausia/portada.jpg" alt={q.cover.photoAlt} className="m-cover-img" />
             <button className="m-btn" style={{ marginTop: '1.75rem' }} onClick={next}>{q.cover.cta}</button>
           </div>
         );
@@ -172,14 +173,6 @@ export function Quiz({ locale, dict }: Props) {
       case AGE:
         return <Single q={q.age.q} options={q.age.options} selected={answers.age} pending={pending} reduce={reduce}
           onPick={(i) => pickSingle('age', i)} />;
-
-      case PERIOD:
-        return <Single q={q.period.q} options={q.period.options} selected={answers.period} pending={pending} reduce={reduce}
-          onPick={(i) => pickSingle('period', i)} />;
-
-      case FATZONE:
-        return <Single q={q.fatZone.q} options={q.fatZone.options} selected={answers.fatZone} pending={pending} reduce={reduce}
-          icons={zoneIcons} onPick={(i) => pickSingle('fatZone', i)} />;
 
       case HEIGHT:
         return <MeasureSlider key="height" type="height" q={q.height.q} dict={dict}
@@ -193,6 +186,17 @@ export function Quiz({ locale, dict }: Props) {
           unit={massUnit} onUnit={(u) => setMassUnit(u as 'kg' | 'lb')}
           onSubmit={(v) => { update({ weight: v }); next(); }} />;
 
+      case FATZONE:
+        return <Single q={q.fatZone.q} options={q.fatZone.options} selected={answers.fatZone} pending={pending} reduce={reduce}
+          icons={zoneIcons} onPick={(i) => pickSingle('fatZone', i)} />;
+
+      case LOADING1:
+        return <Loading1 texts={q.loading1.texts} onDone={next} />;
+
+      case GOAL:
+        return <Single q={q.goal.q} options={q.goal.options} selected={answers.goal} pending={pending} reduce={reduce}
+          onPick={(i) => pickSingle('goal', i)} />;
+
       case TARGET: {
         const w = answers.weight ?? 70;
         const tMin = Math.max(40, w - 25);
@@ -204,8 +208,9 @@ export function Quiz({ locale, dict }: Props) {
           onSubmit={(v) => { update({ target: v }); next(); }} />;
       }
 
-      case LOADING1:
-        return <Loading1 texts={q.loading1.texts} onDone={next} />;
+      case PERIOD:
+        return <Single q={q.period.q} options={q.period.options} selected={answers.period} pending={pending} reduce={reduce}
+          onPick={(i) => pickSingle('period', i)} />;
 
       case SYMPTOMS:
         return (
@@ -233,31 +238,16 @@ export function Quiz({ locale, dict }: Props) {
           </>
         );
 
-      case GOAL:
-        return <Single q={q.goal.q} options={q.goal.options} selected={answers.goal} pending={pending} reduce={reduce}
-          onPick={(i) => pickSingle('goal', i)} />;
-
       case MOVEMENT:
         return <Single q={q.movement.q} options={q.movement.options} selected={answers.movement} pending={pending} reduce={reduce}
           onPick={(i) => pickSingle('movement', i)} />;
-
-      case TIME:
-        return <Single q={q.time.q} options={q.time.options} selected={answers.time} pending={pending} reduce={reduce}
-          onPick={(i) => pickSingle('time', i)} />;
 
       case LASTGOOD:
         return <Single q={q.lastGood.q} options={q.lastGood.options} selected={answers.lastGood} pending={pending} reduce={reduce}
           onPick={(i) => pickSingle('lastGood', i)} />;
 
-      case EVENT:
-        return <Single q={q.event.q} options={q.event.options} selected={answers.event} pending={pending} reduce={reduce}
-          onPick={(i) => pickSingle('event', i)} />;
-
       case LOADING2:
-        return <Loading2 rows={q.loading2.rows} onDone={next} />;
-
-      case RESULT:
-        return <Result dict={dict} answers={answers} onSeeMyPlan={() => { window.location.href = `/menopausia/${locale}/oferta`; }} />;
+        return <Loading2 rows={q.loading2.rows} onDone={finish} />;
 
       default:
         return null;
