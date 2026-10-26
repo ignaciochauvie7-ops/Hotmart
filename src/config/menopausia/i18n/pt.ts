@@ -21,6 +21,7 @@ export const pt: MenoDict = {
   common: {
     continue: 'Continuar',
     backAria: 'Voltar atrás',
+    restartAria: 'Voltar ao início',
     startTest: 'Começar o teste (1 minuto)',
     seeMyPlan: 'Ver o meu plano',
     loading: 'A carregar…',

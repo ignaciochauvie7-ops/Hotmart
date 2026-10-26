@@ -27,6 +27,7 @@ export interface MenoDict {
   common: {
     continue: string;
     backAria: string;
+    restartAria: string;
     startTest: string;
     seeMyPlan: string;
     loading: string;

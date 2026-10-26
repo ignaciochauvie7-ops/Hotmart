@@ -4,7 +4,7 @@ import type { MenoDict, MenoLocale } from '../../config/menopausia/i18n';
 import { loadAnswers, loadStep, saveAnswers, saveStep, type QuizAnswers } from '../../lib/menopausia/state';
 import { fotosA, fotosB } from '../../config/menopausia/photos';
 import { track, trackCustom } from '../../lib/menopausia/pixel';
-import { ArrowLeft, Check, zoneIcons } from './quiz/icons';
+import { ArrowLeft, Check, Restart, zoneIcons } from './quiz/icons';
 import { Img } from './quiz/Img';
 import { Loading1 } from './quiz/Loading1';
 import { Loading2 } from './quiz/Loading2';
@@ -51,10 +51,12 @@ export function Quiz({ locale, dict }: Props) {
   };
 
   // Hydrate answers + last step from sessionStorage on mount (reload keeps place).
+  // Never restore onto a loader step — those are transient and would bounce the
+  // visitor forward to the offer on reload.
   useEffect(() => {
     setAnswers(loadAnswers());
     const saved = loadStep();
-    if (saved != null && saved > COVER && saved <= LAST) setStep(saved);
+    if (saved != null && saved > COVER && saved <= LAST && !LOADERS.has(saved)) setStep(saved);
   }, []);
 
   // Persist the step on every change so a reload lands on the same screen.
@@ -114,6 +116,15 @@ export function Quiz({ locale, dict }: Props) {
     go(to, -1);
   }
 
+  // Start over from the cover (clears saved answers + step).
+  function restart() {
+    saveAnswers({});
+    setAnswers({});
+    firedView.current = false;
+    firedLead.current = false;
+    go(COVER, -1);
+  }
+
   // Single choice: record the answer and advance in the same frame — no delay.
   function pickSingle(key: keyof QuizAnswers, index: number) {
     update({ [key]: index } as Partial<QuizAnswers>);
@@ -143,6 +154,9 @@ export function Quiz({ locale, dict }: Props) {
           <div className="m-progress" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
             <div className="m-progress__fill" style={{ width: `${progress}%` }} />
           </div>
+          <button className="m-back m-restart" onClick={restart} aria-label={dict.common.restartAria}>
+            <Restart />
+          </button>
         </div>
       )}
 
