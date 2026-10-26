@@ -10,7 +10,7 @@ export const pt: MenoDict = {
     quizTitle: 'Descobre o teu plano para desinchar a barriga na menopausa',
     quizDesc:
       'Teste de 1 minuto para criar o teu plano personalizado e desinchar a barriga na menopausa.',
-    offerTitle: 'O teu plano Menopausa Plana',
+    offerTitle: 'O teu plano Barriga Lisa em 28 Dias',
     offerDesc: 'O teu plano personalizado para desinchar a barriga em 28 dias.',
     graciasTitle: 'A tua encomenda quase pronta',
     listoTitle: 'Está tudo pronto',
@@ -111,7 +111,7 @@ export const pt: MenoDict = {
       ],
     },
     result: {
-      title: 'O teu plano Menopausa Plana está pronto',
+      title: 'O teu plano Barriga Lisa em 28 Dias está pronto',
       labelAge: 'Idade',
       labelGoal: 'Objetivo principal',
       labelSymptoms: 'Sintomas principais',
@@ -137,7 +137,7 @@ export const pt: MenoDict = {
     profileGoalPrefix: 'O teu objetivo',
     receiveTitle: 'O que recebes hoje',
     items: [
-      { name: 'Desafio Menopausa Plana de 28 dias: rotina de 15 min + plano de refeições + listas de compras', price: 67 },
+      { name: 'Desafio Barriga Lisa em 28 Dias: rotina de 15 min + plano de refeições + listas de compras', price: 67 },
       { name: 'Bónus 1: 30 receitas anti-inflamatórias', price: 19 },
       { name: 'Bónus 2: Registo para imprimir de 28 dias', price: 9 },
       { name: 'Bónus 3: Comer fora sem inchar', price: 12 },
@@ -150,7 +150,7 @@ export const pt: MenoDict = {
     priceOld: 67,
     offLabel: '-75%',
     bumpLabel:
-      'Sim, adiciona Dorme Fresca: plano de 21 noites para dormir sem interrupções e travar os afrontamentos. Só {price}',
+      'Sim, adiciona Volta a Descansar Bem em 21 Dias: plano de 21 noites para dormir sem interrupções e travar os afrontamentos. Só {price}',
     buy: 'Quero o meu plano agora',
     paySecure: 'Pagamento seguro',
     accessEmail: 'Acesso imediato por email',
@@ -180,7 +180,7 @@ export const pt: MenoDict = {
     notPaidBody:
       'Se acabaste de pagar, pode demorar alguns segundos. Verifica o teu email; se não vires nada, escreve-nos.',
     upsellTag: 'Espera! A tua encomenda está quase pronta',
-    upsellTitle: 'Adiciona Adeus Inchaço',
+    upsellTitle: 'Adiciona Adeus Inchaço em 14 Dias',
     upsellBody: 'Plano anti-inflamatório de 14 dias para desinchar a barriga. Só hoje: {price}.',
     upsellIncludes: [
       'Ementas anti-inflamatórias de 14 dias',
@@ -197,6 +197,18 @@ export const pt: MenoDict = {
     body:
       'Verifica o teu email: enviámos todos os teus ficheiros. Se não os vires, vê no spam ou nas promoções.',
     upsellThanks: 'Obrigada! O teu extra também segue por email.',
+  },
+
+  downloads: {
+    title: 'Descarrega os teus ficheiros',
+    note: 'Os links expiram em 7 dias. Também tos enviámos por email.',
+  },
+
+  email: {
+    subject: 'Os teus ficheiros já estão prontos',
+    heading: 'Obrigada pela tua compra!',
+    intro: 'Aqui tens as tuas transferências. Toca em cada ficheiro para o guardares:',
+    expiryNote: 'Os links expiram em 7 dias.',
   },
 
   legal: {

@@ -127,6 +127,18 @@ export interface MenoDict {
     upsellThanks: string;
   };
 
+  downloads: {
+    title: string;
+    note: string;
+  };
+
+  email: {
+    subject: string;
+    heading: string;
+    intro: string;
+    expiryNote: string;
+  };
+
   legal: {
     privacyHeading: string;
     privacyBody: string[];

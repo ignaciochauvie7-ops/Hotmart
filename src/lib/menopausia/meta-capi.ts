@@ -27,7 +27,7 @@ export interface PurchaseEvent {
  * funnel keeps working untracked.
  */
 export async function sendPurchaseCapi(ev: PurchaseEvent): Promise<boolean> {
-  const pixelId = env('NEXT_PUBLIC_META_PIXEL_ID_MENOPAUSIA');
+  const pixelId = env('PIXEL_ID_MENOPAUSIA');
   const token = env('META_CAPI_TOKEN_MENOPAUSIA');
   if (!pixelId || !token) return false;
 

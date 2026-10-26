@@ -8,7 +8,7 @@ export const es: MenoDict = {
     quizTitle: 'Descubre tu plan para desinflamar el abdomen en la menopausia',
     quizDesc:
       'Test de 1 minuto para crear tu plan personalizado y desinflamar el abdomen en la menopausia.',
-    offerTitle: 'Tu plan Menopausia Plana',
+    offerTitle: 'Tu plan Abdomen Plano en 28 Días',
     offerDesc: 'Tu plan personalizado para desinflamar el abdomen en 28 días.',
     graciasTitle: 'Tu pedido casi listo',
     listoTitle: 'Todo listo',
@@ -109,7 +109,7 @@ export const es: MenoDict = {
       ],
     },
     result: {
-      title: 'Tu plan Menopausia Plana está listo',
+      title: 'Tu plan Abdomen Plano en 28 Días está listo',
       labelAge: 'Edad',
       labelGoal: 'Objetivo principal',
       labelSymptoms: 'Síntomas principales',
@@ -135,7 +135,7 @@ export const es: MenoDict = {
     profileGoalPrefix: 'Tu objetivo',
     receiveTitle: 'Lo que recibes hoy',
     items: [
-      { name: 'Reto Menopausia Plana de 28 días: rutina de 15 min + plan de comidas + listas de compras', price: 67 },
+      { name: 'Reto Abdomen Plano en 28 Días: rutina de 15 min + plan de comidas + listas de compras', price: 67 },
       { name: 'Bonus 1: 30 recetas antiinflamatorias', price: 19 },
       { name: 'Bonus 2: Tracker imprimible de 28 días', price: 9 },
       { name: 'Bonus 3: Come fuera sin hincharte', price: 12 },
@@ -148,7 +148,7 @@ export const es: MenoDict = {
     priceOld: 67,
     offLabel: '-75%',
     bumpLabel:
-      'Sí, agrega Duerme Fresca: plan de 21 noches para dormir de corrido y frenar los sofocos. Solo {price}',
+      'Sí, agrega Vuelve a Descansar Bien en 21 Días: plan de 21 noches para dormir de corrido y frenar los sofocos. Solo {price}',
     buy: 'Quiero mi plan ahora',
     paySecure: 'Pago seguro',
     accessEmail: 'Acceso inmediato por email',
@@ -178,7 +178,7 @@ export const es: MenoDict = {
     notPaidBody:
       'Si acabas de pagar, puede tardar unos segundos. Revisa tu email; si no ves nada, escríbenos.',
     upsellTag: '¡Espera! Tu pedido está casi listo',
-    upsellTitle: 'Agrega Adiós Hinchazón',
+    upsellTitle: 'Agrega Adiós Hinchazón en 14 Días',
     upsellBody: 'Plan antiinflamatorio de 14 días para deshinchar tu abdomen. Solo hoy: {price}.',
     upsellIncludes: [
       'Menús antiinflamatorios de 14 días',
@@ -195,6 +195,18 @@ export const es: MenoDict = {
     body:
       'Revisa tu email: te enviamos todos tus archivos. Si no lo ves, mira en spam o promociones.',
     upsellThanks: '¡Gracias! Tu extra también va en camino a tu email.',
+  },
+
+  downloads: {
+    title: 'Descarga tus archivos',
+    note: 'Los enlaces caducan en 7 días. También te los enviamos por email.',
+  },
+
+  email: {
+    subject: 'Tus archivos ya están listos',
+    heading: '¡Gracias por tu compra!',
+    intro: 'Aquí tienes tus descargas. Toca cada archivo para guardarlo:',
+    expiryNote: 'Los enlaces caducan en 7 días.',
   },
 
   legal: {

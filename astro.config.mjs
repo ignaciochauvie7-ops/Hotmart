@@ -8,7 +8,11 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   // Static by default; server routes opt in with `export const prerender = false`.
   output: 'static',
-  adapter: vercel(),
+  adapter: vercel({
+    // Bundle the delivered PDFs (outside /public) into the serverless function
+    // so the signed download route can read them at runtime.
+    includeFiles: ['./private/menopausia/es', './private/menopausia/pt', './private/menopausia/pl'],
+  }),
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],

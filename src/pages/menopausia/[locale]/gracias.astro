@@ -4,8 +4,9 @@ export const prerender = false;
 import MenoLayout from '../../../layouts/MenoLayout.astro';
 import { Gracias } from '../../../components/menopausia/Gracias';
 import { getDict, isLocale } from '../../../config/menopausia/i18n';
-import { getDodoClient, retrievePayment } from '../../../lib/menopausia/dodo';
-import { prices } from '../../../config/menopausia/products';
+import { getDodoClient, retrievePayment, paymentIsPaid } from '../../../lib/menopausia/dodo';
+import { bucketsFromPayment, buildDownloads, type DownloadLink } from '../../../lib/menopausia/order';
+import { prices, type ProductBucket } from '../../../config/menopausia/products';
 
 const { locale } = Astro.params;
 if (!isLocale(locale)) return Astro.redirect('/menopausia/es');
@@ -19,18 +20,24 @@ let email = params.get('email') ?? undefined;
 let paid = false;
 let value = prices.main;
 let currency = 'EUR';
+let downloads: DownloadLink[] = [];
 
 const client = getDodoClient();
 if (client && paymentId) {
   const p: any = await retrievePayment(client, paymentId);
-  const st = String(p?.status ?? '').toLowerCase();
-  paid = st === 'succeeded' || st === 'paid' || st === 'active';
+  paid = paymentIsPaid(p);
   if (typeof p?.total_amount === 'number') value = p.total_amount / 100;
   if (p?.currency) currency = p.currency;
   if (p?.customer?.email) email = p.customer.email;
+  if (paid) {
+    // Buyer is on /gracias → main is always included; add bump if purchased.
+    const buckets: ProductBucket[] = ['main'];
+    const fromCart = bucketsFromPayment(locale, p);
+    if (fromCart.includes('bump') || p?.metadata?.bump === 'true') buckets.push('bump');
+    downloads = buildDownloads(locale, paymentId, buckets);
+  }
 } else if (!client && statusParam === 'succeeded') {
-  // Dev/local fallback when Dodo isn't configured yet.
-  paid = true;
+  paid = true; // Dev/local fallback when Dodo isn't configured.
 }
 ---
 
@@ -42,6 +49,7 @@ if (client && paymentId) {
     currency={currency}
     eventId={paymentId}
     email={email}
+    downloads={downloads}
     client:load
   />
 </MenoLayout>

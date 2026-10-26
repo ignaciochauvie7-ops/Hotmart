@@ -10,7 +10,7 @@ export const pl: MenoDict = {
     quizTitle: 'Poznaj swój plan na płaski brzuch w menopauzie',
     quizDesc:
       'Test w 1 minutę, który stworzy Twój spersonalizowany plan na płaski brzuch w menopauzie.',
-    offerTitle: 'Twój plan Płaski Brzuch',
+    offerTitle: 'Twój plan Płaski Brzuch w 28 Dni',
     offerDesc: 'Twój spersonalizowany plan na płaski brzuch w 28 dni.',
     graciasTitle: 'Twoje zamówienie prawie gotowe',
     listoTitle: 'Wszystko gotowe',
@@ -111,7 +111,7 @@ export const pl: MenoDict = {
       ],
     },
     result: {
-      title: 'Twój plan Płaski Brzuch jest gotowy',
+      title: 'Twój plan Płaski Brzuch w 28 Dni jest gotowy',
       labelAge: 'Wiek',
       labelGoal: 'Główny cel',
       labelSymptoms: 'Główne objawy',
@@ -137,7 +137,7 @@ export const pl: MenoDict = {
     profileGoalPrefix: 'Twój cel',
     receiveTitle: 'Co dostajesz dzisiaj',
     items: [
-      { name: 'Wyzwanie Płaski Brzuch na 28 dni: 15-minutowa rutyna + plan posiłków + listy zakupów', price: 67 },
+      { name: 'Wyzwanie Płaski Brzuch w 28 Dni: 15-minutowa rutyna + plan posiłków + listy zakupów', price: 67 },
       { name: 'Bonus 1: 30 przepisów przeciwzapalnych', price: 19 },
       { name: 'Bonus 2: Tracker do druku na 28 dni', price: 9 },
       { name: 'Bonus 3: Jedz na mieście bez wzdęć', price: 12 },
@@ -150,7 +150,7 @@ export const pl: MenoDict = {
     priceOld: 67,
     offLabel: '-75%',
     bumpLabel:
-      'Tak, dodaj Śpij Chłodno: plan na 21 nocy, by spać bez przerw i ograniczyć uderzenia gorąca. Tylko {price}',
+      'Tak, dodaj Znów Dobrze Śpij w 21 Dni: plan na 21 nocy, by spać bez przerw i ograniczyć uderzenia gorąca. Tylko {price}',
     buy: 'Chcę swój plan teraz',
     paySecure: 'Bezpieczna płatność',
     accessEmail: 'Natychmiastowy dostęp e-mailem',
@@ -180,7 +180,7 @@ export const pl: MenoDict = {
     notPaidBody:
       'Jeśli właśnie zapłaciłaś, może to potrwać kilka sekund. Sprawdź e-mail; jeśli nic nie widzisz, napisz do nas.',
     upsellTag: 'Zaczekaj! Twoje zamówienie jest prawie gotowe',
-    upsellTitle: 'Dodaj Żegnaj Wzdęcie',
+    upsellTitle: 'Dodaj Żegnaj Wzdęcie w 14 Dni',
     upsellBody: 'Przeciwzapalny plan na 14 dni, który spłaszczy Twój brzuch. Tylko dziś: {price}.',
     upsellIncludes: [
       'Przeciwzapalne menu na 14 dni',
@@ -197,6 +197,18 @@ export const pl: MenoDict = {
     body:
       'Sprawdź e-mail: wysłaliśmy wszystkie Twoje pliki. Jeśli ich nie widzisz, zajrzyj do spamu lub ofert.',
     upsellThanks: 'Dziękujemy! Twój dodatek też jest już w drodze na e-mail.',
+  },
+
+  downloads: {
+    title: 'Pobierz swoje pliki',
+    note: 'Linki wygasają po 7 dniach. Wysłaliśmy je też na e-mail.',
+  },
+
+  email: {
+    subject: 'Twoje pliki są już gotowe',
+    heading: 'Dziękujemy za zakup!',
+    intro: 'Oto Twoje pliki do pobrania. Kliknij każdy, aby go zapisać:',
+    expiryNote: 'Linki wygasają po 7 dniach.',
   },
 
   legal: {

@@ -67,3 +67,18 @@ export async function retrievePayment(client: DodoPayments, paymentId: string): 
     return null;
   }
 }
+
+/** True if the payment object represents a completed payment. */
+export function paymentIsPaid(payment: any): boolean {
+  const st = String(payment?.status ?? '').toLowerCase();
+  return st === 'succeeded' || st === 'paid' || st === 'active';
+}
+
+/** Best-effort extraction of purchased product IDs across possible SDK shapes. */
+export function paymentProductIds(payment: any): string[] {
+  const cart = payment?.product_cart ?? payment?.products ?? payment?.line_items ?? [];
+  if (!Array.isArray(cart)) return [];
+  return cart
+    .map((it: any) => it?.product_id ?? it?.product?.product_id ?? it?.id)
+    .filter((x: any): x is string => typeof x === 'string');
+}
