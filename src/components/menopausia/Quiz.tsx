@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactElement } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import type { MenoDict, MenoLocale } from '../../config/menopausia/i18n';
-import { loadAnswers, saveAnswers, type QuizAnswers } from '../../lib/menopausia/state';
+import { loadAnswers, loadStep, saveAnswers, saveStep, type QuizAnswers } from '../../lib/menopausia/state';
 import { track, trackCustom } from '../../lib/menopausia/pixel';
 import { ArrowLeft, Check, zoneIcons } from './quiz/icons';
 import { Img } from './quiz/Img';
@@ -34,26 +34,37 @@ const LOADING2 = 15;
 const RESULT = 16;
 const LAST = RESULT;
 const LOADERS = new Set([LOADING1, LOADING2]);
-
-const variants = {
-  enter: { opacity: 0, x: 24 },
-  center: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: -24 },
-};
+// Steps that count toward the progress bar (loaders and result excluded).
+const QUESTION_STEPS = [AGE, PERIOD, FATZONE, REASSURE, HEIGHT, WEIGHT, TARGET, SYMPTOMS, GOAL, MOVEMENT, TIME, LASTGOOD, EVENT];
 
 export function Quiz({ locale, dict }: Props) {
   const q = dict.quiz;
+  const reduce = useReducedMotion();
   const [step, setStep] = useState(COVER);
+  const [dir, setDir] = useState(1); // 1 = forward, -1 = back; drives slide direction
   const [answers, setAnswers] = useState<QuizAnswers>({});
   const [pending, setPending] = useState<number | null>(null); // 300ms single-choice feedback
   const [timeAfter, setTimeAfter] = useState(false);
   const firedView = useRef(false);
   const firedLead = useRef(false);
 
-  // Hydrate from sessionStorage on mount.
+  const variants = {
+    enter: (d: number) => ({ opacity: 0, x: reduce ? 0 : d >= 0 ? 24 : -24 }),
+    center: { opacity: 1, x: 0 },
+    exit: (d: number) => ({ opacity: 0, x: reduce ? 0 : d >= 0 ? -24 : 24 }),
+  };
+
+  // Hydrate answers + last step from sessionStorage on mount (reload keeps place).
   useEffect(() => {
     setAnswers(loadAnswers());
+    const saved = loadStep();
+    if (saved != null && saved > COVER && saved <= LAST) setStep(saved);
   }, []);
+
+  // Persist the step on every change so a reload lands on the same screen.
+  useEffect(() => {
+    saveStep(step);
+  }, [step]);
 
   // Pixel: QuizStep on every advance; ViewContent at step 1; Lead at result.
   useEffect(() => {
@@ -76,19 +87,20 @@ export function Quiz({ locale, dict }: Props) {
     });
   }
 
-  function go(to: number) {
+  function go(to: number, direction = 1) {
     setPending(null);
+    setDir(direction);
     setStep(Math.max(COVER, Math.min(LAST, to)));
   }
 
   function next() {
-    go(step + 1);
+    go(step + 1, 1);
   }
 
   function back() {
     let to = step - 1;
     while (to > COVER && LOADERS.has(to)) to -= 1;
-    go(to);
+    go(to, -1);
   }
 
   // Single choice: 300ms visual feedback, then advance.
@@ -111,7 +123,9 @@ export function Quiz({ locale, dict }: Props) {
   }
 
   const showTopbar = step >= AGE && step <= EVENT && !LOADERS.has(step) && !timeAfter;
-  const progress = Math.round((step / LAST) * 100);
+  // Percentage over question steps only — loaders and result don't count.
+  const qIndex = QUESTION_STEPS.indexOf(step);
+  const progress = qIndex >= 0 ? Math.round(((qIndex + 1) / QUESTION_STEPS.length) * 100) : 0;
 
   return (
     <div className="m-shell">
@@ -126,14 +140,15 @@ export function Quiz({ locale, dict }: Props) {
         </div>
       )}
 
-      <AnimatePresence mode="wait" initial={false}>
+      <AnimatePresence mode="wait" initial={false} custom={dir}>
         <motion.div
           key={timeAfter ? 'time-after' : step}
+          custom={dir}
           variants={variants}
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         >
           {renderStep()}
         </motion.div>
@@ -155,15 +170,15 @@ export function Quiz({ locale, dict }: Props) {
         );
 
       case AGE:
-        return <Single q={q.age.q} options={q.age.options} selected={answers.age} pending={pending}
+        return <Single q={q.age.q} options={q.age.options} selected={answers.age} pending={pending} reduce={reduce}
           onPick={(i) => pickSingle('age', i)} />;
 
       case PERIOD:
-        return <Single q={q.period.q} options={q.period.options} selected={answers.period} pending={pending}
+        return <Single q={q.period.q} options={q.period.options} selected={answers.period} pending={pending} reduce={reduce}
           onPick={(i) => pickSingle('period', i)} />;
 
       case FATZONE:
-        return <Single q={q.fatZone.q} options={q.fatZone.options} selected={answers.fatZone} pending={pending}
+        return <Single q={q.fatZone.q} options={q.fatZone.options} selected={answers.fatZone} pending={pending} reduce={reduce}
           icons={zoneIcons} onPick={(i) => pickSingle('fatZone', i)} />;
 
       case REASSURE:
@@ -206,10 +221,11 @@ export function Quiz({ locale, dict }: Props) {
               {q.symptoms.options.map((opt, i) => {
                 const on = (answers.symptoms ?? []).includes(i);
                 return (
-                  <button key={i} className={`m-option ${on ? 'is-selected' : ''}`} onClick={() => toggleSymptom(i)} aria-pressed={on}>
+                  <motion.button key={i} className={`m-option ${on ? 'is-selected' : ''}`} onClick={() => toggleSymptom(i)} aria-pressed={on}
+                    whileTap={reduce ? undefined : { scale: 0.97 }} {...optionMotion(i, reduce)}>
                     <span>{opt}</span>
                     <span className="m-option__check">{on && <Check />}</span>
-                  </button>
+                  </motion.button>
                 );
               })}
             </div>
@@ -220,23 +236,23 @@ export function Quiz({ locale, dict }: Props) {
         );
 
       case GOAL:
-        return <Single q={q.goal.q} options={q.goal.options} selected={answers.goal} pending={pending}
+        return <Single q={q.goal.q} options={q.goal.options} selected={answers.goal} pending={pending} reduce={reduce}
           onPick={(i) => pickSingle('goal', i)} />;
 
       case MOVEMENT:
-        return <Single q={q.movement.q} options={q.movement.options} selected={answers.movement} pending={pending}
+        return <Single q={q.movement.q} options={q.movement.options} selected={answers.movement} pending={pending} reduce={reduce}
           onPick={(i) => pickSingle('movement', i)} />;
 
       case TIME:
-        return <Single q={q.time.q} options={q.time.options} selected={answers.time} pending={pending}
+        return <Single q={q.time.q} options={q.time.options} selected={answers.time} pending={pending} reduce={reduce}
           onPick={(i) => pickSingle('time', i)} />;
 
       case LASTGOOD:
-        return <Single q={q.lastGood.q} options={q.lastGood.options} selected={answers.lastGood} pending={pending}
+        return <Single q={q.lastGood.q} options={q.lastGood.options} selected={answers.lastGood} pending={pending} reduce={reduce}
           onPick={(i) => pickSingle('lastGood', i)} />;
 
       case EVENT:
-        return <Single q={q.event.q} options={q.event.options} selected={answers.event} pending={pending}
+        return <Single q={q.event.q} options={q.event.options} selected={answers.event} pending={pending} reduce={reduce}
           onPick={(i) => pickSingle('event', i)} />;
 
       case LOADING2:
@@ -253,14 +269,25 @@ export function Quiz({ locale, dict }: Props) {
 
 // ── Reusable sub-components ────────────────────────────────────────────────
 
+// Options fade + rise in a 50ms cascade (disabled under reduced motion).
+function optionMotion(i: number, reduce: boolean | null) {
+  if (reduce) return {};
+  return {
+    initial: { opacity: 0, y: 8 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.28, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] as const },
+  };
+}
+
 function Single({
-  q, options, selected, pending, icons, onPick,
+  q, options, selected, pending, icons, reduce, onPick,
 }: {
   q: string;
   options: string[];
   selected?: number;
   pending: number | null;
   icons?: ((p: { className?: string }) => ReactElement)[];
+  reduce: boolean | null;
   onPick: (i: number) => void;
 }) {
   return (
@@ -271,11 +298,17 @@ function Single({
           const on = pending === i || (pending === null && selected === i);
           const Icon = icons?.[i];
           return (
-            <button key={i} className={`m-option ${on ? 'is-selected' : ''}`} onClick={() => onPick(i)}>
+            <motion.button
+              key={i}
+              className={`m-option ${on ? 'is-selected' : ''}`}
+              onClick={() => onPick(i)}
+              whileTap={reduce ? undefined : { scale: 0.97 }}
+              {...optionMotion(i, reduce)}
+            >
               {Icon && <Icon className="m-option__icon" />}
               <span>{opt}</span>
               <span className="m-option__check">{on && <Check />}</span>
-            </button>
+            </motion.button>
           );
         })}
       </div>

@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import type { MenoDict } from '../../../config/menopausia/i18n';
 import { bmi, estimateKgRange, type QuizAnswers } from '../../../lib/menopausia/state';
+import { tween } from '../../../lib/menopausia/anim';
 
 interface Props {
   dict: MenoDict;
@@ -31,7 +34,7 @@ export function Result({ dict, answers, onSeeMyPlan }: Props) {
           <div style={{ marginTop: '0.9rem', paddingTop: '0.9rem', borderTop: '1px solid var(--line)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
               <span className="m-muted">{r.labelImc}</span>
-              <strong style={{ fontFamily: 'var(--font-serif)', fontSize: '1.6rem' }}>{imc}</strong>
+              <CountUp value={imc} decimals={1} />
             </div>
             <p className="m-muted" style={{ fontSize: '0.85rem' }}>{r.imcNote}</p>
           </div>
@@ -51,6 +54,26 @@ export function Result({ dict, answers, onSeeMyPlan }: Props) {
   );
 }
 
+/** Counts from 0 up to `value` once on mount. Shows the final value immediately under reduced motion. */
+function CountUp({ value, decimals }: { value: number; decimals: number }) {
+  const reduce = useReducedMotion();
+  const [n, setN] = useState(reduce ? value : 0);
+  useEffect(() => {
+    if (reduce) {
+      setN(value);
+      return;
+    }
+    let canceler: { cancel: () => void } | undefined;
+    tween(0, value, 900, setN, (c) => { canceler = c; });
+    return () => canceler?.cancel();
+  }, [value, reduce]);
+  return (
+    <strong style={{ fontFamily: 'var(--font-serif)', fontSize: '1.6rem', fontVariantNumeric: 'tabular-nums' }}>
+      {n.toFixed(decimals)}
+    </strong>
+  );
+}
+
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', padding: '0.35rem 0' }}>
@@ -61,6 +84,14 @@ function SummaryRow({ label, value }: { label: string; value: string }) {
 }
 
 function ProgressChart({ bloating, energy, today, day28 }: { bloating: string; energy: string; today: string; day28: string }) {
+  const reduce = useReducedMotion();
+  const draw = reduce
+    ? { initial: { pathLength: 1 }, animate: { pathLength: 1 } }
+    : { initial: { pathLength: 0 }, animate: { pathLength: 1 }, transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as const } };
+  const dot = reduce
+    ? { initial: { opacity: 1 }, animate: { opacity: 1 } }
+    : { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { delay: 1.15, duration: 0.3 } };
+
   return (
     <div>
       <div className="m-chips" style={{ marginBottom: '0.75rem' }}>
@@ -73,12 +104,12 @@ function ProgressChart({ bloating, energy, today, day28 }: { bloating: string; e
         {/* baseline */}
         <line x1="20" y1="160" x2="300" y2="160" stroke="var(--line)" strokeWidth="1" />
         {/* bloating down */}
-        <path d="M20 50 Q150 80 300 145" fill="none" stroke="var(--terra)" strokeWidth="3" strokeLinecap="round" />
+        <motion.path d="M20 50 Q150 80 300 145" fill="none" stroke="var(--terra)" strokeWidth="3" strokeLinecap="round" {...draw} />
         {/* energy up */}
-        <path d="M20 145 Q150 108 300 48" fill="none" stroke="var(--sage-dark)" strokeWidth="3" strokeLinecap="round" />
+        <motion.path d="M20 145 Q150 108 300 48" fill="none" stroke="var(--sage-dark)" strokeWidth="3" strokeLinecap="round" {...draw} />
         {/* day 28 markers */}
-        <circle cx="300" cy="145" r="5" fill="var(--terra)" />
-        <circle cx="300" cy="48" r="5" fill="var(--sage-dark)" />
+        <motion.circle cx="300" cy="145" r="5" fill="var(--terra)" {...dot} />
+        <motion.circle cx="300" cy="48" r="5" fill="var(--sage-dark)" {...dot} />
         <line x1="300" y1="30" x2="300" y2="160" stroke="var(--line)" strokeWidth="1" strokeDasharray="3 3" />
         {/* x labels */}
         <text x="20" y="176" fontSize="11" fill="var(--muted-text)" fontFamily="Inter, sans-serif">{today}</text>

@@ -55,6 +55,30 @@ export function Offer({ locale }: Props) {
     return () => window.clearInterval(id);
   }, []);
 
+  // Sections fade up as they scroll into view (IntersectionObserver).
+  const shellRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const root = shellRef.current;
+    if (!root) return;
+    const els = Array.from(root.querySelectorAll<HTMLElement>('.m-section'));
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    els.forEach((e) => e.classList.add('m-reveal'));
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((en) => {
+          if (en.isIntersecting) {
+            en.target.classList.add('is-in');
+            io.unobserve(en.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+    );
+    els.forEach((e) => io.observe(e));
+    return () => io.disconnect();
+  }, []);
+
   const total = prices.main + (bump ? prices.bump : 0);
 
   async function buy() {
@@ -84,7 +108,7 @@ export function Offer({ locale }: Props) {
     <>
       <CountBar text={o.reserved} remaining={remaining} />
 
-      <div className="m-shell">
+      <div className="m-shell" ref={shellRef}>
         <motion.h1 className="m-q" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
           {headline}
         </motion.h1>
@@ -214,7 +238,7 @@ function BuyBlock({
   const o = dict.offer;
   return (
     <div className="m-section">
-      <button className="m-btn" onClick={onBuy} disabled={loading}>
+      <button className="m-btn m-btn--pulse" onClick={onBuy} disabled={loading}>
         {loading ? <span className="m-spin" /> : o.buy}
       </button>
       <p className="m-center m-muted" style={{ marginTop: '0.6rem', fontWeight: 600 }}>
