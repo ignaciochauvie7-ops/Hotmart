@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { easeInOut, tween, wait, type Canceler } from '../../../lib/menopausia/anim';
 import { Check } from './icons';
 import { Carousel } from './Carousel';
+import { fotosB } from '../../../config/menopausia/photos';
 
 interface Props {
   rows: string[]; // 2 row labels
@@ -62,7 +63,7 @@ export function Loading2({ rows, onDone }: Props) {
           <Check className={`m-loader-row__check ${checks[i] ? 'is-on' : ''}`} />
         </div>
       ))}
-      <Carousel />
+      <Carousel images={fotosB} />
     </div>
   );
 }

@@ -3,32 +3,44 @@
    Namespaced under .m-root so it never collides with the existing BerichBusiness
    styles. Mobile-first, warm and elegant.
    ─────────────────────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap');
+/* Fonts are self-hosted and loaded via <link> in MenoLayout (fonts.css). */
 
-/* Page reset for the menopausia funnel: full-bleed cream, no side strips, no
-   horizontal scroll. Only loaded on these pages (via MenoLayout). */
+/* Page reset for the menopausia funnel: full-bleed warm white with a subtle pink
+   wash at the top, no side strips, no horizontal scroll. Only loaded on these
+   pages (via MenoLayout). */
+html {
+  font-size: 17px; /* base body text ≥17px for readability (45–60 audience) */
+}
+
 html,
 body {
   margin: 0;
   width: 100%;
   min-height: 100dvh;
   overflow-x: hidden;
-  background: #f7f2ea; /* --cream */
+  background: linear-gradient(180deg, #FDECEF 0%, #FFF9F5 42%) no-repeat;
+  background-color: #FFF9F5;
+  background-attachment: fixed;
 }
 
 .m-root {
-  --sage: #8a9a7b;
-  --sage-dark: #6d7d5e;
-  --sage-soft: #e7ece0;
-  --terra: #c27a5c;
-  --terra-hover: #a9654a;
-  --cream: #f7f2ea;
-  --surface: #fffdf9;
-  --ink: #3d3a35;
-  --muted: #76706650;
-  --muted-text: #76706a;
-  --line: #e7ded0;
-  --ok: #5f8a5f;
+  /* Teal accent (section titles, icons, selected option + check). */
+  --sage: #0E6A72;
+  --sage-dark: #0E6A72;
+  --sage-soft: #E3F2F2; /* soft teal surface (selected option bg) */
+  /* Raspberry primary (buttons, progress, slider). */
+  --terra: #D6336C;
+  --terra-hover: #B02456;
+  --cream: #FFF9F5; /* warm white base */
+  --surface: #FFFFFF;
+  --ink: #2B1B33;
+  --muted: #6E5F7633;
+  --muted-text: #6E5F76;
+  --line: #F1DDE3;
+  --ok: #0E6A72;
+  --amber: #FFB43A; /* details & highlights (discount badge) */
+  --coral: #FF8A5B; /* progress-bar gradient tail */
+  --track: #F7DCE4; /* progress / loader track (soft pink) */
   --radius: 16px;
   --radius-lg: 22px;
   --shadow-sm: 0 1px 3px rgba(61, 58, 53, 0.07);
@@ -39,7 +51,7 @@ body {
 
   font-family: var(--font-sans);
   color: var(--ink);
-  background: var(--cream);
+  background: transparent; /* the page gradient shows through */
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   min-height: 100dvh;
@@ -74,39 +86,13 @@ body {
 
 .m-root button {
   font-family: inherit;
+  touch-action: manipulation; /* no 300ms tap delay on iOS */
 }
 
 /* Layout shell -------------------------------------------------------------- */
 .m-root {
-  /* Decorative soft circles, visible mainly on wider (desktop) viewports. */
   position: relative;
   overflow-x: hidden;
-}
-
-.m-root::before,
-.m-root::after {
-  content: '';
-  position: fixed;
-  border-radius: 50%;
-  z-index: 0;
-  pointer-events: none;
-  filter: blur(2px);
-}
-
-.m-root::before {
-  width: 42vmax;
-  height: 42vmax;
-  top: -14vmax;
-  left: -16vmax;
-  background: radial-gradient(circle at 35% 35%, var(--sage-soft), transparent 70%);
-}
-
-.m-root::after {
-  width: 36vmax;
-  height: 36vmax;
-  right: -14vmax;
-  bottom: -12vmax;
-  background: radial-gradient(circle at 60% 60%, color-mix(in srgb, var(--terra) 14%, transparent), transparent 70%);
 }
 
 .m-shell {
@@ -153,6 +139,7 @@ body {
 .m-stage .m-q {
   margin-top: 0;
   margin-bottom: 2rem; /* 32px to the options */
+  font-size: 28px; /* fixed, readable for the 45–60 audience */
   text-align: center;
 }
 
@@ -168,7 +155,7 @@ body {
   justify-content: center;
   gap: 0.5rem;
   width: 100%;
-  min-height: 56px;
+  min-height: 60px;
   padding: 0.9rem 1.5rem;
   border: none;
   border-radius: 999px;
@@ -251,14 +238,14 @@ body {
   flex: 1;
   height: 8px;
   border-radius: 999px;
-  background: var(--sage-soft);
+  background: var(--track);
   overflow: hidden;
 }
 
 .m-progress__fill {
   height: 100%;
   border-radius: 999px;
-  background: var(--terra);
+  background: linear-gradient(90deg, var(--terra), var(--coral));
   transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -305,8 +292,8 @@ body {
 
 .m-option[aria-pressed='true'],
 .m-option.is-selected {
-  border-color: var(--sage-dark);
-  background: color-mix(in srgb, var(--sage) 20%, var(--surface));
+  border: 2px solid var(--sage-dark);
+  background: var(--sage-soft);
 }
 
 .m-option__icon {
@@ -607,7 +594,7 @@ body {
 .m-loader-bar {
   height: 10px;
   border-radius: 999px;
-  background: var(--sage-soft);
+  background: var(--track);
   overflow: hidden;
   margin-top: 1.25rem;
 }
@@ -639,7 +626,7 @@ body {
   width: 100%;
   height: 6px;
   border-radius: 999px;
-  background: var(--sage-soft);
+  background: var(--track);
   overflow: hidden;
 }
 
@@ -755,8 +742,8 @@ body {
   display: inline-block;
   margin-top: 0.5rem;
   padding: 0.25rem 0.75rem;
-  background: var(--terra);
-  color: #fff;
+  background: var(--amber);
+  color: var(--ink);
   border-radius: 999px;
   font-size: 0.85rem;
   font-weight: 700;
@@ -780,6 +767,27 @@ body {
   margin-top: 2px;
   accent-color: var(--terra);
   cursor: pointer;
+}
+
+/* Results photo carousel (/oferta) — photos only, horizontal snap scroll. */
+.m-results-carousel {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.25rem;
+}
+
+.m-results-carousel img {
+  flex: 0 0 auto;
+  width: 70%;
+  max-width: 260px;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  scroll-snap-align: center;
 }
 
 .m-faq-item {
@@ -870,6 +878,7 @@ body {
 .m-section > h2 {
   font-size: 1.4rem;
   margin-bottom: 1rem;
+  color: var(--sage); /* teal section titles */
 }
 
 .m-divider {

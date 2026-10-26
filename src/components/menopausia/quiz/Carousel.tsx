@@ -1,30 +1,32 @@
 import { useEffect, useState } from 'react';
 
-const PHOTOS = [1, 2, 3, 4, 5, 6];
+interface Props {
+  images: string[]; // optimized WebP urls for this group
+}
 
 /**
- * Crossfading photo carousel shown under the loading bars.
- * Reads /menopausia/mujeres/1.jpg … 6.jpg. Any image that 404s falls back to a
- * cream/sage placeholder so the movement is visible before real photos exist;
- * once the real files are uploaded with those names they appear automatically.
+ * Crossfading photo carousel shown under the loading bars. The first image loads
+ * eagerly (high priority) so there's no gap; the rest lazy-load. Any image that
+ * 404s falls back to a soft placeholder so the movement is always visible.
  */
-export function Carousel() {
+export function Carousel({ images }: Props) {
   const [slide, setSlide] = useState(0);
   useEffect(() => {
-    const id = window.setInterval(() => setSlide((s) => (s + 1) % PHOTOS.length), 1200);
+    if (images.length <= 1) return;
+    const id = window.setInterval(() => setSlide((s) => (s + 1) % images.length), 1200);
     return () => window.clearInterval(id);
-  }, []);
+  }, [images.length]);
 
   return (
     <div className="m-carousel" aria-hidden="true">
-      {PHOTOS.map((n, i) => (
-        <Slide key={n} n={n} active={i === slide} />
+      {images.map((src, i) => (
+        <Slide key={src} src={src} active={i === slide} eager={i === 0} />
       ))}
     </div>
   );
 }
 
-function Slide({ n, active }: { n: number; active: boolean }) {
+function Slide({ src, active, eager }: { src: string; active: boolean; eager: boolean }) {
   const [failed, setFailed] = useState(false);
   return (
     <div className={`m-carousel__slide ${active ? 'is-active' : ''}`}>
@@ -32,9 +34,11 @@ function Slide({ n, active }: { n: number; active: boolean }) {
         <div className="m-carousel__placeholder" />
       ) : (
         <img
-          src={`/menopausia/mujeres/${n}.jpg`}
+          src={src}
           alt=""
-          loading="lazy"
+          loading={eager ? 'eager' : 'lazy'}
+          // @ts-expect-error fetchpriority is a valid DOM attribute
+          fetchpriority={eager ? 'high' : 'auto'}
           decoding="async"
           onError={() => setFailed(true)}
         />

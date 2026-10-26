@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { getDict, money, type MenoDict, type MenoLocale } from '../../config/menopausia/i18n';
 import { prices } from '../../config/menopausia/products';
+import { fotosC, showResultsCarousel } from '../../config/menopausia/photos';
 import { loadAnswers } from '../../lib/menopausia/state';
 import { getCookie, track } from '../../lib/menopausia/pixel';
 import { Check } from './quiz/icons';
@@ -161,6 +162,16 @@ export function Offer({ locale }: Props) {
             ))}
           </div>
         </section>
+
+        {showResultsCarousel && fotosC.length > 0 && (
+          <section className="m-section">
+            <div className="m-results-carousel">
+              {fotosC.map((src, i) => (
+                <img key={i} src={src} alt="" loading="lazy" decoding="async" />
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="m-section">
           <div className="m-guarantee">

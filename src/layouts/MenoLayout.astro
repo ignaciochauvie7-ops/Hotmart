@@ -21,8 +21,12 @@ const dict = getDict(locale);
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     {description && <meta name="description" content={description} />}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
-    <meta name="theme-color" content="#f7f2ea" />
+    <meta name="theme-color" content="#FFF9F5" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Self-hosted fonts: preload the two primary faces, then load the rest. -->
+    <link rel="preload" as="font" type="font/woff2" href="/menopausia/fonts/lora-600-latin.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/menopausia/fonts/inter-400-latin.woff2" crossorigin />
+    <link rel="stylesheet" href="/menopausia/fonts/fonts.css" />
     <title>{title}</title>
     <MetaPixel />
   </head>

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { easeInOut, tween, type Canceler } from '../../../lib/menopausia/anim';
 import { Carousel } from './Carousel';
+import { fotosA } from '../../../config/menopausia/photos';
 
 interface Props {
   texts: string[]; // 3 phase texts
@@ -39,7 +40,7 @@ export function Loading1({ texts, onDone }: Props) {
       </div>
       <div className="m-loader-pct">{Math.round(pct)}%</div>
       <p className="m-muted" aria-live="polite">{texts[phase]}</p>
-      <Carousel />
+      <Carousel images={fotosA} />
     </div>
   );
 }

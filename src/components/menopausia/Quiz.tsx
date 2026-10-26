@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactElement } fr
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import type { MenoDict, MenoLocale } from '../../config/menopausia/i18n';
 import { loadAnswers, loadStep, saveAnswers, saveStep, type QuizAnswers } from '../../lib/menopausia/state';
+import { fotosA, fotosB } from '../../config/menopausia/photos';
 import { track, trackCustom } from '../../lib/menopausia/pixel';
 import { ArrowLeft, Check, zoneIcons } from './quiz/icons';
 import { Img } from './quiz/Img';
@@ -38,7 +39,6 @@ export function Quiz({ locale, dict }: Props) {
   const [step, setStep] = useState(COVER);
   const [dir, setDir] = useState(1); // 1 = forward, -1 = back; drives slide direction
   const [answers, setAnswers] = useState<QuizAnswers>({});
-  const [pending, setPending] = useState<number | null>(null); // brief single-choice feedback
   const [lenUnit, setLenUnit] = useState<'cm' | 'ft'>('cm');
   const [massUnit, setMassUnit] = useState<'kg' | 'lb'>('kg');
   const firedView = useRef(false);
@@ -61,6 +61,17 @@ export function Quiz({ locale, dict }: Props) {
   useEffect(() => {
     saveStep(step);
   }, [step]);
+
+  // Warm the cache for the first image of each loader while earlier questions
+  // are being answered, so the carousels show instantly.
+  useEffect(() => {
+    [fotosA[0], fotosB[0]].forEach((src) => {
+      if (src) {
+        const img = new Image();
+        img.src = src;
+      }
+    });
+  }, []);
 
   // Pixel: QuizStep on every advance; ViewContent at step 1. Lead fires when loader 2 finishes.
   useEffect(() => {
@@ -89,7 +100,6 @@ export function Quiz({ locale, dict }: Props) {
   }
 
   function go(to: number, direction = 1) {
-    setPending(null);
     setDir(direction);
     setStep(Math.max(COVER, Math.min(LAST, to)));
   }
@@ -104,14 +114,10 @@ export function Quiz({ locale, dict }: Props) {
     go(to, -1);
   }
 
-  // Single choice: 120ms visual feedback, then advance (feels immediate).
+  // Single choice: record the answer and advance in the same frame — no delay.
   function pickSingle(key: keyof QuizAnswers, index: number) {
     update({ [key]: index } as Partial<QuizAnswers>);
-    setPending(index);
-    window.setTimeout(() => {
-      setPending(null);
-      next();
-    }, 120);
+    next();
   }
 
   function toggleSymptom(index: number) {
@@ -150,7 +156,7 @@ export function Quiz({ locale, dict }: Props) {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
           >
             {renderStep()}
           </motion.div>
@@ -165,13 +171,13 @@ export function Quiz({ locale, dict }: Props) {
         return (
           <div className="m-center m-cover">
             <h1 className="m-q" style={{ marginTop: 0, marginBottom: '1.5rem' }}>{q.cover.title}</h1>
-            <Img src="/menopausia/portada.jpg" alt={q.cover.photoAlt} className="m-cover-img" />
+            <Img src="/menopausia/portada.webp" alt={q.cover.photoAlt} className="m-cover-img" />
             <button className="m-btn" style={{ marginTop: '1.75rem' }} onClick={next}>{q.cover.cta}</button>
           </div>
         );
 
       case AGE:
-        return <Single q={q.age.q} options={q.age.options} selected={answers.age} pending={pending} reduce={reduce}
+        return <Single q={q.age.q} options={q.age.options} selected={answers.age}
           onPick={(i) => pickSingle('age', i)} />;
 
       case HEIGHT:
@@ -187,14 +193,14 @@ export function Quiz({ locale, dict }: Props) {
           onSubmit={(v) => { update({ weight: v }); next(); }} />;
 
       case FATZONE:
-        return <Single q={q.fatZone.q} options={q.fatZone.options} selected={answers.fatZone} pending={pending} reduce={reduce}
+        return <Single q={q.fatZone.q} options={q.fatZone.options} selected={answers.fatZone} reduce={reduce}
           icons={zoneIcons} onPick={(i) => pickSingle('fatZone', i)} />;
 
       case LOADING1:
         return <Loading1 texts={q.loading1.texts} onDone={next} />;
 
       case GOAL:
-        return <Single q={q.goal.q} options={q.goal.options} selected={answers.goal} pending={pending} reduce={reduce}
+        return <Single q={q.goal.q} options={q.goal.options} selected={answers.goal}
           onPick={(i) => pickSingle('goal', i)} />;
 
       case TARGET: {
@@ -209,7 +215,7 @@ export function Quiz({ locale, dict }: Props) {
       }
 
       case PERIOD:
-        return <Single q={q.period.q} options={q.period.options} selected={answers.period} pending={pending} reduce={reduce}
+        return <Single q={q.period.q} options={q.period.options} selected={answers.period}
           onPick={(i) => pickSingle('period', i)} />;
 
       case SYMPTOMS:
@@ -221,11 +227,10 @@ export function Quiz({ locale, dict }: Props) {
                 {q.symptoms.options.map((opt, i) => {
                   const on = (answers.symptoms ?? []).includes(i);
                   return (
-                    <motion.button key={i} className={`m-option ${on ? 'is-selected' : ''}`} onClick={() => toggleSymptom(i)} aria-pressed={on}
-                      whileTap={reduce ? undefined : { scale: 0.97 }} {...optionMotion(i, reduce)}>
+                    <button key={i} className={`m-option ${on ? 'is-selected' : ''}`} onClick={() => toggleSymptom(i)} aria-pressed={on}>
                       <span>{opt}</span>
                       <span className="m-option__check">{on && <Check />}</span>
-                    </motion.button>
+                    </button>
                   );
                 })}
               </div>
@@ -239,11 +244,11 @@ export function Quiz({ locale, dict }: Props) {
         );
 
       case MOVEMENT:
-        return <Single q={q.movement.q} options={q.movement.options} selected={answers.movement} pending={pending} reduce={reduce}
+        return <Single q={q.movement.q} options={q.movement.options} selected={answers.movement}
           onPick={(i) => pickSingle('movement', i)} />;
 
       case LASTGOOD:
-        return <Single q={q.lastGood.q} options={q.lastGood.options} selected={answers.lastGood} pending={pending} reduce={reduce}
+        return <Single q={q.lastGood.q} options={q.lastGood.options} selected={answers.lastGood}
           onPick={(i) => pickSingle('lastGood', i)} />;
 
       case LOADING2:
@@ -257,46 +262,40 @@ export function Quiz({ locale, dict }: Props) {
 
 // ── Reusable sub-components ────────────────────────────────────────────────
 
-// Options fade + rise in a 50ms cascade (disabled under reduced motion).
-function optionMotion(i: number, reduce: boolean | null) {
-  if (reduce) return {};
-  return {
-    initial: { opacity: 0, y: 8 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.24, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] as const },
-  };
-}
-
 function Single({
-  q, options, selected, pending, icons, reduce, onPick,
+  q, options, selected, icons, onPick,
 }: {
   q: string;
   options: string[];
   selected?: number;
-  pending: number | null;
   icons?: ((p: { className?: string }) => ReactElement)[];
-  reduce: boolean | null;
   onPick: (i: number) => void;
 }) {
+  // Advance on pointerup so there's no tap delay; keep keyboard support too.
+  // Options render all at once (no cascade); the press feedback is CSS :active.
   return (
     <div className="m-screen__body">
       <h1 className="m-q">{q}</h1>
       <div className="m-options">
         {options.map((opt, i) => {
-          const on = pending === i || (pending === null && selected === i);
+          const on = selected === i;
           const Icon = icons?.[i];
           return (
-            <motion.button
+            <button
               key={i}
               className={`m-option ${on ? 'is-selected' : ''}`}
-              onClick={() => onPick(i)}
-              whileTap={reduce ? undefined : { scale: 0.97 }}
-              {...optionMotion(i, reduce)}
+              onPointerUp={() => onPick(i)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onPick(i);
+                }
+              }}
             >
               {Icon && <Icon className="m-option__icon" />}
               <span>{opt}</span>
               <span className="m-option__check">{on && <Check />}</span>
-            </motion.button>
+            </button>
           );
         })}
       </div>
