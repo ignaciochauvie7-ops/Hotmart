@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CategorySection from '../components/CategorySection.astro';
+import { getCategorySections } from '../utils/catalog';
+
+const sections = getCategorySections();
+---
+
+<BaseLayout title="BerichBusiness" description="Microproductos digitales para agencias, ecommerce, freelancers y más. Descargá, aplicá y vendé más.">
+  <section class="hero">
+    <div class="container hero__inner">
+      <p class="hero__eyebrow">BerichBusiness</p>
+      <h1 class="hero__title">Microproductos listos para el negocio que tenés hoy</h1>
+      <p class="hero__text">
+        Prompt packs, plantillas y kits descargables — organizados por tipo de negocio.
+        Elegí tu categoría, mirá qué resuelve cada producto y accedé directo por Hotmart.
+      </p>
+    </div>
+  </section>
+
+  {sections.map(({ category, products }, index) => (
+    <CategorySection category={category} products={products} alternate={index % 2 === 0} />
+  ))}
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: clamp(2.5rem, 8vw, 4rem);
+    background: linear-gradient(180deg, #ffffff 0%, #f7f8fa 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero__inner {
+    max-width: 720px;
+  }
+
+  .hero__eyebrow {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-coral);
+  }
+
+  .hero__title {
+    margin-top: var(--space-sm);
+    font-size: clamp(1.875rem, 5.5vw, 2.75rem);
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    color: var(--color-navy);
+  }
+
+  .hero__text {
+    margin-top: var(--space-md);
+    font-size: 1.0625rem;
+    color: var(--color-text-muted);
+    max-width: 36rem;
+    line-height: 1.65;
+  }
+</style>

@@ -1,0 +1,321 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CTAButton from '../../components/CTAButton.astro';
+import ProductCover from '../../components/ProductCover.astro';
+import TrustBox from '../../components/TrustBox.astro';
+import StickyCTA from '../../components/StickyCTA.astro';
+import categories from '../../data/categories.json';
+import products from '../../data/products.json';
+import type { Product } from '../../types/product';
+
+export function getStaticPaths() {
+  const typedProducts = products as Product[];
+
+  return typedProducts.map((product) => ({
+    params: {
+      categoria: product.categoria,
+      slug: product.slug,
+    },
+    props: { product },
+  }));
+}
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const category = categories.find((item) => item.slug === product.categoria);
+const paymentPending = product.hotmartUrl === 'PENDIENTE' || !product.hotmartUrl;
+---
+
+<BaseLayout
+  title={product.nombre}
+  description={`${product.nombre} — ${product.paraQuien}`}
+>
+  <article class="product-page">
+    <!-- 1. Hero -->
+    <section class="product-hero">
+      <div class="container product-hero__inner">
+        {category && (
+          <a href={`/#${category.slug}`} class="product-hero__category">{category.nombre}</a>
+        )}
+        <h1 class="product-hero__title">{product.nombre}</h1>
+        <p class="product-hero__problem">{product.problema}</p>
+        <p class="product-hero__price">{product.moneda} {product.precio}</p>
+        <div class="product-hero__cta">
+          <CTAButton
+            href={product.hotmartUrl}
+            label={product.ctaTexto}
+            disabled={paymentPending}
+          />
+        </div>
+      </div>
+      <div class="container product-hero__cover product-hero__cover--desktop">
+        {product.imagen ? (
+          <img src={product.imagen} alt={product.nombre} width="800" height="600" />
+        ) : (
+          <ProductCover nombre={product.nombre} />
+        )}
+      </div>
+    </section>
+
+    <!-- 2. Agitación -->
+    <section class="section section--agitation">
+      <div class="container product-block">
+        <p class="agitation">{product.agitacion}</p>
+      </div>
+    </section>
+
+    <!-- 3. Qué incluye -->
+    <section class="section section--soft">
+      <div class="container product-block">
+        <h2 class="product-block__title">Qué incluye</h2>
+        <ul class="includes">
+          {product.incluye.map((item) => (
+            <li class="includes__item">
+              <p class="includes__name">{item.nombre}</p>
+              <p class="includes__detail">{item.detalle}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Para quién es -->
+    <section class="section">
+      <div class="container product-block">
+        <h2 class="product-block__title">Para quién es</h2>
+        <p class="product-block__text">{product.paraQuien}</p>
+      </div>
+    </section>
+
+    <!-- 5. Garantía y confianza -->
+    <section class="section section--soft">
+      <div class="container product-block">
+        <TrustBox />
+      </div>
+    </section>
+
+    <!-- 6. CTA final -->
+    <section class="section product-final-cta">
+      <div class="container product-final-cta__inner">
+        <h2 class="product-final-cta__title">Dejá de reescribir lo mismo cada mes</h2>
+        <p class="product-final-cta__text">
+          Accedé ahora a {product.nombre} por {product.moneda} {product.precio}.
+          Pago seguro, entrega inmediata.
+        </p>
+        <div class="product-final-cta__button">
+          <CTAButton
+            href={product.hotmartUrl}
+            label={product.ctaTexto}
+            disabled={paymentPending}
+          />
+        </div>
+      </div>
+    </section>
+  </article>
+
+  <StickyCTA
+    href={product.hotmartUrl}
+    label={product.ctaTexto}
+    price={product.precio}
+    currency={product.moneda}
+    disabled={paymentPending}
+  />
+</BaseLayout>
+
+<style>
+  .product-page {
+    padding-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    .product-page {
+      padding-bottom: 5.5rem;
+    }
+  }
+
+  /* Hero — above the fold on mobile */
+  .product-hero {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding-block: clamp(1.5rem, 5vw, 3rem);
+    background: linear-gradient(180deg, #ffffff 0%, #f7f8fa 100%);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .product-hero__inner {
+    max-width: 640px;
+  }
+
+  .product-hero__category {
+    display: inline-block;
+    margin-bottom: var(--space-sm);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-coral);
+  }
+
+  .product-hero__title {
+    font-size: clamp(1.75rem, 6vw, 2.75rem);
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    color: var(--color-navy);
+  }
+
+  .product-hero__problem {
+    margin-top: var(--space-sm);
+    font-size: clamp(1rem, 2.5vw, 1.1875rem);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .product-hero__price {
+    margin-top: var(--space-md);
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--color-coral);
+  }
+
+  .product-hero__cta {
+    margin-top: var(--space-md);
+    max-width: 22rem;
+  }
+
+  .product-hero__cover {
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
+
+  .product-hero__cover img {
+    width: 100%;
+    height: auto;
+  }
+
+  .product-hero__cover--desktop {
+    display: none;
+  }
+
+  @media (min-width: 769px) {
+    .product-hero {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .product-hero__inner {
+      flex: 1;
+    }
+
+    .product-hero__cover--desktop {
+      display: block;
+      flex: 0 0 min(42%, 420px);
+    }
+  }
+
+  /* Agitación */
+  .section--agitation {
+    padding-block: var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .agitation {
+    font-size: clamp(1.0625rem, 2.5vw, 1.25rem);
+    line-height: 1.65;
+    color: var(--color-navy);
+    font-weight: 500;
+    max-width: 680px;
+    padding-left: var(--space-md);
+    border-left: 3px solid var(--color-coral);
+  }
+
+  .product-block {
+    max-width: 720px;
+  }
+
+  .product-block__title {
+    font-size: clamp(1.375rem, 3vw, 1.625rem);
+    font-weight: 700;
+    color: var(--color-navy);
+    letter-spacing: -0.02em;
+  }
+
+  .product-block__text {
+    margin-top: var(--space-sm);
+    font-size: 1.0625rem;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+  }
+
+  /* Qué incluye */
+  .includes {
+    margin-top: var(--space-lg);
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .includes__item {
+    padding: var(--space-md);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+  }
+
+  .includes__name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-navy);
+    line-height: 1.35;
+  }
+
+  .includes__detail {
+    margin-top: 0.35rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+  }
+
+  /* CTA final */
+  .product-final-cta {
+    background: var(--color-navy);
+    color: #fff;
+  }
+
+  .product-final-cta__inner {
+    max-width: 560px;
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .product-final-cta__title {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .product-final-cta__text {
+    margin-top: var(--space-sm);
+    font-size: 1.0625rem;
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.6;
+  }
+
+  .product-final-cta__button {
+    margin-top: var(--space-lg);
+    max-width: 22rem;
+    margin-inline: auto;
+  }
+
+  .product-final-cta__button :global(.btn--primary) {
+    background: var(--color-coral);
+  }
+
+  .product-final-cta__button :global(.btn--primary:hover) {
+    background: var(--color-coral-hover);
+  }
+</style>

@@ -1,0 +1,103 @@
+---
+import ProductCover from './ProductCover.astro';
+import type { Product } from '../types/product';
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const href = `/${product.categoria}/${product.slug}`;
+---
+
+<article class="card">
+  <a href={href} class="card__link">
+    <div class="card__image-wrap">
+      {product.imagen ? (
+        <img src={product.imagen} alt={product.nombre} loading="lazy" width="400" height="300" />
+      ) : (
+        <ProductCover nombre={product.nombre} compact />
+      )}
+    </div>
+    <div class="card__body">
+      <h3 class="card__title">{product.nombre}</h3>
+      <p class="card__problem">{product.problema}</p>
+      <p class="card__price">{product.moneda} {product.precio}</p>
+      <span class="card__cta">Ver detalles →</span>
+    </div>
+  </a>
+</article>
+
+<style>
+  .card {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s, transform 0.2s;
+    height: 100%;
+  }
+
+  .card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .card__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .card__image-wrap {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .card__image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: var(--space-md);
+  }
+
+  .card__title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--color-navy);
+    line-height: 1.35;
+  }
+
+  .card__problem {
+    margin-top: 0.5rem;
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card__price {
+    margin-top: auto;
+    padding-top: var(--space-sm);
+    font-weight: 700;
+    font-size: 1.0625rem;
+    color: var(--color-coral);
+  }
+
+  .card__cta {
+    margin-top: 0.35rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-navy);
+  }
+</style>

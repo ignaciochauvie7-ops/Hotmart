@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "ecommerce",
+    "nombre": "Ecommerce",
+    "descripcion": "Prompts, plantillas y kits para tiendas online y negocios digitales."
+  },
+  {
+    "slug": "agencias-de-marketing",
+    "nombre": "Agencias de Marketing",
+    "descripcion": "Recursos para propuestas, reportes, onboarding y retención de clientes."
+  },
+  {
+    "slug": "freelancers-y-consultores",
+    "nombre": "Freelancers y Consultores",
+    "descripcion": "Herramientas para vender más, entregar mejor y ahorrar tiempo operativo."
+  },
+  {
+    "slug": "creadores-de-contenido",
+    "nombre": "Creadores de Contenido",
+    "descripcion": "Kits para guiones, ideas, calendarios editoriales y monetización."
+  },
+  {
+    "slug": "inmobiliarias",
+    "nombre": "Inmobiliarias",
+    "descripcion": "Plantillas para captación, seguimiento de leads y comunicación con compradores."
+  },
+  {
+    "slug": "negocios-locales",
+    "nombre": "Negocios Locales",
+    "descripcion": "Materiales para atraer clientes, promociones y presencia local."
+  },
+  {
+    "slug": "rrhh-y-equipos",
+    "nombre": "RRHH y Equipos",
+    "descripcion": "Documentos y flujos para reclutamiento, onboarding y gestión de personas."
+  },
+  {
+    "slug": "pymes-y-autonomos",
+    "nombre": "PyMEs y Autónomos",
+    "descripcion": "Paquetes listos para ordenar, vender y escalar sin armar todo desde cero."
+  }
+]

@@ -1,0 +1,45 @@
+[
+  {
+    "slug": "pack-agencias-marketing",
+    "nombre": "Pack Agencias de Marketing",
+    "precio": "14,90",
+    "moneda": "USD",
+    "categoria": "agencias-de-marketing",
+    "problema": "Cada propuesta, reporte y email a cliente se escribe desde cero — horas que no se facturan y que te sacan tiempo de vender y retener cuentas.",
+    "agitacion": "Una propuesta mal armada o un reporte tarde no solo cuesta horas — cuesta la renovación del cliente. Y sin embargo se sigue escribiendo todo desde cero, mes tras mes, cliente por cliente.",
+    "incluye": [
+      {
+        "nombre": "Guía de uso",
+        "detalle": "Cómo aplicar todo el sistema, con el prompt de Brand Voice para que cada documento suene a la marca del cliente, no a IA genérica."
+      },
+      {
+        "nombre": "Módulo de Propuestas",
+        "detalle": "Diagnóstico de prospecto, propuesta comercial personalizada y respuestas ya pensadas para objeciones de precio."
+      },
+      {
+        "nombre": "Módulo de Onboarding",
+        "detalle": "Cuestionario para el cliente nuevo, perfil de marca, email de bienvenida y cronograma de arranque."
+      },
+      {
+        "nombre": "Módulo de Reportes",
+        "detalle": "Reporte mensual con lectura de negocio (no solo números), resumen ejecutivo y recomendaciones accionables."
+      },
+      {
+        "nombre": "Módulo de Retención",
+        "detalle": "Diagnóstico de riesgo de renovación, email de renovación y propuestas de upsell justificadas en datos reales."
+      },
+      {
+        "nombre": "Plantilla Word de Propuesta",
+        "detalle": "Documento ya formateado para pegar el resultado y mandarlo con cara profesional."
+      },
+      {
+        "nombre": "Plantilla Word de Reporte",
+        "detalle": "Mismo concepto, listo para el reporte mensual de cada cliente."
+      }
+    ],
+    "paraQuien": "Dueños de agencias chicas, account managers y freelancers que manejan varios clientes",
+    "imagen": null,
+    "ctaTexto": "Conseguir el pack",
+    "hotmartUrl": "https://pay.hotmart.com/Y106805330J?bid=1784633301775"
+  }
+]

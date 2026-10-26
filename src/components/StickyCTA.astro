@@ -1,0 +1,77 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  price: string;
+  currency: string;
+  disabled?: boolean;
+}
+
+const { href, label, price, currency, disabled = false } = Astro.props;
+---
+
+<div class="sticky-cta" aria-label="Acción de compra">
+  <div class="sticky-cta__info">
+    <span class="sticky-cta__price">{currency} {price}</span>
+    <span class="sticky-cta__hint">Pago seguro vía Hotmart</span>
+  </div>
+  {disabled ? (
+    <button class="btn btn--primary sticky-cta__btn btn--disabled" disabled>
+      Link pendiente
+    </button>
+  ) : (
+    <a class="btn btn--primary sticky-cta__btn" href={href} target="_blank" rel="noopener noreferrer">
+      {label}
+    </a>
+  )}
+</div>
+
+<style>
+  .sticky-cta {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding: 0.85rem 1rem calc(0.85rem + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.97);
+    border-top: 1px solid var(--color-border);
+    box-shadow: 0 -4px 20px rgba(27, 42, 74, 0.1);
+    backdrop-filter: blur(8px);
+  }
+
+  .sticky-cta__info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .sticky-cta__price {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--color-navy);
+  }
+
+  .sticky-cta__hint {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .sticky-cta__btn {
+    flex-shrink: 0;
+    width: auto;
+    min-width: 9.5rem;
+    padding-inline: 1.25rem;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    .sticky-cta {
+      display: flex;
+    }
+  }
+</style>

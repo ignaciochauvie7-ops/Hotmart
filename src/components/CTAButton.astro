@@ -1,0 +1,25 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  disabled?: boolean;
+  block?: boolean;
+}
+
+const { href, label, disabled = false, block = true } = Astro.props;
+---
+
+{disabled ? (
+  <button class:list={['btn', 'btn--primary', { 'btn--block': block }, 'btn--disabled']} disabled>
+    Link de pago pendiente
+  </button>
+) : (
+  <a
+    class:list={['btn', 'btn--primary', { 'btn--block': block }]}
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    {label}
+  </a>
+)}

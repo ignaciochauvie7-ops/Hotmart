@@ -1,0 +1,34 @@
+---
+import '../styles/menopausia.css';
+import MetaPixel from '../components/menopausia/MetaPixel.astro';
+import { getDict, type MenoLocale } from '../config/menopausia/i18n';
+
+interface Props {
+  locale: MenoLocale;
+  title: string;
+  description?: string;
+  noindex?: boolean;
+}
+
+const { locale, title, description = '', noindex = false } = Astro.props;
+const dict = getDict(locale);
+---
+
+<!doctype html>
+<html lang={dict.htmlLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    {description && <meta name="description" content={description} />}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content="#f7f2ea" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <MetaPixel />
+  </head>
+  <body>
+    <div class="m-root">
+      <slot />
+    </div>
+  </body>
+</html>

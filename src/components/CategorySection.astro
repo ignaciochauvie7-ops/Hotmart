@@ -1,0 +1,24 @@
+---
+import ProductCard from './ProductCard.astro';
+import type { Category, Product } from '../types/product';
+
+interface Props {
+  category: Category;
+  products: Product[];
+  alternate?: boolean;
+}
+
+const { category, products, alternate = false } = Astro.props;
+---
+
+<section id={category.slug} class:list={['section', { 'section--soft': alternate }]}>
+  <div class="container">
+    <h2 class="section__title">{category.nombre}</h2>
+    <p class="section__subtitle">{category.descripcion}</p>
+    <div class="grid-products">
+      {products.map((product) => (
+        <ProductCard product={product} />
+      ))}
+    </div>
+  </div>
+</section>

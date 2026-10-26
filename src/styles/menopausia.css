@@ -1,0 +1,652 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   Menopausia Plana — self-contained design system.
+   Namespaced under .m-root so it never collides with the existing BerichBusiness
+   styles. Mobile-first, warm and elegant.
+   ─────────────────────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap');
+
+.m-root {
+  --sage: #8a9a7b;
+  --sage-dark: #6d7d5e;
+  --sage-soft: #e7ece0;
+  --terra: #c27a5c;
+  --terra-hover: #a9654a;
+  --cream: #f7f2ea;
+  --surface: #fffdf9;
+  --ink: #3d3a35;
+  --muted: #76706650;
+  --muted-text: #76706a;
+  --line: #e7ded0;
+  --ok: #5f8a5f;
+  --radius: 16px;
+  --radius-lg: 22px;
+  --shadow-sm: 0 1px 3px rgba(61, 58, 53, 0.07);
+  --shadow-md: 0 10px 30px rgba(61, 58, 53, 0.1);
+  --shadow-lg: 0 18px 50px rgba(61, 58, 53, 0.14);
+  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--cream);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+
+.m-root *,
+.m-root *::before,
+.m-root *::after {
+  box-sizing: border-box;
+}
+
+.m-root h1,
+.m-root h2,
+.m-root h3,
+.m-root h4 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--ink);
+}
+
+.m-root p {
+  margin: 0;
+}
+
+.m-root img {
+  max-width: 100%;
+  display: block;
+}
+
+.m-root button {
+  font-family: inherit;
+}
+
+/* Layout shell -------------------------------------------------------------- */
+.m-shell {
+  width: min(100% - 2rem, 520px);
+  margin-inline: auto;
+  padding-block: 1.25rem 3rem;
+}
+
+.m-wide {
+  width: min(100% - 2rem, 600px);
+  margin-inline: auto;
+}
+
+/* Buttons ------------------------------------------------------------------- */
+.m-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 56px;
+  padding: 0.9rem 1.5rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--terra);
+  color: #fff;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.12s, box-shadow 0.2s;
+  box-shadow: 0 6px 16px rgba(194, 122, 92, 0.28);
+}
+
+.m-btn:hover {
+  background: var(--terra-hover);
+}
+
+.m-btn:active {
+  transform: translateY(1px) scale(0.995);
+}
+
+.m-btn:disabled {
+  background: #cdbfae;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.m-btn--ghost {
+  background: transparent;
+  color: var(--sage-dark);
+  box-shadow: none;
+  min-height: 48px;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.m-btn--ghost:hover {
+  background: transparent;
+  color: var(--ink);
+}
+
+/* Progress bar -------------------------------------------------------------- */
+.m-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 0;
+  background: color-mix(in srgb, var(--cream) 90%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.m-back {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.m-back:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.m-progress {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--sage-soft);
+  overflow: hidden;
+}
+
+.m-progress__fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--sage);
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Question + options -------------------------------------------------------- */
+.m-q {
+  font-size: clamp(1.5rem, 6vw, 1.9rem);
+  margin-bottom: 1.5rem;
+}
+
+.m-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.m-option {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  min-height: 60px;
+  padding: 0.9rem 1.15rem;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, transform 0.12s;
+  box-shadow: var(--shadow-sm);
+}
+
+.m-option:hover {
+  border-color: var(--sage);
+}
+
+.m-option[aria-pressed='true'],
+.m-option.is-selected {
+  border-color: var(--terra);
+  background: color-mix(in srgb, var(--terra) 10%, var(--surface));
+}
+
+.m-option__icon {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  color: var(--sage-dark);
+}
+
+.m-option__check {
+  margin-left: auto;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  display: grid;
+  place-items: center;
+  color: #fff;
+}
+
+.m-option.is-selected .m-option__check {
+  background: var(--terra);
+  border-color: var(--terra);
+}
+
+/* Numeric input ------------------------------------------------------------- */
+.m-number {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.m-number input {
+  width: 5.5ch;
+  border: none;
+  border-bottom: 3px solid var(--sage);
+  background: transparent;
+  font-family: var(--font-serif);
+  font-size: 3.25rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: center;
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+.m-number input::-webkit-outer-spin-button,
+.m-number input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.m-number__unit {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--muted-text);
+}
+
+.m-field-error {
+  color: var(--terra-hover);
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Cards --------------------------------------------------------------------- */
+.m-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.m-muted {
+  color: var(--muted-text);
+}
+
+.m-center {
+  text-align: center;
+}
+
+.m-hero-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.m-placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--sage-soft), var(--cream));
+  display: grid;
+  place-items: center;
+  color: var(--muted-text);
+  font-size: 0.85rem;
+}
+
+/* Loading screens ----------------------------------------------------------- */
+.m-loader-slides {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  background: var(--sage-soft);
+}
+
+.m-loader-slide {
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.m-loader-slide.is-active {
+  opacity: 1;
+}
+
+.m-loader-bar {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--sage-soft);
+  overflow: hidden;
+  margin-top: 1.25rem;
+}
+
+.m-loader-bar__fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--terra);
+  width: 0;
+}
+
+.m-loader-pct {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+.m-loader-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.m-loader-row__bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--sage-soft);
+  overflow: hidden;
+}
+
+.m-loader-row__fill {
+  height: 100%;
+  background: var(--sage);
+  width: 0;
+}
+
+.m-loader-row__check {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  color: var(--ok);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.m-loader-row__check.is-on {
+  opacity: 1;
+}
+
+/* Chips --------------------------------------------------------------------- */
+.m-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.m-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  background: var(--sage-soft);
+  color: var(--sage-dark);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* Offer --------------------------------------------------------------------- */
+.m-countbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  text-align: center;
+  padding: 0.7rem 1rem;
+  background: var(--sage-dark);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.m-countbar b {
+  font-variant-numeric: tabular-nums;
+}
+
+.m-value-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.m-value-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.m-value-item__check {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  color: var(--ok);
+  margin-top: 2px;
+}
+
+.m-value-item__price {
+  margin-left: auto;
+  white-space: nowrap;
+  color: var(--muted-text);
+  text-decoration: line-through;
+  font-size: 0.9rem;
+}
+
+.m-price-block {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--sage-soft);
+  border-radius: var(--radius-lg);
+}
+
+.m-price-old {
+  text-decoration: line-through;
+  color: var(--muted-text);
+  font-size: 1.1rem;
+}
+
+.m-price-now {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.m-badge-off {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--terra);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.m-bump {
+  border: 2px dashed var(--terra);
+  border-radius: var(--radius);
+  padding: 1rem 1.15rem;
+  background: color-mix(in srgb, var(--terra) 6%, var(--surface));
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.m-bump input {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  margin-top: 2px;
+  accent-color: var(--terra);
+  cursor: pointer;
+}
+
+.m-faq-item {
+  border-bottom: 1px solid var(--line);
+}
+
+.m-faq-q {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.m-faq-a {
+  overflow: hidden;
+  color: var(--muted-text);
+  padding-bottom: 1rem;
+}
+
+.m-steps {
+  display: grid;
+  gap: 1rem;
+}
+
+.m-step {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+}
+
+.m-step__n {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--sage);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+}
+
+.m-guarantee {
+  display: flex;
+  gap: 0.85rem;
+  align-items: center;
+  padding: 1.15rem;
+  border: 1px solid var(--sage);
+  border-radius: var(--radius);
+  background: var(--sage-soft);
+}
+
+.m-paysafe {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  color: var(--muted-text);
+  font-size: 0.85rem;
+}
+
+.m-footer {
+  text-align: center;
+  color: var(--muted-text);
+  font-size: 0.85rem;
+  padding-top: 2rem;
+}
+
+.m-footer a {
+  color: var(--sage-dark);
+  text-decoration: underline;
+}
+
+.m-section {
+  margin-top: 2.25rem;
+}
+
+.m-section > h2 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.m-divider {
+  height: 1px;
+  background: var(--line);
+  border: none;
+  margin: 2rem 0;
+}
+
+/* Result chart -------------------------------------------------------------- */
+.m-chart {
+  width: 100%;
+  height: auto;
+}
+
+/* Spinner ------------------------------------------------------------------- */
+.m-spin {
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid rgba(255, 255, 255, 0.5);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: m-spin 0.7s linear infinite;
+}
+
+@keyframes m-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.m-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m-root * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

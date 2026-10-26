@@ -1,0 +1,20 @@
+---
+import MenoLayout from '../../../layouts/MenoLayout.astro';
+import { getDict, isLocale, LOCALES } from '../../../config/menopausia/i18n';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params;
+if (!isLocale(locale)) return Astro.redirect('/menopausia/es');
+const dict = getDict(locale);
+---
+
+<MenoLayout locale={locale} title={dict.meta.privacyTitle}>
+  <div class="m-shell">
+    <h1 class="m-q">{dict.legal.privacyHeading}</h1>
+    {dict.legal.privacyBody.map((p) => <p style="margin-bottom:1rem" class="m-muted">{p}</p>)}
+    <a class="m-btn m-btn--ghost" href={`/menopausia/${locale}/oferta`}>{dict.legal.backHome}</a>
+  </div>
+</MenoLayout>
