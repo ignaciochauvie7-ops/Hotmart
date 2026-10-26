@@ -5,7 +5,6 @@ import { loadAnswers, loadStep, saveAnswers, saveStep, type QuizAnswers } from '
 import { fotosA, fotosB } from '../../config/menopausia/photos';
 import { track, trackCustom } from '../../lib/menopausia/pixel';
 import { ArrowLeft, Check, Restart, zoneIcons } from './quiz/icons';
-import { Img } from './quiz/Img';
 import { Loading1 } from './quiz/Loading1';
 import { Loading2 } from './quiz/Loading2';
 
@@ -184,9 +183,19 @@ export function Quiz({ locale, dict }: Props) {
       case COVER:
         return (
           <div className="m-center m-cover">
-            <h1 className="m-q" style={{ marginTop: 0, marginBottom: '1.5rem' }}>{q.cover.title}</h1>
-            <Img src="/menopausia/portada.webp" alt={q.cover.photoAlt} className="m-cover-img" />
-            <button className="m-btn" style={{ marginTop: '1.75rem' }} onClick={next}>{q.cover.cta}</button>
+            <span className="m-cover-badge">{q.cover.badge}</span>
+            <h1 className="m-q m-cover-title">{q.cover.title}</h1>
+            <img
+              className="m-cover-photo"
+              src="/menopausia/portada.webp"
+              alt=""
+              width={900}
+              height={1125}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+            />
+            <button className="m-btn" onClick={next}>{q.cover.cta}</button>
           </div>
         );
 

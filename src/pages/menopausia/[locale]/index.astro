@@ -13,5 +13,12 @@ const dict = getDict(locale);
 ---
 
 <MenoLayout locale={locale} title={dict.meta.quizTitle} description={dict.meta.quizDesc}>
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href="/menopausia/portada.webp"
+    fetchpriority="high"
+  />
   <Quiz locale={locale} dict={dict} client:load />
 </MenoLayout>

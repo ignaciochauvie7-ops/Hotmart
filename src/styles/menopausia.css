@@ -487,38 +487,50 @@ body {
   padding-top: 2.5rem;
 }
 
+/* Horizontal marquee: photos slide continuously to the left. */
 .m-carousel {
-  position: relative;
-  width: 160px;
+  width: 100%;
+  margin-top: 1.75rem;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+}
+
+.m-carousel__track {
+  display: flex;
+  width: max-content;
+  animation-name: m-marquee;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.m-carousel__item {
+  flex: 0 0 auto;
+  width: 132px;
+  margin-right: 12px; /* part of the item width → seamless -50% loop */
   aspect-ratio: 4 / 5;
-  margin: 1.75rem auto 0;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
   background: var(--sage-soft);
 }
 
-.m-carousel__slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.m-carousel__slide.is-active {
-  opacity: 1;
-}
-
-.m-carousel__slide img {
+.m-carousel__item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .m-carousel__placeholder {
   width: 100%;
   height: 100%;
   background: linear-gradient(135deg, var(--sage-soft), var(--cream));
+}
+
+@keyframes m-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 /* Cards --------------------------------------------------------------------- */
@@ -538,21 +550,34 @@ body {
   text-align: center;
 }
 
-/* Cover media: a 4:5 card, centered. Works for the real photo and, until it is
-   uploaded, for the empty cream/sage placeholder below. */
-.m-cover-img {
-  width: 100%;
-  max-width: 260px;
-  aspect-ratio: 4 / 5;
-  margin-inline: auto;
-  object-fit: cover;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
+/* Cover: chip → title → photo → button, stacked and centered. */
+.m-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
 }
 
-.m-placeholder.m-cover-img {
-  aspect-ratio: 4 / 5; /* override the placeholder's default 4/3 */
-  box-shadow: var(--shadow-md);
+.m-cover-badge {
+  display: inline-block;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  background: #FDECEF;
+  color: #D6336C;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.m-cover .m-q {
+  margin: 0; /* spacing handled by the flex gap */
+}
+
+.m-cover-photo {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: var(--shadow-sm);
 }
 
 .m-placeholder {

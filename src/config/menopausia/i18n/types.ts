@@ -34,7 +34,7 @@ export interface MenoDict {
   };
 
   quiz: {
-    cover: { title: string; cta: string; photoAlt: string };
+    cover: { badge: string; title: string; cta: string; photoAlt: string };
     age: { q: string; options: string[] };
     period: { q: string; options: string[] };
     fatZone: { q: string; options: string[] };

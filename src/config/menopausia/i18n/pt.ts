@@ -29,8 +29,9 @@ export const pt: MenoDict = {
 
   quiz: {
     cover: {
-      title: 'Descobre o teu plano para desinchar a barriga na menopausa',
-      cta: 'Começar o teste (1 minuto)',
+      badge: 'Teste de 1 minuto',
+      title: 'Descobre o teu plano personalizado para desinchar a barriga',
+      cta: 'Criar o meu plano',
       photoAlt: 'Mulher de cerca de 50 anos a sorrir',
     },
     age: {

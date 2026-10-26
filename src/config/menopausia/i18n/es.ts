@@ -27,8 +27,9 @@ export const es: MenoDict = {
 
   quiz: {
     cover: {
-      title: 'Descubre tu plan para desinflamar el abdomen en la menopausia',
-      cta: 'Empezar test (1 minuto)',
+      badge: 'Test de 1 minuto',
+      title: 'Descubre tu plan personalizado para desinflamar el abdomen',
+      cta: 'Crear mi plan',
       photoAlt: 'Mujer de unos 50 años sonriendo',
     },
     age: {

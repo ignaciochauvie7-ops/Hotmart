@@ -1,35 +1,32 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface Props {
   images: string[]; // optimized WebP urls for this group
 }
 
 /**
- * Crossfading photo carousel shown under the loading bars. The first image loads
- * eagerly (high priority) so there's no gap; the rest lazy-load. Any image that
- * 404s falls back to a soft placeholder so the movement is always visible.
+ * Photos slide continuously to the left (marquee). The list is duplicated so the
+ * loop is seamless. The first image loads eagerly; the rest lazy. Any image that
+ * 404s falls back to a soft placeholder so the motion is always visible.
  */
 export function Carousel({ images }: Props) {
-  const [slide, setSlide] = useState(0);
-  useEffect(() => {
-    if (images.length <= 1) return;
-    const id = window.setInterval(() => setSlide((s) => (s + 1) % images.length), 1200);
-    return () => window.clearInterval(id);
-  }, [images.length]);
-
+  if (images.length === 0) return null;
+  const loop = [...images, ...images];
   return (
     <div className="m-carousel" aria-hidden="true">
-      {images.map((src, i) => (
-        <Slide key={src} src={src} active={i === slide} eager={i === 0} />
-      ))}
+      <div className="m-carousel__track" style={{ animationDuration: `${images.length * 2.6}s` }}>
+        {loop.map((src, i) => (
+          <Slide key={i} src={src} eager={i === 0} />
+        ))}
+      </div>
     </div>
   );
 }
 
-function Slide({ src, active, eager }: { src: string; active: boolean; eager: boolean }) {
+function Slide({ src, eager }: { src: string; eager: boolean }) {
   const [failed, setFailed] = useState(false);
   return (
-    <div className={`m-carousel__slide ${active ? 'is-active' : ''}`}>
+    <div className="m-carousel__item">
       {failed ? (
         <div className="m-carousel__placeholder" />
       ) : (

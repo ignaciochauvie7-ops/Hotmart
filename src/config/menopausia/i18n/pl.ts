@@ -29,8 +29,9 @@ export const pl: MenoDict = {
 
   quiz: {
     cover: {
-      title: 'Poznaj swój plan na płaski brzuch w menopauzie',
-      cta: 'Zacznij test (1 minuta)',
+      badge: 'Test w 1 minutę',
+      title: 'Odkryj swój spersonalizowany plan na płaski brzuch bez wzdęć',
+      cta: 'Stwórz mój plan',
       photoAlt: 'Uśmiechnięta kobieta około pięćdziesiątki',
     },
     age: {
