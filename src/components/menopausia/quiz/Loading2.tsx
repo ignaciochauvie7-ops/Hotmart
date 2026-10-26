@@ -1,13 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import { tween, wait, type Canceler } from '../../../lib/menopausia/anim';
 import { Check } from './icons';
+import { Carousel } from './Carousel';
 
 interface Props {
   rows: string[]; // 3 row labels
   onDone: () => void;
 }
 
-/** "Creando tu plan": three bars fill one after another with checks (~7s). */
+// Per-row fill durations + trailing pauses, tuned to ~4s total with irregular breaks.
+const FILL = [900, 1000, 1100];
+const PAUSE = [250, 450, 250];
+
+/** "Creando tu plan": three bars fill one after another (~4s) + photo carousel below. */
 export function Loading2({ rows, onDone }: Props) {
   const [fills, setFills] = useState<number[]>(rows.map(() => 0));
   const [checks, setChecks] = useState<boolean[]>(rows.map(() => false));
@@ -21,11 +26,9 @@ export function Loading2({ rows, onDone }: Props) {
 
     (async () => {
       for (let i = 0; i < rows.length; i++) {
-        await tween(0, 55, 700, (v) => setFill(i, v), reg);
-        await wait(i === 1 ? 600 : 400, reg);
-        await tween(55, 100, 900, (v) => setFill(i, v), reg);
+        await tween(0, 100, FILL[i] ?? 900, (v) => setFill(i, v), reg);
         setChecks((prev) => prev.map((x, idx) => (idx === i ? true : x)));
-        await wait(350, reg);
+        await wait(PAUSE[i] ?? 250, reg);
       }
       if (!done.current) {
         done.current = true;
@@ -41,7 +44,7 @@ export function Loading2({ rows, onDone }: Props) {
   }, []);
 
   return (
-    <div>
+    <div className="m-loader">
       {rows.map((label, i) => (
         <div className="m-loader-row" key={i}>
           <span style={{ flex: 1 }}>
@@ -53,6 +56,7 @@ export function Loading2({ rows, onDone }: Props) {
           <Check className={`m-loader-row__check ${checks[i] ? 'is-on' : ''}`} />
         </div>
       ))}
+      <Carousel />
     </div>
   );
 }
