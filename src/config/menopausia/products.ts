@@ -26,7 +26,11 @@ export const products: Record<MenoLocale, LocaleProducts> = {
     bump: 'pdt_0Nqd1ybe9kHJIWaQTiAri',
     upsell: 'pdt_0Nqd2Eo5sxihDoOzXGUxw',
   },
-  cs: { main: '', bump: '', upsell: '' }, // TODO: IDs Dodo (cs) — checkout off hasta tenerlos
+  cs: {
+    main: 'pdt_0NqeF0Vu6cX5n5U8ELdiB',
+    bump: 'pdt_0NqeFEzun5OGh1Ytdp2k7',
+    upsell: 'pdt_0NqeFW5RzSHZmBESb6zWH',
+  },
 };
 
 export interface LocalePricing {
@@ -46,10 +50,8 @@ export const pricing: Record<MenoLocale, LocalePricing> = {
   es: { currency: 'EUR', main: 16.97, bump: 6.97, upsell: 7.47 },
   pt: { currency: 'EUR', main: 16.97, bump: 6.97, upsell: 7.47 },
   pl: { currency: 'PLN', main: 69, bump: 29, upsell: 31 },
-  // TODO (cs): precios fijos en CZK (Localized Pricing de Dodo). 0 = placeholder,
-  // NO inventados. Deben coincidir exactamente con el precio CZK del producto en
-  // Dodo. Rellenar main/bump/upsell en cuanto se confirmen.
-  cs: { currency: 'CZK', main: 0, bump: 0, upsell: 0 },
+  // cs: precios fijos en CZK, exactos como en Dodo (409/179/189 Kč).
+  cs: { currency: 'CZK', main: 409, bump: 179, upsell: 189 },
 };
 
 export function getProducts(locale: MenoLocale): LocaleProducts {
