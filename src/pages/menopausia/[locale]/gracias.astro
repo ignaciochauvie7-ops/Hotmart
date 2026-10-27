@@ -3,7 +3,7 @@ export const prerender = false;
 
 import MenoLayout from '../../../layouts/MenoLayout.astro';
 import { Gracias } from '../../../components/menopausia/Gracias';
-import { getDict, isLocale } from '../../../config/menopausia/i18n';
+import { getDict, isLocale, usesVisualOffer } from '../../../config/menopausia/i18n';
 import { getDodoClient, retrievePayment, paymentIsPaid } from '../../../lib/menopausia/dodo';
 import { bucketsFromPayment, buildDownloads, type DownloadLink } from '../../../lib/menopausia/order';
 import { getPricing, type ProductBucket } from '../../../config/menopausia/products';
@@ -45,9 +45,10 @@ if (client && paymentId) {
   paid = true; // Dev/local fallback when Dodo isn't configured.
 }
 
-// En `es` el upsell ya se ofrece en la landing (checkbox); no se vuelve a
-// mostrar tras pagar. En el resto se oferta aquí salvo que ya se comprara.
-const showUpsell = locale !== 'es' && !upsellPurchased;
+// En la landing visual (es/pl/cs) el upsell ya se ofrece en el carrito; no se
+// vuelve a mostrar tras pagar. En el resto (pt) se oferta aquí salvo que ya se
+// comprara.
+const showUpsell = !usesVisualOffer(locale) && !upsellPurchased;
 ---
 
 <MenoLayout locale={locale} title={dict.meta.graciasTitle} noindex>

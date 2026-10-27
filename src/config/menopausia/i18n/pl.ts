@@ -137,6 +137,83 @@ export const pl: MenoDict = {
     genericHeadline: 'Twój 28-dniowy plan, byś poczuła się lżej w menopauzie',
     ctaMain: 'Chcę swój plan',
 
+    // ── Cuenta regresiva ──────────────────────────────────────────────
+    countdownLabel: 'Dodatki gratis tylko do:',
+
+    // ── Hero ──────────────────────────────────────────────────────────
+    heroLabel: 'Twój plan jest gotowy na podstawie Twoich odpowiedzi',
+    heroTitle: 'Wyzwanie na 28 dni: pożegnaj oponki i znów poczuj się sobą',
+    heroChips: [
+      'Koniec z oponkami i wzdętym brzuchem',
+      'Ubrania znów dobrze leżą',
+      'Więcej energii na cały dzień',
+      'Znów poczuj się piękna i pewna siebie',
+      'Śpij lepiej, budź się z ochotą',
+    ],
+
+    // ── Brzmi znajomo? ─────────────────────────────────────────────────
+    soundsTitle: 'Brzmi znajomo?',
+    soundsPains: [
+      'Patrzysz w lustro, a ubrania już nie dopinają się jak kiedyś',
+      'Zmęczenie, które nie mija nawet po przespanej nocy',
+      'Unikasz zdjęć i spotkań przez to, jak wyglądasz',
+      'Wzdęty brzuch nie znika, cokolwiek robisz',
+    ],
+    soundsResultsTitle: 'Z wyzwaniem',
+    soundsResults: [
+      'Znów wygodnie wkładasz ulubione ubrania',
+      'Wstajesz z energią i mniejszym wzdęciem',
+      'Czujesz się swobodnie na zdjęciach i spotkaniach',
+      'Płaszczejący brzuch tydzień po tygodniu',
+    ],
+
+    // ── Cuadro "Qué incluye" (anclas en PLN, no se cobran) ─────────────
+    valuePrefix: 'Wartość',
+    mainValue: '129 zł',
+    bonusValues: ['39 zł', '29 zł', '29 zł', '25 zł'],
+    totalStruck: '251 zł',
+    todayLabel: 'Dziś',
+
+    // ── Cómo funciona ──────────────────────────────────────────────────
+    howTitle: 'Jak to działa',
+    howSteps: [
+      'Kupujesz w 1 minutę',
+      'Dostajesz wszystko na e-mail od razu',
+      'Zaczynasz jeszcze dziś',
+    ],
+
+    // ── Carrito ────────────────────────────────────────────────────────
+    cartTitle: 'Twoje zamówienie',
+    cartClose: 'Zamknij',
+    cartPlanNote: 'Wyzwanie na 28 dni + 4 dodatki gratis',
+    cartExtrasTitle: 'Chcesz dodać coś jeszcze?',
+    addLabel: 'Dodaj',
+    cartCta: 'Przejdź do bezpiecznej płatności',
+    onlyNow: 'tylko teraz',
+    bumpCartDesc: 'Na nieprzespane noce i uderzenia gorąca, które nie dają spać',
+    bumpStruck: '59 zł',
+    upsellCartDesc: 'Szybka ulga w gazach i wzdęciu po jedzeniu: kluczowe napary i produkty. Idealne uzupełnienie wyzwania.',
+    upsellStruck: '59 zł',
+
+    includesTitle: 'Co zawiera Twój plan',
+    mainName: 'Wyzwanie Płaski Brzuch w 28 Dni',
+    mainSub: 'Rutyna i plan dzień po dniu, by zmniejszyć brzuch',
+    bonusSubs: [
+      'Łatwe posiłki, które zmniejszają stan zapalny',
+      'Zapisuj postępy i utrzymaj regularność',
+      'Co zamówić w restauracji, by nie mieć wzdęć',
+      'Powrót do planu po odstępstwie',
+    ],
+
+    upsellName: 'Żegnaj Wzdęcie w 14 Dni',
+
+    securePay: 'Płatność w 100% bezpieczna i chroniona',
+    guaranteeTitle: 'Gwarancja {days} dni',
+    guaranteeBody:
+      'Wypróbuj bez ryzyka. Jeśli nie będziesz zadowolona, napisz do nas w ciągu {days} dni, a zwrócimy pieniądze.',
+    guaranteeUnit: 'DNI',
+    medicalDisclaimer: 'Ten plan ma charakter informacyjny i nie zastępuje konsultacji lekarskiej.',
+
     bonusesTitle: '4 dodatki w zestawie',
     bonusNames: [
       '30 przepisów przeciwzapalnych',

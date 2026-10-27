@@ -138,6 +138,83 @@ export const cs: MenoDict = {
     genericHeadline: 'Tvůj 28denní plán, aby ses cítila lehčí v menopauze',
     ctaMain: 'Chci svůj plán',
 
+    // ── Cuenta regresiva ──────────────────────────────────────────────
+    countdownLabel: 'Dárky zdarma jen do:',
+
+    // ── Hero ──────────────────────────────────────────────────────────
+    heroLabel: 'Tvůj plán je připravený podle tvých odpovědí',
+    heroTitle: '28denní výzva: rozluč se s faldíky a zase buď sama sebou',
+    heroChips: [
+      'Konec s faldíky a nafouklým břichem',
+      'Oblečení ti zase dobře padne',
+      'Víc energie na celý den',
+      'Zase se cítit krásná a sebejistá',
+      'Spi líp, probouzej se s chutí',
+    ],
+
+    // ── Zní ti to povědomě? ────────────────────────────────────────────
+    soundsTitle: 'Zní ti to povědomě?',
+    soundsPains: [
+      'Podíváš se do zrcadla a oblečení už nedopne jako dřív',
+      'Únava, která nezmizí ani po prospané noci',
+      'Vyhýbáš se fotkám a akcím kvůli tomu, jak vypadáš',
+      'Nafouklé břicho nezmizí, ať děláš, co děláš',
+    ],
+    soundsResultsTitle: 'S výzvou',
+    soundsResults: [
+      'Zase si pohodlně oblékneš své oblíbené kousky',
+      'Vstáváš s energií a menším nadýmáním',
+      'Cítíš se dobře na fotkách i mezi lidmi',
+      'Plošší břicho týden po týdnu',
+    ],
+
+    // ── Cuadro "Qué incluye" (anclas en CZK, no se cobran) ─────────────
+    valuePrefix: 'Hodnota',
+    mainValue: '699 Kč',
+    bonusValues: ['229 Kč', '149 Kč', '149 Kč', '119 Kč'],
+    totalStruck: '1 345 Kč',
+    todayLabel: 'Dnes',
+
+    // ── Cómo funciona ──────────────────────────────────────────────────
+    howTitle: 'Jak to funguje',
+    howSteps: [
+      'Koupíš během 1 minuty',
+      'Všechno ti hned přijde na e-mail',
+      'Začínáš ještě dnes',
+    ],
+
+    // ── Carrito ────────────────────────────────────────────────────────
+    cartTitle: 'Tvá objednávka',
+    cartClose: 'Zavřít',
+    cartPlanNote: '28denní výzva + 4 bonusy zdarma',
+    cartExtrasTitle: 'Chceš přidat ještě něco?',
+    addLabel: 'Přidat',
+    cartCta: 'Přejít k bezpečné platbě',
+    onlyNow: 'jen teď',
+    bumpCartDesc: 'Na probdělé noci a návaly horka, které nedají spát',
+    bumpStruck: '349 Kč',
+    upsellCartDesc: 'Rychlá úleva od plynů a nadýmání po jídle: klíčové nálevy a potraviny. Ideální doplněk výzvy.',
+    upsellStruck: '369 Kč',
+
+    includesTitle: 'Co tvůj plán obsahuje',
+    mainName: 'Výzva Ploché Břicho za 28 Dní',
+    mainSub: 'Rutina a plán den po dni, aby se zmenšilo břicho',
+    bonusSubs: [
+      'Snadná jídla, která snižují záněty',
+      'Zaznamenávej pokrok a udrž si pravidelnost',
+      'Co si objednat v restauraci bez nadýmání',
+      'Návrat k plánu po prohřešku',
+    ],
+
+    upsellName: 'Sbohem nadýmání za 14 dní',
+
+    securePay: 'Platba 100% bezpečná a chráněná',
+    guaranteeTitle: 'Záruka {days} dní',
+    guaranteeBody:
+      'Vyzkoušej to bez rizika. Pokud nebudeš spokojená, napiš nám do {days} dní a vrátíme ti peníze.',
+    guaranteeUnit: 'DNÍ',
+    medicalDisclaimer: 'Tento plán má informativní charakter a nenahrazuje lékařskou konzultaci.',
+
     bonusesTitle: '4 bonusy v balíčku',
     bonusNames: [
       '30 protizánětlivých receptů',

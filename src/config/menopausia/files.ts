@@ -20,8 +20,28 @@ export const files: Record<MenoLocale, Record<ProductBucket, string[]>> = {
     upsell: ['EXTRA - Adios Hinchazon - Plan de 14 dias.pdf'],
   },
   pt: { main: [], bump: [], upsell: [] }, // TODO: nombres de archivos (pt)
-  pl: { main: [], bump: [], upsell: [] }, // TODO: nombres de archivos (pl)
-  cs: { main: [], bump: [], upsell: [] }, // TODO: nombres de archivos (cs)
+  pl: {
+    main: [
+      '1 - Plaski Brzuch w 28 Dni.pdf',
+      '2 - BONUS - 30 Przepisow Przeciwzapalnych.pdf',
+      '3 - BONUS - Tracker na 28 Dni (do druku).pdf',
+      '4 - BONUS - Jedz na Miescie bez Wzdec.pdf',
+      '5 - BONUS - Plan Ratunkowy na 3 Dni.pdf',
+    ],
+    bump: ['EXTRA - Znow Dobrze Spij w 21 Dni.pdf'],
+    upsell: ['EXTRA - Zegnaj Wzdecie w 14 Dni.pdf'],
+  },
+  cs: {
+    main: [
+      '1 - Ploche Bricho za 28 Dni.pdf',
+      '2 - BONUS - 30 Protizanetlivych Receptu.pdf',
+      '3 - BONUS - Tracker na 28 Dni (k tisku).pdf',
+      '4 - BONUS - Jez Venku bez Nadymani.pdf',
+      '5 - BONUS - Zachranny Plan na 3 Dny.pdf',
+    ],
+    bump: ['EXTRA - Zase Dobre Spi za 21 Dni.pdf'],
+    upsell: ['EXTRA - Sbohem Nadymani za 14 Dni.pdf'],
+  },
 };
 
 export function filesFor(locale: MenoLocale, bucket: ProductBucket): string[] {

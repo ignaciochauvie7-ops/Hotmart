@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { getDict, money, type MenoLocale } from '../../config/menopausia/i18n';
+import { getDict, money, usesVisualOffer, type MenoLocale } from '../../config/menopausia/i18n';
 import { getPricing } from '../../config/menopausia/products';
 import { getCovers, type Cover, type CoverSlot } from '../../config/menopausia/covers';
 import { loadAnswers } from '../../lib/menopausia/state';
@@ -103,6 +103,8 @@ export function Offer({ locale }: Props) {
   const nl = dict.numberLocale;
   const covers = getCovers(locale);
   const isEs = locale === 'es';
+  // es/pl/cs comparten la landing visual; pt usa el layout original.
+  const useVisual = usesVisualOffer(locale);
 
   // Extras arrancan sin marcar: se eligen dentro del carrito.
   const [bump, setBump] = useState(false);
@@ -169,9 +171,9 @@ export function Offer({ locale }: Props) {
     return () => io.disconnect();
   }, []);
 
-  // Cuenta regresiva (solo `es`): tick cada segundo; al llegar a 0, nuevo valor.
+  // Cuenta regresiva (landing visual): tick cada segundo; al llegar a 0, nuevo valor.
   useEffect(() => {
-    if (!isEs) return;
+    if (!useVisual) return;
     let deadline = readCountdownDeadline();
     const tick = () => {
       let left = deadline - Date.now();
@@ -189,7 +191,7 @@ export function Offer({ locale }: Props) {
     tick();
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
-  }, [isEs]);
+  }, [useVisual]);
 
   // Bloquea el scroll del fondo mientras el carrito está abierto.
   useEffect(() => {
@@ -339,11 +341,15 @@ export function Offer({ locale }: Props) {
     </div>
   );
 
-  // ── Landing `es` — visual, orientada a imágenes ─────────────────────────────
-  if (isEs) {
-    const mainCover = esCover('main', o.mainName ?? 'Reto Abdomen Plano en 28 Días');
-    const bumpCover = esCover('bump', o.bumpName);
-    const upsellCover = esCover('upsell', o.upsellName ?? '');
+  // ── Landing visual (es/pl/cs) — orientada a imágenes ────────────────────────
+  if (useVisual) {
+    // es reutiliza el arte `pl` con alt en español; pl/cs usan sus propias
+    // portadas (cs aún sin portadas en checo → sin imagen, nunca arte polaco).
+    const coverFor = (slot: CoverSlot, alt: string): Cover | undefined =>
+      isEs ? esCover(slot, alt) : covers[slot];
+    const mainCover = coverFor('main', o.mainName ?? 'Reto Abdomen Plano en 28 Días');
+    const bumpCover = coverFor('bump', o.bumpName);
+    const upsellCover = coverFor('upsell', o.upsellName ?? '');
     const title = o.heroTitle ?? headline;
 
     // Pago seguro: candado + línea + logos en una sola fila (reutilizado).
@@ -502,7 +508,7 @@ export function Offer({ locale }: Props) {
             {/* Abanico: portada principal al frente + 4 bonus asomando detrás */}
             <div className="m-fan m-hero-in">
               {bonusSlots.map((slot, i) => (
-                <CoverImg key={slot} cover={esCover(slot, o.bonusNames[i])}
+                <CoverImg key={slot} cover={coverFor(slot, o.bonusNames[i])}
                   className={`m-fan__bonus m-fan__bonus--${i + 1}`} sizes="126px" />
               ))}
               <CoverImg cover={mainCover} className="m-fan__main" sizes="220px" priority />
@@ -572,7 +578,10 @@ export function Offer({ locale }: Props) {
               <ul className="m-valuelist">
                 <li className="m-valuerow">
                   <CoverImg cover={mainCover} className="m-valuerow__cover" sizes="48px" />
-                  <span className="m-valuerow__name">{o.mainName}</span>
+                  <span className="m-valuerow__name">
+                    {o.mainName}
+                    {o.mainSub && <span className="m-valuerow__sub">{o.mainSub}</span>}
+                  </span>
                   {o.mainValue && (
                     <span className="m-valuerow__value">
                       {o.valuePrefix} <s>{o.mainValue}</s>
@@ -581,8 +590,11 @@ export function Offer({ locale }: Props) {
                 </li>
                 {bonusSlots.map((slot, i) => (
                   <li key={slot} className="m-valuerow">
-                    <CoverImg cover={esCover(slot, o.bonusNames[i])} className="m-valuerow__cover" sizes="48px" />
-                    <span className="m-valuerow__name">{o.bonusNames[i]}</span>
+                    <CoverImg cover={coverFor(slot, o.bonusNames[i])} className="m-valuerow__cover" sizes="48px" />
+                    <span className="m-valuerow__name">
+                      {o.bonusNames[i]}
+                      {o.bonusSubs?.[i] && <span className="m-valuerow__sub">{o.bonusSubs[i]}</span>}
+                    </span>
                     {o.bonusValues && o.bonusValues[i] && (
                       <span className="m-valuerow__value">
                         <s>{o.bonusValues[i]}</s> <span className="m-valuerow__free">{o.freeTag}</span>
@@ -633,7 +645,7 @@ export function Offer({ locale }: Props) {
           {o.guaranteeTitle && (
             <section className="m-section m-reveal">
               <div className="m-guarantee m-guarantee--big">
-                <GuaranteeSeal days={GUARANTEE_DAYS} />
+                <GuaranteeSeal days={GUARANTEE_DAYS} unit={o.guaranteeUnit} />
                 <p className="m-guarantee__title">{withDays(o.guaranteeTitle)}</p>
                 {o.guaranteeBody && <p className="m-guarantee__body">{withDays(o.guaranteeBody)}</p>}
               </div>
@@ -787,13 +799,13 @@ function ClockIcon({ className }: { className?: string }) {
   );
 }
 
-function GuaranteeSeal({ days }: { days: number }) {
+function GuaranteeSeal({ days, unit = 'DÍAS' }: { days: number; unit?: string }) {
   return (
     <svg className="m-guarantee__seal" viewBox="0 0 80 80" width="64" height="64" aria-hidden="true">
       <circle cx="40" cy="40" r="37" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="4 3" />
       <circle cx="40" cy="40" r="30" fill="currentColor" opacity="0.08" />
       <text x="40" y="35" textAnchor="middle" fontSize="22" fontWeight="700" fill="currentColor">{days}</text>
-      <text x="40" y="51" textAnchor="middle" fontSize="10" fontWeight="700" letterSpacing="1" fill="currentColor">DÍAS</text>
+      <text x="40" y="51" textAnchor="middle" fontSize="10" fontWeight="700" letterSpacing="1" fill="currentColor">{unit}</text>
     </svg>
   );
 }

@@ -128,6 +128,15 @@ export interface MenoDict {
     mainName?: string;
     /** Una línea del ebook principal. */
     mainBlurb?: string;
+    /** Subtítulo corto bajo el nombre principal en el cuadro "Qué incluye"
+     *  (letra chica, gris suave). Solo pl/cs; omitido en es. */
+    mainSub?: string;
+    /** Subtítulos cortos bajo cada bonus en "Qué incluye" (orden = bonus1..4).
+     *  Solo pl/cs; omitido en es. */
+    bonusSubs?: string[];
+    /** Etiqueta de unidad del sello de garantía (p. ej. "DÍAS", "DNI", "DNÍ").
+     *  Omitido → "DÍAS". */
+    guaranteeUnit?: string;
     /** Una línea por bonus (orden = bonus1..bonus4). */
     bonusBlurbs?: string[];
     /** Comparativa sin/con plan. */
