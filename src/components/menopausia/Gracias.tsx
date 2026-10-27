@@ -17,9 +17,11 @@ interface Props {
   eventId: string;
   email?: string;
   downloads?: DownloadLink[];
+  /** false en `es` (el upsell va en la landing) o si ya se compró. */
+  showUpsell?: boolean;
 }
 
-export function Gracias({ locale, paid, value, currency, eventId, email, downloads = [] }: Props) {
+export function Gracias({ locale, paid, value, currency, eventId, email, downloads = [], showUpsell = true }: Props) {
   const dict = getDict(locale);
   const g = dict.gracias;
   const pr = getPricing(locale);
@@ -67,7 +69,9 @@ export function Gracias({ locale, paid, value, currency, eventId, email, downloa
       {/* Descarga arriba, con los enlaces firmados. Nunca depende del upsell. */}
       <Downloads title={dict.downloads.title} note={dict.downloads.note} links={downloads} />
 
-      {/* Única tarjeta de upsell — no bloquea ni retrasa la descarga. */}
+      {/* Única tarjeta de upsell — no bloquea ni retrasa la descarga.
+          En `es` no se muestra: el upsell ya se ofreció en la landing. */}
+      {showUpsell && (
       <section className="m-card m-upsell">
         {upsellCover && (
           <img
@@ -90,6 +94,7 @@ export function Gracias({ locale, paid, value, currency, eventId, email, downloa
         </button>
         <a className="m-btn m-btn--ghost m-upsell__no" href={`/menopausia/${locale}/listo`}>{g.no}</a>
       </section>
+      )}
     </div>
   );
 }

@@ -1115,6 +1115,139 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* ── Solo `es` · landing reordenada ────────────────────────────────────────── */
+
+/* Promesa fuerte bajo el titular. */
+.m-hero__promise {
+  margin: 1rem auto 0;
+  max-width: 34ch;
+  font-size: 1.02rem;
+  line-height: 1.5;
+  color: var(--muted-text);
+  text-wrap: balance;
+}
+
+/* Beneficios del principal + dolores que resuelve — lista con check. */
+.m-benefits,
+.m-pains {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.m-benefit,
+.m-pain {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.m-benefit__icon,
+.m-pain__icon {
+  flex: none;
+  margin-top: 1px;
+  color: var(--sage-dark);
+}
+
+/* Cubierta tipográfica (fallback `es` sin imagen) — mantiene el 2:3. */
+.m-bookcover {
+  display: flex;
+  align-items: flex-end;
+  aspect-ratio: 2 / 3;
+  padding: 0.6rem;
+  background: linear-gradient(150deg, var(--sage) 0%, var(--sage-dark) 55%, #0a545a 100%);
+  color: #fff;
+  overflow: hidden;
+}
+
+.m-bookcover__title {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  text-align: left;
+  text-wrap: balance;
+}
+
+.m-bump .m-bookcover {
+  width: 72px;
+}
+
+/* Pago seguro + logos. ------------------------------------------------------- */
+.m-securepay {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.m-securepay__line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--sage-dark);
+}
+
+.m-securepay__line svg {
+  flex: none;
+}
+
+.m-paylogos {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+.m-paylogo {
+  width: 48px;
+  height: 30px;
+  border-radius: 4px;
+}
+
+/* Garantía de 14 días con sello. -------------------------------------------- */
+.m-guarantee {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 1.4rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--sage-soft);
+}
+
+.m-guarantee__seal {
+  flex: none;
+  color: var(--sage-dark);
+}
+
+.m-guarantee__text {
+  min-width: 0;
+}
+
+.m-guarantee__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.m-guarantee__body {
+  margin: 0.2rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--muted-text);
+}
+
 /* FAQ accordion ------------------------------------------------------------- */
 .m-faq {
   border-top: 1px solid var(--line);
@@ -1178,6 +1311,130 @@ body {
 
 .m-faq-item.is-open .m-faq-a {
   padding-bottom: 1.1rem;
+}
+
+/* Prueba social · reseñas con foto ------------------------------------------ */
+.m-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  line-height: 0;
+}
+
+.m-testi-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  padding: 0.9rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.4rem;
+}
+
+.m-avatars {
+  display: inline-flex;
+}
+
+.m-avatars__img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.m-avatars__img + .m-avatars__img {
+  margin-left: -12px;
+}
+
+.m-testi-rating__meta {
+  min-width: 0;
+}
+
+.m-testi-rating__stars {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.m-testi-rating__stars strong {
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.m-testi-rating__count {
+  margin: 0.1rem 0 0;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--muted-text);
+}
+
+.m-testi-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+}
+
+.m-testi {
+  padding: 1.1rem 1.15rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.m-testi__head {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.65rem;
+}
+
+.m-testi__photo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.m-testi__who {
+  min-width: 0;
+}
+
+.m-testi__author {
+  margin: 0.2rem 0 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.m-testi__quote {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.m-testi__quote::before {
+  content: '“';
+}
+
+.m-testi__quote::after {
+  content: '”';
+}
+
+@media (min-width: 600px) {
+  .m-testi-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 /* Footer -------------------------------------------------------------------- */

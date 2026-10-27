@@ -135,6 +135,32 @@ export const es: MenoDict = {
     genericHeadline: 'Tu plan de 28 días para sentirte más ligera en la menopausia',
     ctaMain: 'Quiero mi plan',
 
+    promise:
+      'En 28 días desinflamas el abdomen y vuelves a sentirte cómoda con tu ropa, sin dietas imposibles y con solo 15 minutos al día.',
+    mainBenefitsTitle: 'Qué consigues con tu plan',
+    mainBenefits: [
+      'Rutina de 15 minutos al día, pensada para tu cuerpo en la menopausia',
+      'Comidas antiinflamatorias sencillas, sin pasar hambre',
+      'Menos hinchazón y un vientre más plano semana a semana',
+      'Más energía durante el día y mejor descanso por la noche',
+    ],
+    painsTitle: 'Pensado para lo que sientes cada día',
+    pains: [
+      'Sofocos y calor que aparecen sin avisar',
+      'Peso y grasa que se acumulan en el abdomen',
+      'Noches de mal sueño y cansancio al despertar',
+      'Cambios de humor y menos ganas de todo',
+      'Hinchazón y digestiones pesadas cada tarde',
+    ],
+    buyTitle: 'Empieza tu plan hoy',
+    upsellName: 'Adiós Hinchazón en 14 Días',
+    upsellBenefit: 'Plan antiinflamatorio de 14 días para deshinchar el abdomen.',
+    upsellAdd: 'Añádelo por {price}',
+    securePay: 'Pago 100% seguro y protegido',
+    guaranteeTitle: 'Garantía de {days} días',
+    guaranteeBody:
+      'Pruébalo sin riesgo. Si no estás conforme, escríbenos dentro de los {days} días y te devolvemos el dinero.',
+
     bonusesTitle: '4 extras incluidos',
     bonusNames: [
       '30 recetas antiinflamatorias',
@@ -153,6 +179,39 @@ export const es: MenoDict = {
 
     ctaOffer: 'Quiero mi plan',
     trust: 'Pago seguro Dodo · acceso inmediato · garantía de {days} días',
+
+    social: {
+      title: 'Lo que dicen otras mujeres',
+      rating: '4,9',
+      ratingAria: 'Valoración media 4,9 de 5',
+      trusted: '+24.000 mujeres ya empezaron su plan',
+      items: [
+        {
+          quote: 'A las tres semanas noté el abdomen mucho menos hinchado. Por fin me cierra bien el pantalón.',
+          author: 'María José, 54',
+        },
+        {
+          quote: 'Lo mejor es que son solo 15 minutos al día. Con mi horario, es lo único que he conseguido mantener.',
+          author: 'Carmen, 51',
+        },
+        {
+          quote: 'Llevaba dos años sintiéndome hinchada cada tarde. Las recetas me cambiaron la digestión.',
+          author: 'Pilar, 57',
+        },
+        {
+          quote: 'No es una dieta imposible. Como normal y aun así me ha bajado la barriga.',
+          author: 'Rosa, 49',
+        },
+        {
+          quote: 'Tengo más energía y duermo mejor. Vuelvo a sentirme yo.',
+          author: 'Ana, 58',
+        },
+        {
+          quote: 'Pensaba que a mi edad ya no había nada que hacer. Me alegro de haberlo probado.',
+          author: 'Teresa, 61',
+        },
+      ],
+    },
 
     faqTitle: 'Preguntas frecuentes',
     faq: [

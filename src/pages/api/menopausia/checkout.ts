@@ -9,14 +9,14 @@ const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json' } });
 
 export const POST: APIRoute = async ({ request }) => {
-  let body: { locale?: string; bump?: boolean; fbp?: string; fbc?: string };
+  let body: { locale?: string; bump?: boolean; upsell?: boolean; fbp?: string; fbc?: string };
   try {
     body = await request.json();
   } catch {
     return json({ error: 'bad_request' }, 400);
   }
 
-  const { locale, bump, fbp, fbc } = body;
+  const { locale, bump, upsell, fbp, fbc } = body;
   if (!isLocale(locale)) return json({ error: 'bad_locale' }, 400);
 
   const products = getProducts(locale);
@@ -27,8 +27,13 @@ export const POST: APIRoute = async ({ request }) => {
 
   const cart = [{ product_id: products.main, quantity: 1 }];
   if (bump && products.bump) cart.push({ product_id: products.bump, quantity: 1 });
+  if (upsell && products.upsell) cart.push({ product_id: products.upsell, quantity: 1 });
 
-  const metadata: Record<string, string> = { funnel: 'menopausia', bump: String(!!bump) };
+  const metadata: Record<string, string> = {
+    funnel: 'menopausia',
+    bump: String(!!bump),
+    upsell: String(!!upsell),
+  };
   if (fbp) metadata.fbp = fbp;
   if (fbc) metadata.fbc = fbc;
 

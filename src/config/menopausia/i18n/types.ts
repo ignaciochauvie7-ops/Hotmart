@@ -8,6 +8,13 @@ export interface FaqItem {
   a: string;
 }
 
+export interface Testimonial {
+  /** Cita de la clienta. */
+  quote: string;
+  /** Nombre + edad, p. ej. "María José, 54". */
+  author: string;
+}
+
 export interface MenoDict {
   /** BCP-47 tag used for <html lang> and Intl number formatting. */
   htmlLang: string;
@@ -85,6 +92,31 @@ export interface MenoDict {
     genericHeadline: string;
     ctaMain: string;
 
+    // ── Solo `es` · landing reordenada (campos opcionales) ──────────────
+    /** Promesa fuerte bajo el titular. */
+    promise?: string;
+    /** Encabezado de la lista de beneficios del producto principal. */
+    mainBenefitsTitle?: string;
+    /** Beneficios del producto principal (una línea cada uno). */
+    mainBenefits?: string[];
+    /** Encabezado de la sección "dolores que resuelve". */
+    painsTitle?: string;
+    /** Dolores que resuelve (sofocos, peso/abdomen, sueño, ánimo…). */
+    pains?: string[];
+    /** Encabezado del bloque de compra. */
+    buyTitle?: string;
+    /** Extra 2 (upsell) en la landing — nombre junto al checkbox. */
+    upsellName?: string;
+    upsellBenefit?: string;
+    /** {price} → precio del upsell. */
+    upsellAdd?: string;
+    /** Línea de pago seguro junto al botón. */
+    securePay?: string;
+    /** Título de la garantía. */
+    guaranteeTitle?: string;
+    /** {days} → días de garantía. Cuerpo de la garantía. */
+    guaranteeBody?: string;
+
     // ── 2 · Cuadrícula de bonus ─────────────────────────────────────────
     bonusesTitle: string;
     /** 4 nombres cortos, una línea cada uno (orden = bonus1..bonus4). */
@@ -108,7 +140,21 @@ export interface MenoDict {
     /** {days} → días de garantía. "Pago seguro Dodo · acceso inmediato · …". */
     trust: string;
 
-    // ── 6 · FAQ ─────────────────────────────────────────────────────────
+    // ── 6 · Prueba social · reseñas ─────────────────────────────────────
+    social: {
+      /** Encabezado de la sección. */
+      title: string;
+      /** Nota media formateada, p. ej. "4,9". */
+      rating: string;
+      /** Texto accesible de la valoración. */
+      ratingAria: string;
+      /** Línea de confianza, p. ej. "+24.000 mujeres ya empezaron su plan". */
+      trusted: string;
+      /** 6 testimonios (orden = foto t1..t6). */
+      items: Testimonial[];
+    };
+
+    // ── 7 · FAQ ─────────────────────────────────────────────────────────
     faqTitle: string;
     /** Respuestas admiten el token {days}. */
     faq: FaqItem[];

@@ -21,6 +21,7 @@ let paid = false;
 let value = getPricing(locale).main;
 let currency = getPricing(locale).currency;
 let downloads: DownloadLink[] = [];
+let upsellPurchased = false;
 
 const client = getDodoClient();
 if (client && paymentId) {
@@ -30,15 +31,23 @@ if (client && paymentId) {
   if (p?.currency) currency = p.currency;
   if (p?.customer?.email) email = p.customer.email;
   if (paid) {
-    // Buyer is on /gracias → main is always included; add bump if purchased.
+    // Buyer is on /gracias → main is always included; add bump/upsell if purchased.
     const buckets: ProductBucket[] = ['main'];
     const fromCart = bucketsFromPayment(locale, p);
     if (fromCart.includes('bump') || p?.metadata?.bump === 'true') buckets.push('bump');
+    if (fromCart.includes('upsell') || p?.metadata?.upsell === 'true') {
+      buckets.push('upsell');
+      upsellPurchased = true;
+    }
     downloads = buildDownloads(locale, paymentId, buckets);
   }
 } else if (!client && statusParam === 'succeeded') {
   paid = true; // Dev/local fallback when Dodo isn't configured.
 }
+
+// En `es` el upsell ya se ofrece en la landing (checkbox); no se vuelve a
+// mostrar tras pagar. En el resto se oferta aquí salvo que ya se comprara.
+const showUpsell = locale !== 'es' && !upsellPurchased;
 ---
 
 <MenoLayout locale={locale} title={dict.meta.graciasTitle} noindex>
@@ -50,6 +59,7 @@ if (client && paymentId) {
     eventId={paymentId}
     email={email}
     downloads={downloads}
+    showUpsell={showUpsell}
     client:load
   />
 </MenoLayout>
