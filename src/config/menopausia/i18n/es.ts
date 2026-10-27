@@ -130,128 +130,55 @@ export const es: MenoDict = {
   },
 
   offer: {
-    // Bloque 1 · Promesa
-    headline: 'Tu plan de 28 días para sentirte más ligera, hecho para mujeres de {age}',
+    headline: 'Tu plan de 28 días para sentirte más ligera, para mujeres de {age}',
     genericHeadline: 'Tu plan de 28 días para sentirte más ligera en la menopausia',
-    subhead:
-      'Rutinas cortas y comidas sencillas que encajan en tu día, sin pasar hambre ni pisar el gimnasio.',
-    profileIntro: 'Según tus respuestas:',
-    benefits: [
-      '15 minutos al día, en casa y sin equipo',
-      'Comidas pensadas para esta etapa, sin dietas imposibles',
-      'Pasos sencillos para notar menos hinchazón día a día',
-    ],
     ctaMain: 'Quiero mi plan',
-    trustInline: 'Pago seguro · Lo recibes en PDF al instante',
 
-    // Bloque 2 · Problema + solución
-    problemTitle: 'Si sientes que tu cuerpo ya no responde como antes, no es culpa tuya',
-    problemBody: [
-      'En la menopausia tus hormonas cambian las reglas: la rutina de siempre deja de funcionar y aparecen la hinchazón, el cansancio y las noches en vela.',
-      'No necesitas más fuerza de voluntad. Necesitas un plan pensado para esta etapa, que se adapte a tu tiempo y a tu cuerpo de hoy.',
-    ],
-    solutionTitle: 'Un plan de 28 días que encaja en tu vida',
-    solutionBody:
-      'Solo 15 minutos al día, en casa, con comidas sencillas y las listas de la compra ya hechas. Lo abres en el móvil o lo imprimes, y empiezas hoy mismo.',
-    includesTitle: 'Qué incluye tu plan',
-    ebook: {
-      name: 'Reto Abdomen Plano en 28 Días',
-      blurb: 'La rutina guiada de 15 minutos al día, el plan de comidas y las listas de la compra, paso a paso.',
-    },
-    bonusesTitle: 'Y 4 extras de regalo',
-    bonuses: [
-      { name: '30 recetas antiinflamatorias', blurb: 'Platos fáciles y sabrosos para cocinar sin complicarte.' },
-      { name: 'Tracker imprimible de 28 días', blurb: 'Una hoja para marcar cada día y ver tu avance de un vistazo.' },
-      { name: 'Come fuera sin hincharte', blurb: 'Qué pedir en restaurantes y reuniones para seguir tu plan sin renunciar a nada.' },
-      { name: 'Plan Rescate de 3 días', blurb: 'Un reinicio corto para los días en que te notas más hinchada.' },
-    ],
-
-    // Bloque 3 · Prueba honesta
-    proofTitle: 'Comprar es seguro y sin riesgos',
-    proofSecure:
-      'Pago protegido y procesado por Dodo Payments. No guardamos los datos de tu tarjeta.',
-    proofGuarantee: 'Garantía de {days} días: si no es para ti, te devolvemos el dinero.',
-    proofDelivery: 'Entrega inmediata: recibes todo en tu email nada más pagar.',
-    proofSupportPrefix: '¿Tienes dudas? Escríbenos a',
-
-    // Bloque 4 · Oferta
-    offerTitle: 'Todo tu plan, en un solo pago',
-    getListTitle: 'Esto recibes hoy',
-    getList: [
-      'Reto Abdomen Plano en 28 Días',
+    bonusesTitle: '4 extras incluidos',
+    bonusNames: [
       '30 recetas antiinflamatorias',
-      'Tracker imprimible de 28 días',
+      'Tracker de 28 días',
       'Come fuera sin hincharte',
       'Plan Rescate de 3 días',
     ],
-    priceLead: 'Hoy',
-    priceNote: 'Pago único · Sin suscripción · Sin cargos ocultos',
-    bumpLabel:
-      'Añade Vuelve a Descansar Bien en 21 Días: un plan de 21 noches para dormir mejor. Solo {price}.',
-    ctaOffer: 'Quiero mi plan',
-    guaranteeBadge: 'Garantía de {days} días',
-    paymentNote: 'Acceso inmediato por email tras el pago',
-    totalTodayLabel: 'Total hoy',
+    freeTag: 'Gratis',
 
-    // Bloque 5 · FAQ + cierre
+    priceNote: 'Pago único',
+    perDay: '≈ {price} al día',
+
+    bumpName: 'Vuelve a Descansar Bien en 21 Días',
+    bumpBenefit: 'Un plan de 21 noches para dormir mejor.',
+    bumpAdd: 'Añádelo por {price}',
+
+    ctaOffer: 'Quiero mi plan',
+    trust: 'Pago seguro Dodo · acceso inmediato · garantía de {days} días',
+
     faqTitle: 'Preguntas frecuentes',
     faq: [
       {
-        q: '¿Qué recibo exactamente y en qué formato?',
-        a: 'Recibes el plan completo de 28 días y los 4 extras en PDF: puedes leerlos en el móvil, la tablet o el ordenador, o imprimirlos si lo prefieres.',
+        q: '¿Qué recibo y en qué formato?',
+        a: 'El plan de 28 días y los 4 extras en PDF, para leer en el móvil, la tablet o el ordenador, o imprimir.',
       },
       {
         q: '¿Cuándo me llega?',
-        a: 'Al instante. En cuanto se confirma el pago te enviamos todo a tu email, normalmente en menos de 5 minutos.',
+        a: 'Al instante. En cuanto se confirma el pago recibes todo en tu email, normalmente en menos de 5 minutos.',
       },
       {
-        q: '¿Funciona en el celular?',
-        a: 'Sí. Son archivos PDF que se abren en cualquier teléfono, tablet u ordenador, sin instalar nada.',
+        q: '¿Es un pago único?',
+        a: 'Sí. Un solo pago, sin suscripción ni cargos recurrentes.',
       },
       {
-        q: '¿Necesito gimnasio o aparatos?',
-        a: 'No. Los ejercicios se hacen en casa con tu propio cuerpo; como mucho una silla y una esterilla.',
+        q: '¿Es seguro pagar y en qué moneda?',
+        a: 'Pagas con tarjeta a través de Dodo Payments con conexión cifrada; no guardamos los datos de tu tarjeta. El importe se cobra en euros.',
       },
       {
-        q: '¿Sirve para mi edad y mi etapa de la menopausia?',
-        a: 'Sí. Está pensado para mujeres de 45 a 60 años, tengas o no la regla: premenopausia, menopausia o posmenopausia.',
-      },
-      {
-        q: '¿Es una suscripción?',
-        a: 'No. Es un pago único. No hay cuotas ni cargos recurrentes.',
-      },
-      {
-        q: '¿Cómo se paga y en qué moneda?',
-        a: 'Pagas con tarjeta de forma segura. El importe se muestra y se cobra en euros.',
-      },
-      {
-        q: '¿Es seguro pagar?',
-        a: 'Sí. El pago lo procesa Dodo Payments con conexión cifrada; nosotros no vemos ni guardamos los datos de tu tarjeta.',
-      },
-      {
-        q: '¿Qué pasa si no me gusta?',
-        a: 'Tienes {days} días de garantía. Si no es para ti, escríbenos y te devolvemos el dinero.',
-      },
-      {
-        q: '¿Cómo imprimo el tracker?',
-        a: 'Abre el PDF del tracker y pulsa imprimir desde el móvil o el ordenador. También puedes marcarlo en pantalla si prefieres no gastar papel.',
-      },
-      {
-        q: '¿A quién escribo si no me llega?',
-        a: 'Revisa primero las carpetas de spam y promociones. Si en unos minutos sigues sin verlo, responde al email de tu compra y te lo reenviamos enseguida.',
+        q: '¿Y si no me gusta?',
+        a: 'Tienes {days} días de garantía: si no es para ti, te devolvemos el dinero. Este plan es informativo y no sustituye la consulta médica.',
       },
     ],
-    medicalNote:
-      'Este plan es informativo y de estilo de vida: no sustituye la consulta médica. Si tienes alguna condición de salud, consulta a tu médico antes de empezar.',
-    finalTitle: 'Empieza hoy tu plan de 28 días',
-    ctaFinal: 'Quiero mi plan ahora',
 
-    // Varios
-    freeLabel: 'Incluido',
-    stickyPrefix: 'Hoy',
+    totalLabel: 'Total',
     checkoutError: 'No pudimos abrir el pago. Inténtalo de nuevo en un momento.',
-    footerDisclaimer:
-      'Este programa es informativo y no sustituye el consejo de un profesional de la salud.',
     privacyLink: 'Privacidad',
     termsLink: 'Términos',
   },

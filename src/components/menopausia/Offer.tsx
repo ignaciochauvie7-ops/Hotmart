@@ -1,32 +1,58 @@
 import { useEffect, useRef, useState } from 'react';
 import { getDict, money, type MenoLocale } from '../../config/menopausia/i18n';
 import { getPricing } from '../../config/menopausia/products';
+import { getCovers, type Cover, type CoverSlot } from '../../config/menopausia/covers';
 import { loadAnswers } from '../../lib/menopausia/state';
 import { getCookie, track } from '../../lib/menopausia/pixel';
-import { Reviews } from './Reviews';
-import { Check } from './quiz/icons';
 
 interface Props {
   locale: MenoLocale;
-  /** process.env.SUPPORT_EMAIL, inyectado por la página. Vacío = no se muestra. */
-  supportEmail?: string;
 }
 
-/** Días de garantía — variable única usada en copy y sello. */
+/** Días de garantía — variable única usada en copy. */
 const GUARANTEE_DAYS = 14;
 
-export function Offer({ locale, supportEmail }: Props) {
+/** Portada responsive (480w/960w). No se renderiza si el locale no la tiene. */
+function CoverImg({
+  cover,
+  className,
+  sizes,
+  priority = false,
+}: {
+  cover?: Cover;
+  className: string;
+  sizes: string;
+  priority?: boolean;
+}) {
+  if (!cover) return null;
+  return (
+    <img
+      className={className}
+      src={cover.src480}
+      srcSet={`${cover.src480} 480w, ${cover.src960} 960w`}
+      sizes={sizes}
+      width={cover.width}
+      height={cover.height}
+      alt={cover.alt}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchPriority={priority ? 'high' : 'auto'}
+      decoding="async"
+    />
+  );
+}
+
+export function Offer({ locale }: Props) {
   const dict = getDict(locale);
   const o = dict.offer;
   const q = dict.quiz;
   const pr = getPricing(locale);
   const nl = dict.numberLocale;
+  const covers = getCovers(locale);
 
   const [bump, setBump] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [headline, setHeadline] = useState(o.genericHeadline);
-  const [chips, setChips] = useState<{ label: string; value: string }[]>([]);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showSticky, setShowSticky] = useState(false);
 
@@ -34,32 +60,18 @@ export function Offer({ locale, supportEmail }: Props) {
   const mainPrice = money(pr.main, nl, pr.currency);
   const bumpPrice = money(pr.bump, nl, pr.currency);
   const totalPrice = money(total, nl, pr.currency);
+  const perDay = o.perDay.replace('{price}', money(pr.main / 28, nl, pr.currency));
   const withDays = (s: string) => s.replace('{days}', String(GUARANTEE_DAYS));
 
-  // Personaliza titular y chips con las respuestas del quiz (genérico si entró directo).
+  // Personaliza solo el titular con la franja de edad del quiz (genérico si entró directo).
   useEffect(() => {
     const a = loadAnswers();
-    const next: { label: string; value: string }[] = [];
     if (a.age != null && q.age.options[a.age]) {
       setHeadline(o.headline.replace('{age}', q.age.options[a.age]));
-      next.push({ label: q.result.labelAge, value: q.age.options[a.age] });
     }
-    if (a.goal != null && q.goal.options[a.goal]) {
-      next.push({ label: q.result.labelGoal, value: q.goal.options[a.goal] });
-    }
-    if (Array.isArray(a.symptoms) && a.symptoms.length > 0) {
-      const names = a.symptoms
-        .map((i) => q.symptoms.options[i])
-        .filter(Boolean)
-        .slice(0, 3);
-      if (names.length > 0) {
-        next.push({ label: q.result.labelSymptoms, value: names.join(' · ') });
-      }
-    }
-    setChips(next);
   }, [dict]);
 
-  // La barra fija aparece al pasar el primer CTA (sentinela bajo la promesa).
+  // La barra fija aparece al pasar el primer CTA (sentinela bajo el hero).
   const sentinelRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = sentinelRef.current;
@@ -72,7 +84,7 @@ export function Offer({ locale, supportEmail }: Props) {
     return () => io.disconnect();
   }, []);
 
-  // Las secciones aparecen una vez al entrar en viewport (opacity + translateY).
+  // Aparición suave al scroll (opacity + translateY), una sola vez.
   const shellRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const root = shellRef.current;
@@ -117,157 +129,82 @@ export function Offer({ locale, supportEmail }: Props) {
     }
   }
 
-  const items = [o.ebook, ...o.bonuses];
+  const bonusSlots: CoverSlot[] = ['bonus1', 'bonus2', 'bonus3', 'bonus4'];
 
   return (
     <>
       <div className="m-shell m-shell--offer" ref={shellRef}>
-        {/* ── Bloque 1 · Promesa ───────────────────────────────────────── */}
+        {/* ── 1 · Titular + portada principal + CTA ────────────────────── */}
         <header className="m-hero">
           <h1 className="m-hero__title m-hero-in">{headline}</h1>
-          <p className="m-hero__sub m-hero-in">{o.subhead}</p>
 
-          {chips.length > 0 && (
-            <div className="m-profile m-hero-in">
-              <p className="m-profile__intro">{o.profileIntro}</p>
-              <div className="m-chips">
-                {chips.map((c, i) => (
-                  <span key={i} className="m-chip">
-                    <span className="m-chip__label">{c.label}:</span> {c.value}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <ul className="m-benefits m-hero-in">
-            {o.benefits.map((b, i) => (
-              <li key={i} className="m-benefit">
-                <Check className="m-benefit__check" />
-                <span>{b}</span>
-              </li>
-            ))}
-          </ul>
+          <CoverImg
+            cover={covers.main}
+            className="m-cover-main"
+            sizes="(min-width: 600px) 320px, 220px"
+            priority
+          />
 
           <div className="m-hero-in">
             <button className="m-btn m-btn--glow" onClick={buy} disabled={loading}>
               {loading ? <span className="m-spin" /> : o.ctaMain}
             </button>
             <p className="m-cta-trust">
-              <LockIcon /> {o.trustInline}
+              <LockIcon /> {withDays(o.trust)}
             </p>
           </div>
         </header>
 
         <div ref={sentinelRef} aria-hidden="true" className="m-sentinel" />
 
-        {/* ── Bloque 2 · Problema + solución ───────────────────────────── */}
+        {/* ── 2 · Cuadrícula de bonus ──────────────────────────────────── */}
         <section className="m-section m-reveal">
-          <h2>{o.problemTitle}</h2>
-          {o.problemBody.map((p, i) => (
-            <p key={i} className="m-prose">{p}</p>
-          ))}
-        </section>
-
-        <section className="m-section m-reveal">
-          <h2>{o.solutionTitle}</h2>
-          <p className="m-prose">{o.solutionBody}</p>
-
-          <h3 className="m-subhead">{o.includesTitle}</h3>
-          <ul className="m-features">
-            {items.map((it, i) => (
-              <li key={i} className="m-feature">
-                <span className="m-feature__mark" aria-hidden="true">
-                  <Check />
-                </span>
-                <div>
-                  <p className="m-feature__name">
-                    {it.name}
-                    {i > 0 && <span className="m-tag">{o.freeLabel}</span>}
-                  </p>
-                  <p className="m-feature__blurb">{it.blurb}</p>
-                </div>
+          <h2>{o.bonusesTitle}</h2>
+          <ul className="m-bonus-grid">
+            {bonusSlots.map((slot, i) => (
+              <li key={slot} className="m-bonus">
+                <CoverImg
+                  cover={covers[slot]}
+                  className="m-bonus__cover"
+                  sizes="(min-width: 600px) 150px, 100px"
+                />
+                <p className="m-bonus__name">{o.bonusNames[i]}</p>
+                <span className="m-bonus__tag">{o.freeTag}</span>
               </li>
             ))}
           </ul>
         </section>
 
-        {/* ── Bloque 3 · Prueba honesta ────────────────────────────────── */}
+        {/* ── 3 · Caja de precio ───────────────────────────────────────── */}
         <section className="m-section m-reveal">
-          <h2>{o.proofTitle}</h2>
-          <ul className="m-trust">
-            <li className="m-trust__row">
-              <LockIcon className="m-trust__icon" />
-              <span>{o.proofSecure}</span>
-            </li>
-            <li className="m-trust__row">
-              <ShieldIcon className="m-trust__icon" />
-              <span>{withDays(o.proofGuarantee)}</span>
-            </li>
-            <li className="m-trust__row">
-              <MailIcon className="m-trust__icon" />
-              <span>{o.proofDelivery}</span>
-            </li>
-            {supportEmail && (
-              <li className="m-trust__row">
-                <ChatIcon className="m-trust__icon" />
-                <span>
-                  {o.proofSupportPrefix}{' '}
-                  <a href={`mailto:${supportEmail}`}>{supportEmail}</a>
-                </span>
-              </li>
-            )}
-          </ul>
-          <Reviews locale={locale} />
-        </section>
-
-        {/* ── Bloque 4 · Oferta ────────────────────────────────────────── */}
-        <section className="m-section m-reveal">
-          <h2>{o.offerTitle}</h2>
-          <div className="m-offer-card">
-            <p className="m-offer-card__head">{o.getListTitle}</p>
-            <ul className="m-get">
-              {o.getList.map((name, i) => (
-                <li key={i} className="m-get__row">
-                  <Check className="m-get__check" />
-                  <span>{name}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="m-price">
-              <span className="m-price__lead">{o.priceLead}</span>
-              <span className="m-price__now">{mainPrice}</span>
-            </div>
-            <p className="m-price__note">{o.priceNote}</p>
-
-            <label className="m-bump">
-              <input type="checkbox" checked={bump} onChange={() => setBump((b) => !b)} />
-              <span>{o.bumpLabel.replace('{price}', bumpPrice)}</span>
-            </label>
-
-            {bump && (
-              <p className="m-total">
-                {o.totalTodayLabel}: <strong>{totalPrice}</strong>
-              </p>
-            )}
-
-            <button className="m-btn m-btn--glow" onClick={buy} disabled={loading}>
-              {loading ? <span className="m-spin" /> : o.ctaOffer}
-            </button>
-            {error && <p className="m-field-error" style={{ marginTop: '0.6rem' }}>{error}</p>}
-
-            <div className="m-guarantee">
-              <ShieldIcon />
-              <span>{withDays(o.guaranteeBadge)}</span>
-            </div>
-            <p className="m-paynote">
-              <LockIcon /> {o.paymentNote}
-            </p>
+          <div className="m-pricebox">
+            <span className="m-pricebox__now">{mainPrice}</span>
+            <p className="m-pricebox__note">{o.priceNote}</p>
+            <p className="m-pricebox__perday">{perDay}</p>
           </div>
+
+          {/* ── 4 · Bump ───────────────────────────────────────────────── */}
+          <label className="m-bump">
+            <input type="checkbox" checked={bump} onChange={() => setBump((b) => !b)} />
+            <CoverImg cover={covers.bump} className="m-bump__cover" sizes="72px" />
+            <span className="m-bump__text">
+              <span className="m-bump__name">{o.bumpName}</span>
+              <span className="m-bump__benefit">{o.bumpBenefit}</span>
+              <span className="m-bump__add">{o.bumpAdd.replace('{price}', bumpPrice)}</span>
+            </span>
+          </label>
+
+          {/* ── 5 · CTA + confianza ────────────────────────────────────── */}
+          <button className="m-btn m-btn--glow m-cta-total" onClick={buy} disabled={loading}>
+            {loading ? <span className="m-spin" /> : `${o.ctaOffer} · ${totalPrice}`}
+          </button>
+          {error && <p className="m-field-error" style={{ marginTop: '0.6rem' }}>{error}</p>}
+          <p className="m-cta-trust">
+            <LockIcon /> {withDays(o.trust)}
+          </p>
         </section>
 
-        {/* ── Bloque 5 · FAQ ───────────────────────────────────────────── */}
+        {/* ── 6 · FAQ ──────────────────────────────────────────────────── */}
         <section className="m-section m-reveal">
           <h2>{o.faqTitle}</h2>
           <div className="m-faq">
@@ -294,38 +231,20 @@ export function Offer({ locale, supportEmail }: Props) {
               );
             })}
           </div>
-          <p className="m-medical">{o.medicalNote}</p>
-        </section>
-
-        {/* ── Cierre ───────────────────────────────────────────────────── */}
-        <section className="m-section m-final m-reveal">
-          <h2>{o.finalTitle}</h2>
-          <button className="m-btn m-btn--glow" onClick={buy} disabled={loading}>
-            {loading ? <span className="m-spin" /> : o.ctaFinal}
-          </button>
-          <p className="m-cta-trust">
-            <LockIcon /> {o.trustInline}
-          </p>
         </section>
 
         <footer className="m-footer">
-          <p>{o.footerDisclaimer}</p>
-          <p style={{ marginTop: '0.75rem' }}>
-            <a href={`/menopausia/${locale}/privacidad`}>{o.privacyLink}</a>
-            {' · '}
-            <a href={`/menopausia/${locale}/terminos`}>{o.termsLink}</a>
-          </p>
+          <a href={`/menopausia/${locale}/privacidad`}>{o.privacyLink}</a>
+          {' · '}
+          <a href={`/menopausia/${locale}/terminos`}>{o.termsLink}</a>
         </footer>
       </div>
 
       {/* Barra CTA fija en móvil — slide-in al pasar el primer CTA. */}
       <div className={`m-sticky-cta${showSticky ? ' is-visible' : ''}`}>
         <button className="m-btn" onClick={buy} disabled={loading}>
-          {loading ? <span className="m-spin" /> : o.ctaMain}
+          {loading ? <span className="m-spin" /> : `${o.ctaMain} · ${totalPrice}`}
         </button>
-        <p className="m-sticky-cta__price">
-          {o.stickyPrefix}: {totalPrice} · {o.paymentNote}
-        </p>
       </div>
     </>
   );
@@ -337,35 +256,6 @@ function LockIcon({ className }: { className?: string }) {
       strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <rect x="4" y="11" width="16" height="9" rx="2" />
       <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-    </svg>
-  );
-}
-
-function ShieldIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor"
-      strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z" />
-      <path d="m9 12 2 2 4-4" />
-    </svg>
-  );
-}
-
-function MailIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-      strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="3" y="5" width="18" height="14" rx="2" />
-      <path d="m3 7 9 6 9-6" />
-    </svg>
-  );
-}
-
-function ChatIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-      strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z" />
     </svg>
   );
 }

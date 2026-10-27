@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getDict, money, type MenoLocale } from '../../config/menopausia/i18n';
 import { getPricing } from '../../config/menopausia/products';
+import { getCovers } from '../../config/menopausia/covers';
 import { getCookie, track } from '../../lib/menopausia/pixel';
-import { Check } from './quiz/icons';
 
 interface DownloadLink {
   file: string;
@@ -24,6 +24,7 @@ export function Gracias({ locale, paid, value, currency, eventId, email, downloa
   const g = dict.gracias;
   const pr = getPricing(locale);
   const upsellPrice = money(pr.upsell, dict.numberLocale, pr.currency);
+  const upsellCover = getCovers(locale).upsell;
   const [loading, setLoading] = useState(false);
 
   // Verified Purchase — fire the Pixel event with event_id = payment_id (dedup).
@@ -62,34 +63,33 @@ export function Gracias({ locale, paid, value, currency, eventId, email, downloa
   }
 
   return (
-    <div className="m-shell">
+    <div className="m-shell m-gracias">
+      {/* Descarga arriba, con los enlaces firmados. Nunca depende del upsell. */}
       <Downloads title={dict.downloads.title} note={dict.downloads.note} links={downloads} />
 
-      <p className="m-chip" style={{ marginBottom: '1rem' }}>{g.upsellTag}</p>
-      <h1 className="m-q">{g.upsellTitle}</h1>
-      <p style={{ marginBottom: '1.25rem' }}>
-        {g.upsellBody.replace('{price}', upsellPrice)}
-      </p>
-
-      <div className="m-card">
-        <div className="m-value-list">
-          {g.upsellIncludes.map((item, i) => (
-            <div key={i} className="m-value-item">
-              <Check className="m-value-item__check" />
-              <span>{item}</span>
-            </div>
-          ))}
-        </div>
-        <div className="m-price-block" style={{ marginTop: '1.25rem' }}>
-          <div className="m-price-now">{upsellPrice}</div>
-          <span className="m-badge-off">{g.upsellPriceLabel}</span>
-        </div>
-      </div>
-
-      <button className="m-btn" style={{ marginTop: '1.5rem' }} onClick={addUpsell} disabled={loading}>
-        {loading ? <span className="m-spin" /> : g.yes}
-      </button>
-      <a className="m-btn m-btn--ghost" href={`/menopausia/${locale}/listo`}>{g.no}</a>
+      {/* Única tarjeta de upsell — no bloquea ni retrasa la descarga. */}
+      <section className="m-card m-upsell">
+        {upsellCover && (
+          <img
+            className="m-upsell__cover"
+            src={upsellCover.src480}
+            srcSet={`${upsellCover.src480} 480w, ${upsellCover.src960} 960w`}
+            sizes="140px"
+            width={upsellCover.width}
+            height={upsellCover.height}
+            alt={upsellCover.alt}
+            loading="lazy"
+            decoding="async"
+          />
+        )}
+        <h2 className="m-upsell__name">{g.upsellTitle}</h2>
+        <p className="m-upsell__line">{g.upsellBody.replace('{price}', upsellPrice)}</p>
+        <div className="m-upsell__price">{upsellPrice}</div>
+        <button className="m-btn" onClick={addUpsell} disabled={loading}>
+          {loading ? <span className="m-spin" /> : g.yes}
+        </button>
+        <a className="m-btn m-btn--ghost m-upsell__no" href={`/menopausia/${locale}/listo`}>{g.no}</a>
+      </section>
     </div>
   );
 }
@@ -103,17 +103,16 @@ interface DlProps {
 export function Downloads({ title, note, links }: DlProps) {
   if (links.length === 0) return null;
   return (
-    <section className="m-card" style={{ marginBottom: '1.75rem' }}>
-      <h2 style={{ fontSize: '1.3rem', marginBottom: '0.9rem' }}>{title}</h2>
-      <div className="m-value-list">
+    <section className="m-card m-downloads">
+      <h2 className="m-downloads__title">{title}</h2>
+      <div className="m-downloads__list">
         {links.map((l) => (
-          <a key={l.file} className="m-btn m-btn--ghost" href={l.url}
-            style={{ justifyContent: 'flex-start', textDecoration: 'none', border: '1.5px solid var(--line)', borderRadius: 14 }}>
+          <a key={l.file} className="m-btn m-dl-btn" href={l.url}>
             <DownloadIcon /> {l.file.replace(/\.pdf$/i, '')}
           </a>
         ))}
       </div>
-      <p className="m-muted" style={{ fontSize: '0.85rem', marginTop: '0.75rem' }}>{note}</p>
+      <p className="m-muted m-downloads__note">{note}</p>
     </section>
   );
 }

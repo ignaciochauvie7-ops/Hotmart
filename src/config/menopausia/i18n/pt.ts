@@ -131,128 +131,55 @@ export const pt: MenoDict = {
   },
 
   offer: {
-    // Bloco 1 · Promessa
-    headline: 'O teu plano de 28 dias para te sentires mais leve, feito para mulheres dos {age}',
+    headline: 'O teu plano de 28 dias para te sentires mais leve, para mulheres dos {age}',
     genericHeadline: 'O teu plano de 28 dias para te sentires mais leve na menopausa',
-    subhead:
-      'Rotinas curtas e refeições simples que encaixam no teu dia, sem passar fome nem ir ao ginásio.',
-    profileIntro: 'De acordo com as tuas respostas:',
-    benefits: [
-      '15 minutos por dia, em casa e sem equipamento',
-      'Refeições pensadas para esta fase, sem dietas impossíveis',
-      'Passos simples para sentir menos inchaço dia após dia',
-    ],
     ctaMain: 'Quero o meu plano',
-    trustInline: 'Pagamento seguro · Recebe-lo em PDF de imediato',
 
-    // Bloco 2 · Problema + solução
-    problemTitle: 'Se sentes que o teu corpo já não responde como antes, a culpa não é tua',
-    problemBody: [
-      'Na menopausa as hormonas mudam as regras: a rotina de sempre deixa de funcionar e surgem o inchaço, o cansaço e as noites sem dormir.',
-      'Não precisas de mais força de vontade. Precisas de um plano pensado para esta fase, que se adapte ao teu tempo e ao teu corpo de hoje.',
-    ],
-    solutionTitle: 'Um plano de 28 dias que encaixa na tua vida',
-    solutionBody:
-      'Só 15 minutos por dia, em casa, com refeições simples e as listas de compras já feitas. Abres no telemóvel ou imprimes e começas hoje mesmo.',
-    includesTitle: 'O que inclui o teu plano',
-    ebook: {
-      name: 'Desafio Barriga Lisa em 28 Dias',
-      blurb: 'A rotina guiada de 15 minutos por dia, o plano de refeições e as listas de compras, passo a passo.',
-    },
-    bonusesTitle: 'E 4 extras de oferta',
-    bonuses: [
-      { name: '30 receitas anti-inflamatórias', blurb: 'Pratos fáceis e saborosos para cozinhar sem complicações.' },
-      { name: 'Registo para imprimir de 28 dias', blurb: 'Uma folha para marcar cada dia e ver o teu progresso de relance.' },
-      { name: 'Comer fora sem inchar', blurb: 'O que pedir em restaurantes e encontros para seguir o teu plano sem abdicar de nada.' },
-      { name: 'Plano Resgate de 3 dias', blurb: 'Um reinício curto para os dias em que te sentes mais inchada.' },
-    ],
-
-    // Bloco 3 · Prova honesta
-    proofTitle: 'Comprar é seguro e sem riscos',
-    proofSecure:
-      'Pagamento protegido e processado pela Dodo Payments. Não guardamos os dados do teu cartão.',
-    proofGuarantee: 'Garantia de {days} dias: se não for para ti, devolvemos-te o dinheiro.',
-    proofDelivery: 'Entrega imediata: recebes tudo no teu email assim que pagas.',
-    proofSupportPrefix: 'Tens dúvidas? Escreve-nos para',
-
-    // Bloco 4 · Oferta
-    offerTitle: 'Todo o teu plano, num único pagamento',
-    getListTitle: 'Isto recebes hoje',
-    getList: [
-      'Desafio Barriga Lisa em 28 Dias',
+    bonusesTitle: '4 extras incluídos',
+    bonusNames: [
       '30 receitas anti-inflamatórias',
-      'Registo para imprimir de 28 dias',
+      'Registo de 28 dias',
       'Comer fora sem inchar',
       'Plano Resgate de 3 dias',
     ],
-    priceLead: 'Hoje',
-    priceNote: 'Pagamento único · Sem subscrição · Sem custos ocultos',
-    bumpLabel:
-      'Adiciona Volta a Descansar Bem em 21 Dias: um plano de 21 noites para dormir melhor. Só {price}.',
-    ctaOffer: 'Quero o meu plano',
-    guaranteeBadge: 'Garantia de {days} dias',
-    paymentNote: 'Acesso imediato por email após o pagamento',
-    totalTodayLabel: 'Total hoje',
+    freeTag: 'Grátis',
 
-    // Bloco 5 · FAQ + fecho
+    priceNote: 'Pagamento único',
+    perDay: '≈ {price} por dia',
+
+    bumpName: 'Volta a Descansar Bem em 21 Dias',
+    bumpBenefit: 'Um plano de 21 noites para dormir melhor.',
+    bumpAdd: 'Adiciona por {price}',
+
+    ctaOffer: 'Quero o meu plano',
+    trust: 'Pagamento seguro Dodo · acesso imediato · garantia de {days} dias',
+
     faqTitle: 'Perguntas frequentes',
     faq: [
       {
-        q: 'O que recebo exatamente e em que formato?',
-        a: 'Recebes o plano completo de 28 dias e os 4 extras em PDF: podes lê-los no telemóvel, no tablet ou no computador, ou imprimi-los se preferires.',
+        q: 'O que recebo e em que formato?',
+        a: 'O plano de 28 dias e os 4 extras em PDF, para ler no telemóvel, no tablet ou no computador, ou imprimir.',
       },
       {
         q: 'Quando me chega?',
-        a: 'De imediato. Assim que o pagamento é confirmado enviamos tudo para o teu email, normalmente em menos de 5 minutos.',
+        a: 'De imediato. Assim que o pagamento é confirmado recebes tudo no teu email, normalmente em menos de 5 minutos.',
       },
       {
-        q: 'Funciona no telemóvel?',
-        a: 'Sim. São ficheiros PDF que abrem em qualquer telemóvel, tablet ou computador, sem instalar nada.',
+        q: 'É um pagamento único?',
+        a: 'Sim. Um único pagamento, sem subscrição nem custos recorrentes.',
       },
       {
-        q: 'Preciso de ginásio ou aparelhos?',
-        a: 'Não. Os exercícios fazem-se em casa com o teu próprio corpo; quando muito uma cadeira e um tapete.',
-      },
-      {
-        q: 'Serve para a minha idade e a minha fase da menopausa?',
-        a: 'Sim. Foi pensado para mulheres dos 45 aos 60 anos, tenhas ou não menstruação: pré-menopausa, menopausa ou pós-menopausa.',
-      },
-      {
-        q: 'É uma subscrição?',
-        a: 'Não. É um pagamento único. Não há mensalidades nem custos recorrentes.',
-      },
-      {
-        q: 'Como se paga e em que moeda?',
-        a: 'Pagas com cartão de forma segura. O valor é mostrado e cobrado em euros.',
-      },
-      {
-        q: 'É seguro pagar?',
-        a: 'Sim. O pagamento é processado pela Dodo Payments com ligação cifrada; nós não vemos nem guardamos os dados do teu cartão.',
+        q: 'É seguro pagar e em que moeda?',
+        a: 'Pagas com cartão através da Dodo Payments com ligação cifrada; não guardamos os dados do teu cartão. O valor é cobrado em euros.',
       },
       {
         q: 'E se não gostar?',
-        a: 'Tens {days} dias de garantia. Se não for para ti, escreve-nos e devolvemos-te o dinheiro.',
-      },
-      {
-        q: 'Como imprimo o registo?',
-        a: 'Abre o PDF do registo e carrega em imprimir no telemóvel ou no computador. Também o podes marcar no ecrã se preferires não gastar papel.',
-      },
-      {
-        q: 'A quem escrevo se não me chegar?',
-        a: 'Verifica primeiro as pastas de spam e promoções. Se ao fim de alguns minutos continuares sem o ver, responde ao email da tua compra e reenviamos-to.',
+        a: 'Tens {days} dias de garantia: se não for para ti, devolvemos-te o dinheiro. Este plano é informativo e não substitui a consulta médica.',
       },
     ],
-    medicalNote:
-      'Este plano é informativo e de estilo de vida: não substitui a consulta médica. Se tens alguma condição de saúde, consulta o teu médico antes de começar.',
-    finalTitle: 'Começa hoje o teu plano de 28 dias',
-    ctaFinal: 'Quero o meu plano agora',
 
-    // Vários
-    freeLabel: 'Incluído',
-    stickyPrefix: 'Hoje',
+    totalLabel: 'Total',
     checkoutError: 'Não foi possível abrir o pagamento. Tenta novamente dentro de momentos.',
-    footerDisclaimer:
-      'Este programa é informativo e não substitui o aconselhamento de um profissional de saúde.',
     privacyLink: 'Privacidade',
     termsLink: 'Termos',
   },

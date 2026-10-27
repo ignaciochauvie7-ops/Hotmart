@@ -75,67 +75,45 @@ export interface MenoDict {
   };
 
   offer: {
-    // ── Bloque 1 · Promesa ──────────────────────────────────────────────
+    // ── 1 · Titular + portada principal + CTA ───────────────────────────
     /** {age} → franja de edad del quiz. */
     headline: string;
     /** Titular sin personalizar (entrada directa, sin respuestas). */
     genericHeadline: string;
-    subhead: string;
-    /** Línea sobre los chips del perfil, p. ej. "Según tus respuestas:". */
-    profileIntro: string;
-    /** 3 beneficios cortos. */
-    benefits: string[];
     ctaMain: string;
-    /** Línea de confianza bajo el CTA (pago seguro · PDF al instante). */
-    trustInline: string;
 
-    // ── Bloque 2 · Problema + solución ──────────────────────────────────
-    problemTitle: string;
-    problemBody: string[];
-    solutionTitle: string;
-    solutionBody: string;
-    includesTitle: string;
-    ebook: { name: string; blurb: string };
+    // ── 2 · Cuadrícula de bonus ─────────────────────────────────────────
     bonusesTitle: string;
-    bonuses: { name: string; blurb: string }[];
+    /** 4 nombres cortos, una línea cada uno (orden = bonus1..bonus4). */
+    bonusNames: string[];
+    /** Etiqueta de regalo bajo cada bonus. */
+    freeTag: string;
 
-    // ── Bloque 3 · Prueba honesta ───────────────────────────────────────
-    proofTitle: string;
-    proofSecure: string;
-    /** {days} → días de garantía. */
-    proofGuarantee: string;
-    proofDelivery: string;
-    /** Prefijo antes del email de soporte (solo si SUPPORT_EMAIL existe). */
-    proofSupportPrefix: string;
-
-    // ── Bloque 4 · Oferta ───────────────────────────────────────────────
-    offerTitle: string;
-    getListTitle: string;
-    getList: string[];
-    priceLead: string;
+    // ── 3 · Caja de precio ──────────────────────────────────────────────
     priceNote: string;
-    /** {price} → precio del bump en moneda local. */
-    bumpLabel: string;
-    ctaOffer: string;
-    /** {days} → días de garantía. */
-    guaranteeBadge: string;
-    paymentNote: string;
-    /** "Total hoy" cuando el bump está marcado. */
-    totalTodayLabel: string;
+    /** {price} → precio por día ya formateado. Único comparativo permitido. */
+    perDay: string;
 
-    // ── Bloque 5 · FAQ + cierre ─────────────────────────────────────────
+    // ── 4 · Bump ────────────────────────────────────────────────────────
+    bumpName: string;
+    bumpBenefit: string;
+    /** {price} → precio del bump. Texto junto al checkbox. */
+    bumpAdd: string;
+
+    // ── 5 · CTA + confianza ─────────────────────────────────────────────
+    ctaOffer: string;
+    /** {days} → días de garantía. "Pago seguro Dodo · acceso inmediato · …". */
+    trust: string;
+
+    // ── 6 · FAQ ─────────────────────────────────────────────────────────
     faqTitle: string;
-    /** La respuesta de la garantía admite el token {days}. */
+    /** Respuestas admiten el token {days}. */
     faq: FaqItem[];
-    medicalNote: string;
-    finalTitle: string;
-    ctaFinal: string;
 
     // ── Varios ──────────────────────────────────────────────────────────
-    freeLabel: string;
-    stickyPrefix: string;
+    /** Prefijo del total en CTA/barra fija. */
+    totalLabel: string;
     checkoutError: string;
-    footerDisclaimer: string;
     privacyLink: string;
     termsLink: string;
   };

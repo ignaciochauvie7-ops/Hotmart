@@ -1,0 +1,68 @@
+[
+  {
+    "page": "gracias",
+    "loc": "pl",
+    "vp": "375x667",
+    "errs": [],
+    "broken": 0,
+    "imgs": 1,
+    "cls": 0.0004,
+    "euro": false,
+    "paid": true
+  },
+  {
+    "page": "gracias",
+    "loc": "pl",
+    "vp": "768x1024",
+    "errs": [],
+    "broken": 0,
+    "imgs": 1,
+    "cls": 0.0001,
+    "euro": false,
+    "paid": true
+  },
+  {
+    "page": "gracias",
+    "loc": "pl",
+    "vp": "1280x900",
+    "errs": [],
+    "broken": 0,
+    "imgs": 1,
+    "cls": 0.0001,
+    "euro": false,
+    "paid": true
+  },
+  {
+    "page": "gracias",
+    "loc": "es",
+    "vp": "375x667",
+    "errs": [],
+    "broken": 0,
+    "imgs": 0,
+    "cls": 0.0004,
+    "euro": true,
+    "paid": true
+  },
+  {
+    "page": "gracias",
+    "loc": "es",
+    "vp": "768x1024",
+    "errs": [],
+    "broken": 0,
+    "imgs": 0,
+    "cls": 0.0001,
+    "euro": true,
+    "paid": true
+  },
+  {
+    "page": "gracias",
+    "loc": "es",
+    "vp": "1280x900",
+    "errs": [],
+    "broken": 0,
+    "imgs": 0,
+    "cls": 0.0001,
+    "euro": true,
+    "paid": true
+  }
+]

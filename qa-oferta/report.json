@@ -1,0 +1,170 @@
+[
+  {
+    "page": "oferta",
+    "locale": "pl",
+    "viewport": "375x667",
+    "consoleErrors": [],
+    "brokenImgs": [],
+    "imgCount": 6,
+    "cls": 0,
+    "hasEuro": false,
+    "hasZl": true,
+    "shot": "/Users/nacho/Proyectos/Hotmart/qa-oferta/oferta-pl-375x667.png",
+    "cta": {
+      "totalNoBump": "Chcę swój plan · 69 zł",
+      "totalBump": "Chcę swój plan · 98 zł",
+      "postNoBump": {
+        "locale": "pl",
+        "bump": false
+      },
+      "postBump": {
+        "locale": "pl",
+        "bump": true
+      }
+    }
+  },
+  {
+    "page": "oferta",
+    "locale": "pl",
+    "viewport": "768x1024",
+    "consoleErrors": [],
+    "brokenImgs": [],
+    "imgCount": 6,
+    "cls": 0,
+    "hasEuro": false,
+    "hasZl": true,
+    "shot": "/Users/nacho/Proyectos/Hotmart/qa-oferta/oferta-pl-768x1024.png"
+  },
+  {
+    "page": "oferta",
+    "locale": "pl",
+    "viewport": "1280x900",
+    "consoleErrors": [],
+    "brokenImgs": [],
+    "imgCount": 6,
+    "cls": 0,
+    "hasEuro": false,
+    "hasZl": true,
+    "shot": "/Users/nacho/Proyectos/Hotmart/qa-oferta/oferta-pl-1280x900.png"
+  },
+  {
+    "page": "gracias",
+    "locale": "pl",
+    "viewport": "375x667",
+    "consoleErrors": [],
+    "brokenImgs": [],
+    "imgCount": 0,
+    "cls": 0,
+    "hasEuro": false,
+    "hasZl": false,
+    "shot": "/Users/nacho/Proyectos/Hotmart/qa-oferta/gracias-pl-375x667.png"
+  },
+  {
+    "page": "gracias",
+    "locale": "pl",
+    "viewport": "768x1024",
+    "consoleErrors": [],
+    "brokenImgs": [],
+    "imgCount": 0,
+    "cls": 0,
+    "hasEuro": false,
+    "hasZl": false,
+    "shot": "/Users/nacho/Proyectos/Hotmart/qa-oferta/gracias-pl-768x1024.png"
+  },
+  {
+    "page": "gracias",
+    "locale": "pl",
+    "viewport": "1280x900",
+    "consoleErrors": [],
+    "brokenImgs": [],
+    "imgCount": 0,
+    "cls": 0,
+    "hasEuro": false,
+    "hasZl": false,
+    "shot": "/Users/nacho/Proyectos/Hotmart/qa-oferta/gracias-pl-1280x900.png"
+  },
+  {
+    "page": "oferta",
+    "locale": "es",
+    "viewport": "375x667",
+    "consoleErrors": [],
+    "brokenImgs": [],
+    "imgCount": 0,
+    "cls": 0,
+    "hasEuro": true,
+    "hasZl": false,
+    "shot": "/Users/nacho/Proyectos/Hotmart/qa-oferta/oferta-es-375x667.png",
+    "cta": {
+      "totalNoBump": "Quiero mi plan · 16,97 €",
+      "totalBump": "Quiero mi plan · 23,94 €",
+      "postNoBump": {
+        "locale": "es",
+        "bump": false
+      },
+      "postBump": {
+        "locale": "es",
+        "bump": true
+      }
+    }
+  },
+  {
+    "page": "oferta",
+    "locale": "es",
+    "viewport": "768x1024",
+    "consoleErrors": [],
+    "brokenImgs": [],
+    "imgCount": 0,
+    "cls": 0,
+    "hasEuro": true,
+    "hasZl": false,
+    "shot": "/Users/nacho/Proyectos/Hotmart/qa-oferta/oferta-es-768x1024.png"
+  },
+  {
+    "page": "oferta",
+    "locale": "es",
+    "viewport": "1280x900",
+    "consoleErrors": [],
+    "brokenImgs": [],
+    "imgCount": 0,
+    "cls": 0,
+    "hasEuro": true,
+    "hasZl": false,
+    "shot": "/Users/nacho/Proyectos/Hotmart/qa-oferta/oferta-es-1280x900.png"
+  },
+  {
+    "page": "gracias",
+    "locale": "es",
+    "viewport": "375x667",
+    "consoleErrors": [],
+    "brokenImgs": [],
+    "imgCount": 0,
+    "cls": 0,
+    "hasEuro": false,
+    "hasZl": false,
+    "shot": "/Users/nacho/Proyectos/Hotmart/qa-oferta/gracias-es-375x667.png"
+  },
+  {
+    "page": "gracias",
+    "locale": "es",
+    "viewport": "768x1024",
+    "consoleErrors": [],
+    "brokenImgs": [],
+    "imgCount": 0,
+    "cls": 0,
+    "hasEuro": false,
+    "hasZl": false,
+    "shot": "/Users/nacho/Proyectos/Hotmart/qa-oferta/gracias-es-768x1024.png"
+  },
+  {
+    "page": "gracias",
+    "locale": "es",
+    "viewport": "1280x900",
+    "consoleErrors": [],
+    "brokenImgs": [],
+    "imgCount": 0,
+    "cls": 0,
+    "hasEuro": false,
+    "hasZl": false,
+    "shot": "/Users/nacho/Proyectos/Hotmart/qa-oferta/gracias-es-1280x900.png"
+  }
+]
