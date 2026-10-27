@@ -52,19 +52,6 @@ function CoverImg({
   );
 }
 
-/**
- * Portada para `es`, que aún no tiene imágenes de cubierta: usa la imagen si
- * existe; si no, una cubierta tipográfica (sin huecos vacíos ni texto polaco).
- */
-function BookCover({ cover, name, className }: { cover?: Cover; name: string; className: string }) {
-  if (cover) return <CoverImg cover={cover} className={className} sizes="150px" />;
-  return (
-    <span className={`${className} m-bookcover`} aria-hidden="true">
-      <span className="m-bookcover__title">{name}</span>
-    </span>
-  );
-}
-
 export function Offer({ locale }: Props) {
   const dict = getDict(locale);
   const o = dict.offer;
@@ -74,8 +61,9 @@ export function Offer({ locale }: Props) {
   const covers = getCovers(locale);
   const isEs = locale === 'es';
 
-  const [bump, setBump] = useState(false);
-  const [upsell, setUpsell] = useState(false);
+  // `es` preselecciona el pack completo (bump + upsell); el resto arranca sin extras.
+  const [bump, setBump] = useState(isEs);
+  const [upsell, setUpsell] = useState(isEs);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [headline, setHeadline] = useState(o.genericHeadline);
@@ -85,7 +73,6 @@ export function Offer({ locale }: Props) {
   const total = pr.main + (bump ? pr.bump : 0) + (upsell ? pr.upsell : 0);
   const mainPrice = money(pr.main, nl, pr.currency);
   const bumpPrice = money(pr.bump, nl, pr.currency);
-  const upsellPrice = money(pr.upsell, nl, pr.currency);
   const totalPrice = money(total, nl, pr.currency);
   const perDay = o.perDay.replace('{price}', money(pr.main / 28, nl, pr.currency));
   const withDays = (s: string) => s.replace(/\{days\}/g, String(GUARANTEE_DAYS));
@@ -157,6 +144,24 @@ export function Offer({ locale }: Props) {
   }
 
   const bonusSlots: CoverSlot[] = ['bonus1', 'bonus2', 'bonus3', 'bonus4'];
+
+  // `es` aún no tiene portadas propias: reutiliza temporalmente el arte de `pl`
+  // con textos alternativos en español (ver covers.ts para el arte definitivo).
+  const esCover = (slot: CoverSlot, alt: string): Cover => ({
+    src480: `/menopausia/pl/covers/${slot}-480.webp`,
+    src960: `/menopausia/pl/covers/${slot}-960.webp`,
+    width: 480,
+    height: 720,
+    alt,
+  });
+
+  // Paquete seleccionado (es): 0 solo plan · 1 plan+descanso · 2 pack completo.
+  const pkg = upsell ? 2 : bump ? 1 : 0;
+  const selectPkg = (i: number) => {
+    setBump(i >= 1);
+    setUpsell(i >= 2);
+  };
+  const pkgTotals = [pr.main, pr.main + pr.bump, pr.main + pr.bump + pr.upsell];
 
   const buyButton = (extraClass = '') => (
     <button className={`m-btn m-btn--glow m-cta-total ${extraClass}`} onClick={buy} disabled={loading}>
@@ -248,15 +253,42 @@ export function Offer({ locale }: Props) {
     </div>
   );
 
-  // ── Landing `es` reordenada ────────────────────────────────────────────────
+  // ── Landing `es` — visual, orientada a imágenes ─────────────────────────────
   if (isEs) {
+    const mainCover = esCover('main', o.mainName ?? 'Reto Abdomen Plano en 28 Días');
+    const esBonusCovers = bonusSlots.map((slot, i) => esCover(slot, o.bonusNames[i]));
+
     return (
       <>
-        <div className="m-shell m-shell--offer" ref={shellRef}>
-          {/* 1 · Promesa fuerte + beneficios del principal + 4 bonus (sin precio) */}
-          <header className="m-hero">
+        <div className="m-shell m-shell--offer m-offer-es" ref={shellRef}>
+          {/* 1 · Hero: estrellas, titular, abanico de portadas, chips de beneficio, CTA */}
+          <header className="m-hero m-hero--es">
+            <div className="m-stars-top m-hero-in">
+              <Stars label={o.social.ratingAria} />
+              <strong>{o.social.rating}</strong>
+            </div>
+
             <h1 className="m-hero__title m-hero-in">{headline}</h1>
-            {o.promise && <p className="m-hero__promise m-hero-in">{o.promise}</p>}
+
+            <div className="m-fan m-hero-in" aria-hidden="true">
+              <CoverImg cover={esBonusCovers[0]} className="m-fan__bonus m-fan__bonus--1" sizes="120px" />
+              <CoverImg cover={esBonusCovers[1]} className="m-fan__bonus m-fan__bonus--2" sizes="120px" />
+              <CoverImg cover={esBonusCovers[2]} className="m-fan__bonus m-fan__bonus--3" sizes="120px" />
+              <CoverImg cover={esBonusCovers[3]} className="m-fan__bonus m-fan__bonus--4" sizes="120px" />
+              <CoverImg cover={mainCover} className="m-fan__main" sizes="200px" priority />
+            </div>
+
+            {o.mainBenefits && o.mainBenefits.length > 0 && (
+              <ul className="m-chips m-hero-in">
+                {o.mainBenefits.slice(0, 4).map((b, i) => (
+                  <li key={i} className="m-chip">
+                    <CheckIcon className="m-chip__icon" />
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
             <div className="m-hero-in">
               <button className="m-btn m-btn--glow" onClick={buy} disabled={loading}>
                 {loading ? <span className="m-spin" /> : o.ctaMain}
@@ -266,86 +298,106 @@ export function Offer({ locale }: Props) {
 
           <div ref={sentinelRef} aria-hidden="true" className="m-sentinel" />
 
-          {o.mainBenefits && o.mainBenefits.length > 0 && (
+          {/* 2 · Franja de 3 señales de confianza */}
+          {o.badges && o.badges.length === 3 && (
+            <ul className="m-trustbar m-reveal">
+              <li><BoltIcon /><span>{o.badges[0]}</span></li>
+              <li><LockIcon /><span>{o.badges[1]}</span></li>
+              <li><ShieldIcon /><span>{o.badges[2]}</span></li>
+            </ul>
+          )}
+
+          {/* 3 · Sin el plan / Con el plan */}
+          {o.compareWithout && o.compareWith && (
             <section className="m-section m-reveal">
-              {o.mainBenefitsTitle && <h2>{o.mainBenefitsTitle}</h2>}
-              <ul className="m-benefits">
-                {o.mainBenefits.map((b, i) => (
-                  <li key={i} className="m-benefit">
-                    <CheckIcon className="m-benefit__icon" />
-                    <span>{b}</span>
-                  </li>
-                ))}
-              </ul>
+              {o.compareTitle && <h2>{o.compareTitle}</h2>}
+              <div className="m-compare">
+                <div className="m-compare__col m-compare__col--no">
+                  <p className="m-compare__head">{o.withoutTitle}</p>
+                  <ul>
+                    {o.compareWithout.map((t, i) => (
+                      <li key={i}><XIcon className="m-compare__x" /><span>{t}</span></li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="m-compare__col m-compare__col--yes">
+                  <p className="m-compare__head">{o.withTitle}</p>
+                  <ul>
+                    {o.compareWith.map((t, i) => (
+                      <li key={i}><CheckIcon className="m-compare__check" /><span>{t}</span></li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </section>
           )}
 
+          {/* 4 · Qué incluye — tarjeta por ebook (principal + 4 bonus GRATIS) */}
           <section className="m-section m-reveal">
-            <h2>{o.bonusesTitle}</h2>
-            <ul className="m-bonus-grid">
+            <h2>{o.includesTitle ?? o.bonusesTitle}</h2>
+            <ul className="m-incl">
+              <li className="m-incl__item">
+                <CoverImg cover={mainCover} className="m-incl__cover" sizes="88px" />
+                <div className="m-incl__text">
+                  <p className="m-incl__name">{o.mainName}</p>
+                  {o.mainBlurb && <p className="m-incl__blurb">{o.mainBlurb}</p>}
+                </div>
+              </li>
               {bonusSlots.map((slot, i) => (
-                <li key={slot} className="m-bonus">
-                  <BookCover cover={covers[slot]} name={o.bonusNames[i]} className="m-bonus__cover" />
-                  <p className="m-bonus__name">{o.bonusNames[i]}</p>
-                  <span className="m-bonus__tag">{o.freeTag}</span>
+                <li key={slot} className="m-incl__item">
+                  <CoverImg cover={esBonusCovers[i]} className="m-incl__cover" sizes="88px" />
+                  <div className="m-incl__text">
+                    <p className="m-incl__name">
+                      {o.bonusNames[i]} <span className="m-incl__free">{o.freeTag}</span>
+                    </p>
+                    {o.bonusBlurbs && o.bonusBlurbs[i] && (
+                      <p className="m-incl__blurb">{o.bonusBlurbs[i]}</p>
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>
           </section>
 
-          {/* 2 · Dolores que resuelve */}
-          {o.pains && o.pains.length > 0 && (
-            <section className="m-section m-reveal">
-              {o.painsTitle && <h2>{o.painsTitle}</h2>}
-              <ul className="m-pains">
-                {o.pains.map((p, i) => (
-                  <li key={i} className="m-pain">
-                    <CheckIcon className="m-pain__icon" />
-                    <span>{p}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          {/* 3 · Reseñas */}
+          {/* 5 · Reseñas */}
           {socialSection}
 
-          {/* 4 · Bloque de compra: precio + 2 extras + botón */}
+          {/* 6 · Compra — 3 paquetes seleccionables, total en el botón */}
           <section className="m-section m-reveal" id="comprar">
-            {o.buyTitle && <h2>{o.buyTitle}</h2>}
-            <div className="m-pricebox">
-              <span className="m-pricebox__now">{mainPrice}</span>
-              <p className="m-pricebox__note">{o.priceNote}</p>
-              <p className="m-pricebox__perday">{perDay}</p>
-            </div>
-
-            <label className="m-bump">
-              <input type="checkbox" checked={bump} onChange={() => setBump((b) => !b)} />
-              <BookCover cover={covers.bump} name={o.bumpName} className="m-bump__cover" />
-              <span className="m-bump__text">
-                <span className="m-bump__name">{o.bumpName}</span>
-                <span className="m-bump__benefit">{o.bumpBenefit}</span>
-                <span className="m-bump__add">{o.bumpAdd.replace('{price}', bumpPrice)}</span>
-              </span>
-            </label>
-
-            {o.upsellName && (
-              <label className="m-bump">
-                <input type="checkbox" checked={upsell} onChange={() => setUpsell((u) => !u)} />
-                <BookCover cover={covers.upsell} name={o.upsellName} className="m-bump__cover" />
-                <span className="m-bump__text">
-                  <span className="m-bump__name">{o.upsellName}</span>
-                  {o.upsellBenefit && <span className="m-bump__benefit">{o.upsellBenefit}</span>}
-                  {o.upsellAdd && <span className="m-bump__add">{o.upsellAdd.replace('{price}', upsellPrice)}</span>}
-                </span>
-              </label>
+            {o.packagesTitle && <h2>{o.packagesTitle}</h2>}
+            {o.packages && o.packages.length === 3 && (
+              <div className="m-packs" role="radiogroup" aria-label={o.packagesTitle}>
+                {o.packages.map((p, i) => {
+                  const sel = pkg === i;
+                  const rec = i === 2;
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      role="radio"
+                      aria-checked={sel}
+                      className={`m-pack${sel ? ' is-selected' : ''}${rec ? ' m-pack--rec' : ''}`}
+                      onClick={() => selectPkg(i)}
+                    >
+                      {rec && o.recommendedTag && <span className="m-pack__tag">{o.recommendedTag}</span>}
+                      <span className="m-pack__radio" aria-hidden="true" />
+                      <span className="m-pack__body">
+                        <span className="m-pack__name">{p.name}</span>
+                        <span className="m-pack__desc">{p.desc}</span>
+                      </span>
+                      <span className="m-pack__price">{money(pkgTotals[i], nl, pr.currency)}</span>
+                    </button>
+                  );
+                })}
+              </div>
             )}
+
+            <p className="m-pricebox__note m-packs__note">{o.priceNote} · {perDay}</p>
 
             {buyButton()}
             {error && <p className="m-field-error" style={{ marginTop: '0.6rem' }}>{error}</p>}
 
-            {/* 5 · Pago seguro + logos */}
+            {/* Pago seguro + logos */}
             <div className="m-securepay">
               <p className="m-securepay__line">
                 <LockIcon /> {o.securePay}
@@ -357,20 +409,23 @@ export function Offer({ locale }: Props) {
                 ))}
               </div>
             </div>
-
-            {/* 6 · Garantía de 14 días */}
-            {o.guaranteeTitle && (
-              <div className="m-guarantee">
-                <GuaranteeSeal days={GUARANTEE_DAYS} />
-                <div className="m-guarantee__text">
-                  <p className="m-guarantee__title">{withDays(o.guaranteeTitle)}</p>
-                  {o.guaranteeBody && <p className="m-guarantee__body">{withDays(o.guaranteeBody)}</p>}
-                </div>
-              </div>
-            )}
           </section>
 
-          {/* 7 · FAQ */}
+          {/* 7 · Garantía grande con sello + CTA */}
+          {o.guaranteeTitle && (
+            <section className="m-section m-reveal">
+              <div className="m-guarantee m-guarantee--big">
+                <GuaranteeSeal days={GUARANTEE_DAYS} />
+                <p className="m-guarantee__title">{withDays(o.guaranteeTitle)}</p>
+                {o.guaranteeBody && <p className="m-guarantee__body">{withDays(o.guaranteeBody)}</p>}
+                <button className="m-btn m-btn--glow m-guarantee__cta" onClick={buy} disabled={loading}>
+                  {loading ? <span className="m-spin" /> : (o.guaranteeCta ?? o.ctaMain)}
+                </button>
+              </div>
+            </section>
+          )}
+
+          {/* 8 · FAQ */}
           {faqSection}
 
           {footer}
@@ -484,6 +539,34 @@ function CheckIcon({ className }: { className?: string }) {
     <svg className={className} viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
       strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M20 6 9 17l-5-5" />
+    </svg>
+  );
+}
+
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+      strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M18 6 6 18M6 6l12 12" />
+    </svg>
+  );
+}
+
+function BoltIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M13 2 4 14h7l-1 8 9-12h-7z" />
+    </svg>
+  );
+}
+
+function ShieldIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 3 5 6v5c0 4.4 3 8 7 9 4-1 7-4.6 7-9V6z" />
+      <path d="m9.5 12 1.8 1.8 3.3-3.6" />
     </svg>
   );
 }

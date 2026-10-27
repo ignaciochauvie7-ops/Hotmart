@@ -160,6 +160,46 @@ export const es: MenoDict = {
     guaranteeTitle: 'Garantía de {days} días',
     guaranteeBody:
       'Pruébalo sin riesgo. Si no estás conforme, escríbenos dentro de los {days} días y te devolvemos el dinero.',
+    guaranteeCta: 'Empezar sin riesgo',
+
+    badges: ['Acceso inmediato', 'Pago seguro', 'Garantía 14 días'],
+
+    includesTitle: 'Qué incluye tu plan',
+    mainName: 'Reto Abdomen Plano en 28 Días',
+    mainBlurb: 'El plan completo de 28 días: 15 minutos al día.',
+
+    compareTitle: 'La diferencia',
+    withoutTitle: 'Sin un plan',
+    withTitle: 'Con tu plan',
+    compareWithout: [
+      'Pruebas dietas que no están pensadas para la menopausia',
+      'El abdomen sigue hinchado cada tarde',
+      'Entrenas sin saber si sirve a tu edad',
+      'Duermes mal y amaneces sin energía',
+      'Tiras la toalla a las dos semanas',
+    ],
+    compareWith: [
+      'Un método pensado para tu cuerpo en la menopausia',
+      'Menos hinchazón y vientre más plano semana a semana',
+      'Rutina de 15 minutos al día, fácil de mantener',
+      'Mejor descanso y más energía durante el día',
+      'Paso a paso claro, sin abandonar',
+    ],
+
+    packagesTitle: 'Elige tu plan',
+    recommendedTag: 'Recomendado',
+    packages: [
+      { name: 'Solo el plan', desc: 'Plan de 28 días + 4 extras' },
+      { name: 'Plan + Descanso', desc: 'Todo lo anterior + Descansa Bien en 21 Días' },
+      { name: 'Pack completo', desc: 'Todo + Adiós Hinchazón en 14 Días' },
+    ],
+
+    bonusBlurbs: [
+      'Recetas fáciles para desinflamar sin pasar hambre.',
+      'Marca tu avance día a día y mantén el hábito.',
+      'Elige bien en restaurantes sin hincharte.',
+      'Plan exprés para los días de más hinchazón.',
+    ],
 
     bonusesTitle: '4 extras incluidos',
     bonusNames: [

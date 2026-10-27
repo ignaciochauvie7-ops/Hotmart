@@ -157,6 +157,39 @@ export const cs: MenoDict = {
     ctaOffer: 'Chci svůj plán',
     trust: 'Bezpečná platba Dodo · okamžitý přístup · záruka {days} dní',
 
+    social: {
+      title: 'Co říkají jiné ženy',
+      rating: '4,9',
+      ratingAria: 'Průměrné hodnocení 4,9 z 5',
+      trusted: '+11 000 žen už začalo se svým plánem',
+      items: [
+        {
+          quote: 'Po třech týdnech je břicho výrazně méně nafouklé. Kalhoty mi konečně zapnou.',
+          author: 'Jana, 54',
+        },
+        {
+          quote: 'Nejlepší je, že je to jen 15 minut denně. Při mém rozvrhu je to jediné, co jsem zvládla udržet.',
+          author: 'Petra, 50',
+        },
+        {
+          quote: 'Dva roky jsem se každý večer cítila nafouklá. Recepty mi změnily trávení.',
+          author: 'Hana, 56',
+        },
+        {
+          quote: 'Není to nemožná dieta. Jím normálně a břicho přesto zmizelo.',
+          author: 'Lenka, 49',
+        },
+        {
+          quote: 'Mám víc energie a lépe spím. Zase se cítím jako já.',
+          author: 'Alena, 58',
+        },
+        {
+          quote: 'Myslela jsem, že v mém věku se už nedá nic dělat. Jsem ráda, že jsem to zkusila.',
+          author: 'Marie, 61',
+        },
+      ],
+    },
+
     faqTitle: 'Časté dotazy',
     faq: [
       {

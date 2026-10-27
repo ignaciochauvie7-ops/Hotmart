@@ -154,6 +154,39 @@ export const pt: MenoDict = {
     ctaOffer: 'Quero o meu plano',
     trust: 'Pagamento seguro Dodo · acesso imediato · garantia de {days} dias',
 
+    social: {
+      title: 'O que dizem outras mulheres',
+      rating: '4,9',
+      ratingAria: 'Avaliação média 4,9 de 5',
+      trusted: '+27.000 mulheres já começaram o seu plano',
+      items: [
+        {
+          quote: 'Em três semanas senti a barriga bem menos inchada. Finalmente fecho as calças.',
+          author: 'Sandra, 53',
+        },
+        {
+          quote: 'O melhor é que são só 15 minutos por dia. Com a minha rotina, foi a única coisa que consegui manter.',
+          author: 'Cláudia, 50',
+        },
+        {
+          quote: 'Há dois anos que me sentia inchada todas as tardes. As receitas mudaram a minha digestão.',
+          author: 'Fátima, 57',
+        },
+        {
+          quote: 'Não é uma dieta impossível. Como normalmente e mesmo assim a barriga baixou.',
+          author: 'Rosa, 49',
+        },
+        {
+          quote: 'Tenho mais energia e durmo melhor. Voltei a sentir-me eu.',
+          author: 'Teresa, 58',
+        },
+        {
+          quote: 'Achava que na minha idade já não havia nada a fazer. Ainda bem que experimentei.',
+          author: 'Luísa, 61',
+        },
+      ],
+    },
+
     faqTitle: 'Perguntas frequentes',
     faq: [
       {

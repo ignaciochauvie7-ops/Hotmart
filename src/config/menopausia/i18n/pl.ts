@@ -156,6 +156,39 @@ export const pl: MenoDict = {
     ctaOffer: 'Chcę swój plan',
     trust: 'Bezpieczna płatność Dodo · natychmiastowy dostęp · gwarancja {days} dni',
 
+    social: {
+      title: 'Co mówią inne kobiety',
+      rating: '4,9',
+      ratingAria: 'Średnia ocena 4,9 na 5',
+      trusted: '+18 000 kobiet już zaczęło swój plan',
+      items: [
+        {
+          quote: 'Po trzech tygodniach brzuch jest wyraźnie mniej wzdęty. Spodnie wreszcie się dopinają.',
+          author: 'Anna, 53',
+        },
+        {
+          quote: 'Najlepsze jest to, że to tylko 15 minut dziennie. Przy moim grafiku to jedyne, co udało mi się utrzymać.',
+          author: 'Katarzyna, 50',
+        },
+        {
+          quote: 'Od dwóch lat każdego wieczoru czułam wzdęcia. Przepisy zmieniły moje trawienie.',
+          author: 'Małgorzata, 57',
+        },
+        {
+          quote: 'To nie jest niemożliwa dieta. Jem normalnie, a brzuch i tak zniknął.',
+          author: 'Barbara, 49',
+        },
+        {
+          quote: 'Mam więcej energii i lepiej śpię. Znów czuję się sobą.',
+          author: 'Ewa, 58',
+        },
+        {
+          quote: 'Myślałam, że w moim wieku nic już nie da się zrobić. Cieszę się, że spróbowałam.',
+          author: 'Grażyna, 60',
+        },
+      ],
+    },
+
     faqTitle: 'Najczęstsze pytania',
     faq: [
       {

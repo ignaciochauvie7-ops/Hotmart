@@ -116,6 +116,31 @@ export interface MenoDict {
     guaranteeTitle?: string;
     /** {days} → días de garantía. Cuerpo de la garantía. */
     guaranteeBody?: string;
+    /** CTA del bloque de garantía ("Empezar sin riesgo"). */
+    guaranteeCta?: string;
+
+    // ── Solo `es` · landing visual (campos opcionales) ──────────────────
+    /** Franja de 3 señales de confianza bajo el hero. */
+    badges?: string[];
+    /** Encabezado de la sección "Qué incluye". */
+    includesTitle?: string;
+    /** Nombre del ebook principal (tarjeta de "Qué incluye"). */
+    mainName?: string;
+    /** Una línea del ebook principal. */
+    mainBlurb?: string;
+    /** Una línea por bonus (orden = bonus1..bonus4). */
+    bonusBlurbs?: string[];
+    /** Comparativa sin/con plan. */
+    compareTitle?: string;
+    withoutTitle?: string;
+    withTitle?: string;
+    compareWithout?: string[];
+    compareWith?: string[];
+    /** Bloque de compra con 3 paquetes seleccionables. */
+    packagesTitle?: string;
+    recommendedTag?: string;
+    /** 3 paquetes: solo plan / plan+descanso / pack completo. */
+    packages?: { name: string; desc: string }[];
 
     // ── 2 · Cuadrícula de bonus ─────────────────────────────────────────
     bonusesTitle: string;
