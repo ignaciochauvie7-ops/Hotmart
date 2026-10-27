@@ -526,45 +526,78 @@ body {
   box-shadow: 0 2px 8px rgba(194, 122, 92, 0.45);
 }
 
-/* Loading screens: carousel below the bars --------------------------------- */
-.m-loader {
+/* Loading screens: bars sit near the top, the photo marquee fills below ------ */
+/* Top-align loader screens (otherwise .m-screen centers them mid-stage). This
+   lifts the progress bars up and gives the marquee room underneath. */
+.m-stage .m-screen:has(.m-loader) {
+  margin-block: 0;
+  justify-content: flex-start;
   padding-top: 2.5rem;
 }
 
-/* Photo carousel: one framed photo at a time, crossfading between them. */
-.m-carousel {
+.m-loader {
+  padding-top: 0;
+}
+
+/* Horizontal photo marquee: photos side by side, sliding continuously left.
+   The track holds two copies of the list and shifts by -50% for a seamless
+   loop. Edges fade with a mask. Items are a fixed height; width follows each
+   photo's own aspect ratio (no crop) so transformations read clearly. */
+.m-marquee {
   position: relative;
-  width: min(100%, 220px);
-  margin: 1.75rem auto 0;
-  aspect-ratio: 4 / 5;
+  width: 100%;
+  margin: 2rem 0 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.m-marquee__track {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  padding-inline: 6px;
+  animation: m-marquee-scroll linear infinite;
+  will-change: transform;
+}
+
+.m-marquee__item {
+  flex: 0 0 auto;
+  height: 190px;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-md);
   background: var(--sage-soft);
 }
 
-.m-carousel__item {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.6s var(--ease-out);
-}
-
-.m-carousel__item.is-active {
-  opacity: 1;
-}
-
-.m-carousel__item img {
-  width: 100%;
+.m-marquee__item img {
   height: 100%;
+  width: auto;
+  max-width: none;
   object-fit: cover;
   display: block;
 }
 
-.m-carousel__placeholder {
-  width: 100%;
+.m-marquee__placeholder {
+  width: 150px;
   height: 100%;
   background: linear-gradient(135deg, var(--sage-soft), var(--cream));
+}
+
+@keyframes m-marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Reduced motion: stop the auto-scroll, let the row be swiped by hand. */
+@media (prefers-reduced-motion: reduce) {
+  .m-marquee {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .m-marquee__track {
+    animation: none;
+  }
 }
 
 /* Cards --------------------------------------------------------------------- */

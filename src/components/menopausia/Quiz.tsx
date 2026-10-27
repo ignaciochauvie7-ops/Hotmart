@@ -62,7 +62,6 @@ export function Quiz({ locale, dict }: Props) {
   const q = dict.quiz;
   const reduce = useReducedMotion();
   const [step, setStep] = useState(COVER);
-  const [dir, setDir] = useState(1); // 1 = forward, -1 = back; drives slide direction
   const [answers, setAnswers] = useState<QuizAnswers>({});
   // One shared unit preference across height/weight/target (metric vs imperial).
   // Picking ft/in on height carries lb over to the weight sliders and back.
@@ -70,17 +69,16 @@ export function Quiz({ locale, dict }: Props) {
   const firedView = useRef(false);
   const firedLead = useRef(false);
 
-  // Strong ease-out curve (matches the CSS --ease-out token). Exit is fast and
-  // short (120ms, −12px); enter is a touch longer and settling (200ms, 12→0).
+  // Screen-to-screen transition: a mega-subtle zoom. The outgoing screen eases
+  // back (scale 1→0.98) and fades; the incoming one zooms in (0.98→1) and fades.
+  // mode="wait" runs them in sequence (out, then in) so there's no layout overlap
+  // — that overlap was what made the cover→Q1 step stutter. transform+opacity
+  // only, strong ease-out (the --ease-out token), all under 300ms.
   const EASE = [0.22, 1, 0.36, 1] as const;
   const variants = {
-    enter: (d: number) => ({ opacity: 0, x: reduce ? 0 : d >= 0 ? 12 : -12 }),
-    center: { opacity: 1, x: 0, transition: { duration: 0.2, ease: EASE } },
-    exit: (d: number) => ({
-      opacity: 0,
-      x: reduce ? 0 : d >= 0 ? -12 : 12,
-      transition: { duration: 0.12, ease: EASE },
-    }),
+    enter: { opacity: 0, scale: reduce ? 1 : 0.98 },
+    center: { opacity: 1, scale: 1, transition: { duration: 0.3, ease: EASE } },
+    exit: { opacity: 0, scale: reduce ? 1 : 0.98, transition: { duration: 0.2, ease: EASE } },
   };
 
   // Hydrate answers + last step from sessionStorage on mount (reload keeps place).
@@ -143,19 +141,18 @@ export function Quiz({ locale, dict }: Props) {
     });
   }
 
-  function go(to: number, direction = 1) {
-    setDir(direction);
+  function go(to: number) {
     setStep(Math.max(COVER, Math.min(LAST, to)));
   }
 
   function next() {
-    go(step + 1, 1);
+    go(step + 1);
   }
 
   function back() {
     let to = step - 1;
     while (to > COVER && LOADERS.has(to)) to -= 1;
-    go(to, -1);
+    go(to);
   }
 
   // Start over from the cover (clears saved answers + step).
@@ -165,7 +162,7 @@ export function Quiz({ locale, dict }: Props) {
     firedView.current = false;
     firedLead.current = false;
     try { sessionStorage.removeItem(LEAD_KEY); } catch { /* ignore */ }
-    go(COVER, -1);
+    go(COVER);
   }
 
   // Single choice: record the answer and advance in the same frame — no delay.
@@ -212,11 +209,10 @@ export function Quiz({ locale, dict }: Props) {
       )}
 
       <div className="m-stage">
-        <AnimatePresence mode="popLayout" initial={false} custom={dir}>
+        <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={step}
             className="m-screen"
-            custom={dir}
             variants={variants}
             initial="enter"
             animate="center"
