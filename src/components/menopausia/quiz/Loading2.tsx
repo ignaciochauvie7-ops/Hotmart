@@ -10,12 +10,14 @@ interface Props {
 }
 
 const FILL_MS = 3000; // per-row fill duration (~3s each) so each label is readable
-const GAP_MS = 350; // beat after a check pops before the next row fills
+const STAGGER_MS = FILL_MS / 2; // next row starts when the previous is ~halfway (~1.5s)
+const GAP_MS = 350; // beat after the last check pops before advancing
 
 /**
- * "Comparando con perfiles": rows fill and complete one at a time. Each bar fills
- * on a single ease-in-out curve (~2s each); its check pops in the moment it
- * reaches 100%, then the next row begins.
+ * "Comparando con perfiles": each bar fills on a single ease-in-out curve (~3s),
+ * but the next row starts when the previous is ~halfway instead of waiting for it
+ * to finish — so both labels stay readable while the total stays ~4.5s. A check
+ * pops the moment each bar reaches 100%.
  */
 export function Loading2({ rows, onDone }: Props) {
   const [fills, setFills] = useState<number[]>(rows.map(() => 0));
@@ -30,12 +32,15 @@ export function Loading2({ rows, onDone }: Props) {
     const setCheck = (i: number) =>
       setChecks((prev) => prev.map((x, idx) => (idx === i ? true : x)));
 
+    const runRow = async (i: number) => {
+      if (i > 0) await wait(i * STAGGER_MS, reg);
+      await tween(0, 100, FILL_MS, (v) => setFill(i, v), reg, easeInOut);
+      setCheck(i);
+    };
+
     (async () => {
-      for (let i = 0; i < rows.length; i++) {
-        await tween(0, 100, FILL_MS, (v) => setFill(i, v), reg, easeInOut);
-        setCheck(i);
-        await wait(GAP_MS, reg);
-      }
+      await Promise.all(rows.map((_, i) => runRow(i)));
+      await wait(GAP_MS, reg);
       if (!done.current) {
         done.current = true;
         onDone();
