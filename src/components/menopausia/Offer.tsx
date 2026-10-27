@@ -15,6 +15,15 @@ const GUARANTEE_DAYS = 14;
 /** Fotos de las reseñas (una por testimonio, orden = social.items). */
 const TESTI_PHOTOS = [1, 2, 3, 4, 5, 6].map((n) => `/menopausia/testimonios/t${n}.webp`);
 
+/** Caras para la fila de prueba social del hero (distintas de las reseñas). */
+const PROFILE_PHOTOS = [1, 2, 3, 4, 5].map((n) => `/menopausia/fotos/perfil${n}.jpg`);
+
+/** Fotos antes/después que abren el bloque "¿Te suena?". */
+const TRANSFORM_SHOTS = [
+  { src: '/menopausia/mujeres/antes-despues-1.jpg', w: 820, h: 725 },
+  { src: '/menopausia/mujeres/antes-despues-2.jpg', w: 820, h: 1166 },
+];
+
 /**
  * Logos de pago — SVG oficiales locales (sets MIT: gilbarbara/logos +
  * glifo oficial de Klarna). Solo métodos que Dodo acepta para EUR en Europa
@@ -335,7 +344,6 @@ export function Offer({ locale }: Props) {
     const mainCover = esCover('main', o.mainName ?? 'Reto Abdomen Plano en 28 Días');
     const bumpCover = esCover('bump', o.bumpName);
     const upsellCover = esCover('upsell', o.upsellName ?? '');
-    const bigPhoto = TESTI_PHOTOS[3];
     const title = o.heroTitle ?? headline;
 
     // Pago seguro: candado + línea + logos en una sola fila (reutilizado).
@@ -347,7 +355,7 @@ export function Offer({ locale }: Props) {
         <div className="m-paylogos">
           {PAY_LOGOS.map((l) => (
             <img key={l.src} className="m-paylogo" src={l.src} alt={l.alt}
-              height={22} loading="lazy" decoding="async" />
+              height={18} loading="lazy" decoding="async" />
           ))}
         </div>
       </div>
@@ -447,7 +455,7 @@ export function Offer({ locale }: Props) {
             <div className="m-paylogos m-cart__logos">
               {PAY_LOGOS.map((l) => (
                 <img key={l.src} className="m-paylogo" src={l.src} alt={l.alt}
-                  height={22} loading="lazy" decoding="async" />
+                  height={18} loading="lazy" decoding="async" />
               ))}
             </div>
             {o.guaranteeTitle && (
@@ -466,16 +474,28 @@ export function Offer({ locale }: Props) {
         <div className="m-shell m-shell--offer m-offer-es" ref={shellRef}>
           {/* 1 · Hero: estrellas, etiqueta, titular, abanico, chips, 1 CTA, pago seguro */}
           <header className="m-hero m-hero--es">
-            <div className="m-stars-top m-hero-in">
-              <Stars label={o.social.ratingAria} />
-              <strong>{o.social.rating}</strong>
-            </div>
-
-            {o.heroLabel && (
-              <p className="m-hero__label m-hero-in">
-                <CheckIcon className="m-hero__label-icon" /> {o.heroLabel}
+            {/* Credibilidad arriba del todo: prueba social, plan listo y valoración */}
+            <div className="m-herocred m-hero-in">
+              <p className="m-herocred__trust">
+                <span className="m-herocred__avatars" aria-hidden="true">
+                  {PROFILE_PHOTOS.slice(0, 4).map((src) => (
+                    <img key={src} className="m-herocred__avatar" src={src} alt=""
+                      width={28} height={28} decoding="async" />
+                  ))}
+                </span>
+                <span className="m-herocred__trust-text">{o.social.trusted}</span>
+                <span className="m-herocred__rating">
+                  <Stars size={13} label={o.social.ratingAria} />
+                  <strong>{o.social.rating}</strong>
+                </span>
               </p>
-            )}
+
+              {o.heroLabel && (
+                <p className="m-herocred__ready">
+                  <CheckIcon className="m-herocred__ready-icon" /> {o.heroLabel}
+                </p>
+              )}
+            </div>
 
             <h1 className="m-hero__title m-hero-in">{title}</h1>
 
@@ -507,29 +527,41 @@ export function Offer({ locale }: Props) {
 
           <div ref={sentinelRef} aria-hidden="true" className="m-sentinel" />
 
-          {/* 3 · ¿Te suena? — dolores con foto grande + resultados "Con el reto" */}
+          {/* 3 · ¿Te suena? — prueba antes/después + dos tarjetas (dolor vs reto) */}
           {o.soundsPains && o.soundsPains.length > 0 && (
             <section className="m-section m-reveal">
-              {o.soundsTitle && <h2>{o.soundsTitle}</h2>}
-              <div className="m-sounds">
-                <img className="m-sounds__photo" src={bigPhoto} alt="" width={320} height={320}
-                  loading="lazy" decoding="async" />
-                <ul className="m-sounds__pains">
-                  {o.soundsPains.map((t, i) => (
-                    <li key={i}><XIcon className="m-compare__x" /><span>{t}</span></li>
-                  ))}
-                </ul>
+              {/* Banda antes/después: 2 fotos a lo ancho, superpuestas con profundidad */}
+              <div className="m-transform">
+                {TRANSFORM_SHOTS.map((s, i) => (
+                  <figure key={s.src} className={`m-transform__shot m-transform__shot--${i + 1}`}>
+                    <img src={s.src} alt={o.soundsTitle ?? 'Antes y después'}
+                      width={s.w} height={s.h} loading="lazy" decoding="async" />
+                  </figure>
+                ))}
               </div>
-              {o.soundsResults && o.soundsResults.length > 0 && (
-                <div className="m-sounds__results">
-                  {o.soundsResultsTitle && <p className="m-sounds__results-title">{o.soundsResultsTitle}</p>}
-                  <ul>
-                    {o.soundsResults.map((t, i) => (
-                      <li key={i}><CheckIcon className="m-compare__check" /><span>{t}</span></li>
+
+              {/* Dolor (antes) vs Con el reto (después): dos tarjetas con relieve */}
+              <div className="m-compare2">
+                <div className="m-compare2__card m-compare2__card--pain">
+                  {o.soundsTitle && <p className="m-compare2__title">{o.soundsTitle}</p>}
+                  <ul className="m-compare2__list">
+                    {o.soundsPains.map((t, i) => (
+                      <li key={i}><XIcon className="m-compare2__x" /><span>{t}</span></li>
                     ))}
                   </ul>
                 </div>
-              )}
+
+                {o.soundsResults && o.soundsResults.length > 0 && (
+                  <div className="m-compare2__card m-compare2__card--win">
+                    {o.soundsResultsTitle && <p className="m-compare2__title">{o.soundsResultsTitle}</p>}
+                    <ul className="m-compare2__list">
+                      {o.soundsResults.map((t, i) => (
+                        <li key={i}><CheckIcon className="m-compare2__check" /><span>{t}</span></li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
             </section>
           )}
 
