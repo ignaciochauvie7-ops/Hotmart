@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 interface Props {
   images: string[]; // optimized WebP urls for this group
@@ -13,7 +13,11 @@ interface Props {
  * don't pop in/out. Holds still (and becomes a manual scroll strip) under
  * prefers-reduced-motion. Any image that 404s falls back to a soft placeholder.
  */
-export function Carousel({ images, speed = 26 }: Props) {
+// memo: the loader screens drive a ~60fps progress tween that re-renders their
+// whole subtree every frame. `images` is a module constant, so memo keeps the
+// marquee from reconciling on each of those frames — that main-thread churn was
+// what made the scroll stutter.
+export const Carousel = memo(function Carousel({ images, speed = 26 }: Props) {
   if (images.length === 0) return null;
   // Two copies back-to-back; the keyframe moves the track by -50% (one copy).
   const loop = [...images, ...images];
@@ -21,14 +25,16 @@ export function Carousel({ images, speed = 26 }: Props) {
     <div className="m-marquee" aria-hidden="true">
       <div className="m-marquee__track" style={{ animationDuration: `${speed}s` }}>
         {loop.map((src, i) => (
-          <Slide key={i} src={src} eager={i < images.length} />
+          <Slide key={i} src={src} />
         ))}
       </div>
     </div>
   );
-}
+});
 
-function Slide({ src, eager }: { src: string; eager: boolean }) {
+// Both copies load eager: they share URLs with the first copy (already cached),
+// and lazy-loading the second copy made photos pop in mid-scroll → visible jank.
+function Slide({ src }: { src: string }) {
   const [failed, setFailed] = useState(false);
   return (
     <div className="m-marquee__item">
@@ -38,7 +44,7 @@ function Slide({ src, eager }: { src: string; eager: boolean }) {
         <img
           src={src}
           alt=""
-          loading={eager ? 'eager' : 'lazy'}
+          loading="eager"
           decoding="async"
           onError={() => setFailed(true)}
         />

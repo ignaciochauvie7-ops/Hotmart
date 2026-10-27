@@ -69,16 +69,16 @@ export function Quiz({ locale, dict }: Props) {
   const firedView = useRef(false);
   const firedLead = useRef(false);
 
-  // Screen-to-screen transition: a mega-subtle zoom. The outgoing screen eases
-  // back (scale 1→0.98) and fades; the incoming one zooms in (0.98→1) and fades.
-  // mode="wait" runs them in sequence (out, then in) so there's no layout overlap
-  // — that overlap was what made the cover→Q1 step stutter. transform+opacity
-  // only, strong ease-out (the --ease-out token), all under 300ms.
+  // Screen-to-screen transition: a mega-subtle zoom. mode="wait" runs out-then-in
+  // in sequence so there's no layout overlap (that overlap made cover→Q1 stutter).
+  // Kept snappy: a tap auto-advances, so the whole swap must land fast or it reads
+  // as lag — exit is near-instant (90ms) so the just-tapped option doesn't linger
+  // highlighted, enter is a quick 160ms. transform+opacity only (composite).
   const EASE = [0.22, 1, 0.36, 1] as const;
   const variants = {
-    enter: { opacity: 0, scale: reduce ? 1 : 0.98 },
-    center: { opacity: 1, scale: 1, transition: { duration: 0.3, ease: EASE } },
-    exit: { opacity: 0, scale: reduce ? 1 : 0.98, transition: { duration: 0.2, ease: EASE } },
+    enter: { opacity: 0, scale: reduce ? 1 : 0.99 },
+    center: { opacity: 1, scale: 1, transition: { duration: 0.16, ease: EASE } },
+    exit: { opacity: 0, scale: reduce ? 1 : 0.99, transition: { duration: 0.09, ease: EASE } },
   };
 
   // Hydrate answers + last step from sessionStorage on mount (reload keeps place).
@@ -343,8 +343,11 @@ function Single({
   icons?: ((p: { className?: string }) => ReactElement)[];
   onPick: (i: number) => void;
 }) {
-  // Advance on pointerup so there's no tap delay; keep keyboard support too.
-  // Options render all at once (no cascade); the press feedback is CSS :active.
+  // Advance on click. `touch-action: manipulation` already removes the 300ms tap
+  // delay, and click (unlike pointerup) is suppressed by the browser when the
+  // touch was actually a scroll-drag — so dragging the stage can't accidentally
+  // select an option. Native buttons fire click on Enter/Space, so keyboard works
+  // with no extra handler (an onKeyDown here would double-fire and skip a step).
   return (
     <div className="m-screen__body">
       <h1 className="m-q">{q}</h1>
@@ -356,13 +359,7 @@ function Single({
             <button
               key={i}
               className={`m-option ${on ? 'is-selected' : ''}`}
-              onPointerUp={() => onPick(i)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  onPick(i);
-                }
-              }}
+              onClick={() => onPick(i)}
             >
               {Icon && <Icon className="m-option__icon" />}
               <span>{opt}</span>
