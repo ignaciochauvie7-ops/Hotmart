@@ -17,29 +17,9 @@ export interface QuizAnswers {
 }
 
 const KEY = 'meno_quiz_v1';
-const STEP_KEY = 'meno_quiz_step_v1';
 
-/** Persist the current step so a reload keeps the visitor where they were. */
-export function loadStep(): number | null {
-  if (typeof window === 'undefined') return null;
-  try {
-    const raw = window.sessionStorage.getItem(STEP_KEY);
-    if (raw == null) return null;
-    const n = Number(raw);
-    return Number.isFinite(n) ? n : null;
-  } catch {
-    return null;
-  }
-}
-
-export function saveStep(step: number): void {
-  if (typeof window === 'undefined') return;
-  try {
-    window.sessionStorage.setItem(STEP_KEY, String(step));
-  } catch {
-    /* storage unavailable — ignore */
-  }
-}
+// No step persistence: a reload always restarts the quiz at the cover. Answers
+// are only stashed at the very end (Quiz.finish) to hand them to /oferta.
 
 export function loadAnswers(): QuizAnswers {
   if (typeof window === 'undefined') return {};

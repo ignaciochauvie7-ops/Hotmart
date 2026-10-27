@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactElement } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import type { MenoDict, MenoLocale } from '../../config/menopausia/i18n';
-import { loadAnswers, loadStep, saveAnswers, saveStep, type QuizAnswers } from '../../lib/menopausia/state';
+import { saveAnswers, type QuizAnswers } from '../../lib/menopausia/state';
 import { fotosA, fotosB } from '../../config/menopausia/photos';
 import { track, trackCustom } from '../../lib/menopausia/pixel';
 import { ArrowLeft, Check, Restart, zoneIcons } from './quiz/icons';
@@ -34,30 +34,6 @@ const QUESTION_STEPS = [AGE, HEIGHT, WEIGHT, FATZONE, GOAL, TARGET, PERIOD, SYMP
 // Session flag so Lead fires at most once even across reloads.
 const LEAD_KEY = 'meno_quiz_lead_v1';
 
-// Has this question step been answered? Drives the no-skip guard on reload.
-function isAnswered(step: number, a: QuizAnswers): boolean {
-  switch (step) {
-    case AGE: return a.age != null;
-    case HEIGHT: return a.height != null;
-    case WEIGHT: return a.weight != null;
-    case FATZONE: return a.fatZone != null;
-    case GOAL: return a.goal != null;
-    case TARGET: return a.target != null;
-    case PERIOD: return a.period != null;
-    case SYMPTOMS: return (a.symptoms?.length ?? 0) > 0;
-    case MOVEMENT: return a.movement != null;
-    case LASTGOOD: return a.lastGood != null;
-    default: return true;
-  }
-}
-
-// First question (in flow order) the visitor hasn't answered yet — the furthest
-// step they may legitimately be on. All answered → the last step (loader 2).
-function firstUnanswered(a: QuizAnswers): number {
-  for (const s of QUESTION_STEPS) if (!isAnswered(s, a)) return s;
-  return LAST;
-}
-
 export function Quiz({ locale, dict }: Props) {
   const q = dict.quiz;
   const reduce = useReducedMotion();
@@ -81,26 +57,18 @@ export function Quiz({ locale, dict }: Props) {
     exit: { opacity: 0, scale: reduce ? 1 : 0.99, transition: { duration: 0.09, ease: EASE } },
   };
 
-  // Hydrate answers + last step from sessionStorage on mount (reload keeps place).
-  // Never restore onto a loader step — those are transient and would bounce the
-  // visitor forward to the offer on reload. Also clamp to the first unanswered
-  // question so a stale/tampered step can't skip ahead of the answers given.
+  // No step/answer persistence: a reload always starts fresh at the cover. The
+  // quiz keeps its state in memory only (answers are handed to /oferta at the
+  // finish, below). The one thing we read back is the Lead-dedup flag, so the
+  // pixel Lead event never double-fires within a session.
   useEffect(() => {
-    const a = loadAnswers();
-    setAnswers(a);
-    if (sessionStorage.getItem(LEAD_KEY) === '1') firedLead.current = true;
-    const saved = loadStep();
-    if (saved != null && saved > COVER) {
-      let target = Math.min(saved, firstUnanswered(a));
-      while (target > COVER && LOADERS.has(target)) target -= 1;
-      if (target > COVER && target <= LAST) setStep(target);
-    }
+    try {
+      if (sessionStorage.getItem(LEAD_KEY) === '1') firedLead.current = true;
+    } catch { /* storage unavailable — ignore */ }
+    // Clear any answers left over from a previous completed run so nothing can
+    // leak into a fresh start.
+    saveAnswers({});
   }, []);
-
-  // Persist the step on every change so a reload lands on the same screen.
-  useEffect(() => {
-    saveStep(step);
-  }, [step]);
 
   // Warm the cache for the first image of each loader while earlier questions
   // are being answered, so the carousels show instantly.
@@ -130,15 +98,15 @@ export function Quiz({ locale, dict }: Props) {
       try { sessionStorage.setItem(LEAD_KEY, '1'); } catch { /* ignore */ }
       track('Lead', { content_name: 'quiz_menopausia', locale });
     }
+    // Hand the answers to /oferta only now, right before the full-page nav, so it
+    // can personalise its headline. Nothing is persisted during the quiz itself,
+    // so a mid-quiz reload still starts over at the cover.
+    saveAnswers(answers);
     window.location.href = `/menopausia/${locale}/oferta`;
   }
 
   function update(patch: Partial<QuizAnswers>) {
-    setAnswers((prev) => {
-      const next = { ...prev, ...patch };
-      saveAnswers(next);
-      return next;
-    });
+    setAnswers((prev) => ({ ...prev, ...patch }));
   }
 
   function go(to: number) {

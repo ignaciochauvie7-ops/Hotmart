@@ -9,7 +9,7 @@ interface Props {
   onDone: () => void;
 }
 
-const FILL_MS = 2000; // per-row fill duration (~2s each, per spec)
+const FILL_MS = 3000; // per-row fill duration (~3s each) so each label is readable
 const GAP_MS = 350; // beat after a check pops before the next row fills
 
 /**

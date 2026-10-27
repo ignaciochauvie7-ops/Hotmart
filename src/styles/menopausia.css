@@ -16,7 +16,7 @@ html,
 body {
   margin: 0;
   width: 100%;
-  min-height: 100dvh;
+  min-height: 100svh;
   overflow-x: hidden;
   background: linear-gradient(180deg, #FDECEF 0%, #FFF9F5 42%) no-repeat;
   background-color: #FFF9F5;
@@ -63,7 +63,7 @@ body {
   background: transparent; /* the page gradient shows through */
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  min-height: 100dvh;
+  min-height: 100svh;
 }
 
 .m-root *,
@@ -110,14 +110,24 @@ body {
   display: flex;
   flex-direction: column;
   width: min(100% - 40px, 440px);
-  min-height: 100dvh;
+  min-height: 100svh;
   margin-inline: auto;
   padding-bottom: calc(1rem + env(safe-area-inset-bottom));
 }
 
-/* Quiz stage: fills the space under the 64px header and vertically centers the
-   current screen. Scrolls internally when a screen is taller than the viewport
-   (small phones) so nothing is clipped; the auto margins collapse to 0 then. */
+/* The quiz shell (the only one with a .m-stage) is pinned to the SMALL viewport
+   height (svh = the real visible area with Safari's bars shown). Fixed, not
+   min-height, so: (a) the page body never scrolls, and (b) the centered screen
+   never recentres when Safari's bars show/hide — svh is stable where dvh is not,
+   which was the on-load jump. Every quiz screen is sized to fit this box. */
+.m-shell:has(.m-stage) {
+  height: 100svh;
+  min-height: 0;
+}
+
+/* Quiz stage: fills the space under the header and vertically centers the current
+   screen. overflow-y:auto is only a safety net — screens are compacted (clamps
+   below) to fit without scrolling at every tested height. */
 .m-stage {
   position: relative;
   flex: 1;
@@ -131,7 +141,7 @@ body {
   margin-block: auto; /* centers vertically; collapses when content overflows */
   display: flex;
   flex-direction: column;
-  padding-block: 24px;
+  padding-block: clamp(8px, 1.6svh, 24px);
 }
 
 .m-screen__body {
@@ -147,17 +157,20 @@ body {
   position: sticky;
   bottom: 0;
   z-index: 5;
-  margin-top: 28px;
-  padding-top: 14px;
-  padding-bottom: calc(14px + env(safe-area-inset-bottom));
+  margin-top: clamp(10px, 2svh, 28px);
+  padding-top: clamp(8px, 1.4svh, 14px);
+  padding-bottom: calc(clamp(8px, 1.4svh, 14px) + env(safe-area-inset-bottom));
   background: linear-gradient(to top, var(--cream) 62%, transparent);
 }
 
-/* Quiz question titles are centered; the offer headline (no .m-stage) is not. */
+/* Quiz question titles are centered; the offer headline (no .m-stage) is not.
+   Size + margins shrink on short screens (svh) so the title, options and button
+   all fit without scrolling; caps keep it comfortable on tall phones. */
 .m-stage .m-q {
-  margin-top: 0;
-  margin-bottom: 2rem; /* 32px to the options */
-  font-size: 28px; /* fixed, readable for the 45–60 audience */
+  margin-top: clamp(6px, 1svh, 16px);
+  margin-bottom: clamp(12px, 2.4svh, 32px);
+  font-size: clamp(1.25rem, 0.95rem + 1.5svh, 1.75rem); /* ~20–28px */
+  line-height: 1.2;
   text-align: center;
 }
 
@@ -200,6 +213,11 @@ body {
   background: #cdbfae;
   box-shadow: none;
   cursor: not-allowed;
+}
+
+/* Quiz Continue button scales down on short screens to help the screen fit. */
+.m-screen__foot .m-btn {
+  min-height: clamp(46px, 7svh, 60px);
 }
 
 .m-btn--ghost {
@@ -280,21 +298,24 @@ body {
 .m-options {
   display: flex;
   flex-direction: column;
-  gap: var(--s-3); /* 12px */
+  gap: clamp(3px, 0.65svh, 12px);
 }
 
+/* Options shrink on short screens (svh) so even the 8-option symptoms screen
+   fits without scrolling; caps keep them full-size on tall phones. */
 .m-option {
   display: flex;
   align-items: center;
   gap: 0.85rem;
   width: 100%;
-  min-height: 60px;
-  padding: 0.9rem 1.15rem;
+  min-height: clamp(28px, 5.6svh, 60px);
+  padding: clamp(3px, 0.7svh, 14px) 1.15rem;
   border: 1.5px solid var(--line);
-  border-radius: 18px;
+  border-radius: clamp(12px, 2.4svh, 18px);
   background: var(--surface);
   color: var(--ink);
-  font-size: 1.0625rem;
+  font-size: clamp(0.95rem, 0.82rem + 0.55svh, 1.0625rem);
+  line-height: 1.25;
   font-weight: 500;
   text-align: left;
   cursor: pointer;
@@ -320,8 +341,8 @@ body {
 
 .m-option__icon {
   flex: none;
-  width: 30px;
-  height: 30px;
+  width: clamp(22px, 5svh, 30px);
+  height: clamp(22px, 5svh, 30px);
   color: var(--sage-dark);
 }
 
@@ -351,8 +372,8 @@ body {
 .m-option__check {
   margin-left: auto;
   flex: none;
-  width: 24px;
-  height: 24px;
+  width: clamp(20px, 4svh, 24px);
+  height: clamp(20px, 4svh, 24px);
   border-radius: 50%;
   border: 1.5px solid var(--line);
   display: grid;
@@ -421,7 +442,7 @@ body {
 .m-unit-toggle {
   display: flex;
   width: max-content;
-  margin: 1.25rem auto 0;
+  margin: clamp(0.5rem, 2svh, 1.25rem) auto 0;
   gap: 4px;
   padding: 4px;
   border-radius: 999px;
@@ -451,12 +472,12 @@ body {
   align-items: baseline;
   justify-content: center;
   gap: 0.4rem;
-  margin-top: 1.75rem;
+  margin-top: clamp(0.75rem, 2.4svh, 1.75rem);
 }
 
 .m-measure__val {
   font-family: var(--font-serif);
-  font-size: 3rem; /* 48px */
+  font-size: clamp(2.25rem, 1.5rem + 3svh, 3rem); /* ~36–48px */
   font-weight: 600;
   line-height: 1;
   color: var(--ink);
@@ -486,7 +507,7 @@ body {
   appearance: none;
   width: 100%;
   height: 28px;
-  margin-top: 1.75rem;
+  margin-top: clamp(0.85rem, 2.6svh, 1.75rem);
   background: transparent;
   cursor: pointer;
 }
@@ -556,22 +577,20 @@ body {
   mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
 }
 
+/* Continuous left scroll at a constant px/s. The shift (one copy width) and the
+   duration are measured in JS and set inline (animationName + animationDuration +
+   --m-marquee-shift); the strip stays static until measured so the speed never
+   jumps mid-run. Linear + infinite for seamless constant motion. */
 .m-marquee__track {
   display: flex;
   gap: 12px;
   width: max-content;
   padding-inline: 6px;
-  animation: m-marquee-scroll var(--m-marquee-speed, 26s) linear infinite;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
   will-change: transform;
   transform: translateZ(0); /* own compositor layer → smooth scroll on mobile */
   backface-visibility: hidden;
-}
-
-/* Phones: pass the photos ~2× faster (strip is narrower, slow felt dead). */
-@media (max-width: 640px) {
-  .m-marquee__track {
-    animation-duration: calc(var(--m-marquee-speed, 26s) / 2);
-  }
 }
 
 .m-marquee__item {
@@ -599,7 +618,7 @@ body {
 
 @keyframes m-marquee-scroll {
   from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  to { transform: translateX(calc(-1 * var(--m-marquee-shift, 50%))); }
 }
 
 /* Reduced motion: stop the auto-scroll, let the row be swiped by hand. */
