@@ -3,7 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { verifyDownloadToken, filePath } from '../../../lib/menopausia/download';
 import { getDodoClient, retrievePayment, paymentIsPaid, paymentProductIds } from '../../../lib/menopausia/dodo';
 import { getProducts } from '../../../config/menopausia/products';
-import { fileBelongs } from '../../../config/menopausia/files';
+import { fileBelongs, driveDownloadUrl } from '../../../config/menopausia/files';
 
 export const prerender = false;
 
@@ -29,6 +29,17 @@ export const GET: APIRoute = async ({ url }) => {
     }
   }
   // If Dodo isn't configured (local dev), the signed token alone authorizes.
+
+  // Large mains (~29 MB) are hosted on Drive — redirect instead of buffering
+  // (Vercel caps buffered function responses at 4.5 MB). Payment is already
+  // verified above, so the redirect is only reached by a paying buyer.
+  const drive = driveDownloadUrl(locale, file);
+  if (drive) {
+    return new Response(null, {
+      status: 302,
+      headers: { Location: drive, 'Cache-Control': 'private, no-store' },
+    });
+  }
 
   try {
     const buf = await readFile(filePath(locale, file));

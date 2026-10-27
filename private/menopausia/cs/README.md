@@ -3,11 +3,12 @@
 Coloca aquí los PDF con estos nombres EXACTOS (deben coincidir con
 `files.cs` en `src/config/menopausia/files.ts`). Esta carpeta está fuera de
 `/public`: los archivos solo se sirven con token firmado por
-`/api/menopausia/descarga`. Hasta subir los PDF en checo, la descarga en /cs
-no entregará archivos (la página ya está en checo).
+`/api/menopausia/descarga`.
 
 ## Principal (main)
-- `1 - Ploche Bricho za 28 Dni.pdf`
+- `1 - Ploche Bricho za 28 Dni.pdf` — NO local: ~29 MB, servido por Google Drive
+  (redirect 302 desde `descarga` tras verificar el pago; ver `driveMain` en
+  `src/config/menopausia/files.ts`).
 - `2 - BONUS - 30 Protizanetlivych Receptu.pdf`
 - `3 - BONUS - Tracker na 28 Dni (k tisku).pdf`
 - `4 - BONUS - Jez Venku bez Nadymani.pdf`

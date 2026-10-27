@@ -44,6 +44,30 @@ export const files: Record<MenoLocale, Record<ProductBucket, string[]>> = {
   },
 };
 
+/**
+ * Main reto PDFs that are ~29 MB — too large for Vercel's buffered function
+ * response (4.5 MB cap). These are hosted on public Google Drive and served by
+ * a 302 redirect from the signed download route (after the Dodo payment check),
+ * so auth + payment gating are preserved while the bytes bypass the function.
+ * `es` is intentionally absent (unchanged). Only the `main` bucket's first file
+ * (the big reto) maps here; its 4 bonuses + the 2 extras stay local.
+ */
+const driveMain: Partial<Record<MenoLocale, { file: string; id: string }>> = {
+  pl: { file: '1 - Plaski Brzuch w 28 Dni.pdf', id: '1BGd0HROAZGROGhLJs0GLgK0rxdxF-5kU' },
+  cs: { file: '1 - Ploche Bricho za 28 Dni.pdf', id: '1SC6rdcyJMqzjAXEOMHxh56I022ae7yGH' },
+};
+
+/**
+ * If `file` is a Drive-hosted main for `locale`, return its direct download URL
+ * (`confirm=t` skips Google's large-file virus-scan interstitial). Else null →
+ * the caller serves the file locally.
+ */
+export function driveDownloadUrl(locale: MenoLocale, file: string): string | null {
+  const d = driveMain[locale];
+  if (!d || d.file !== file) return null;
+  return `https://drive.usercontent.google.com/download?id=${d.id}&export=download&confirm=t`;
+}
+
 export function filesFor(locale: MenoLocale, bucket: ProductBucket): string[] {
   return files[locale]?.[bucket] ?? [];
 }
