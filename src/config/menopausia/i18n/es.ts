@@ -166,6 +166,7 @@ export const es: MenoDict = {
     countdownLabel: 'Extras gratis solo hasta:',
 
     // ── Hero ──────────────────────────────────────────────────────────
+    heroLabel: 'Tu plan está listo según tus respuestas',
     heroTitle: 'Reto de 28 días: dile adiós a los rollitos y vuelve a sentirte tú',
     heroChips: [
       'Adiós rollitos y barriga hinchada',
@@ -198,6 +199,14 @@ export const es: MenoDict = {
     totalStruck: '51,85 €',
     todayLabel: 'Hoy',
 
+    // ── Cómo funciona ──────────────────────────────────────────────────
+    howTitle: 'Cómo funciona',
+    howSteps: [
+      'Compras en 1 minuto',
+      'Te llega al email al instante',
+      'Empiezas hoy mismo',
+    ],
+
     // ── Carrito ────────────────────────────────────────────────────────
     cartTitle: 'Tu pedido',
     cartClose: 'Cerrar',
@@ -205,6 +214,12 @@ export const es: MenoDict = {
     cartExtrasTitle: '¿Quieres añadir algo más?',
     addLabel: 'Añadir',
     cartCta: 'Ir al pago seguro',
+    onlyNow: 'solo ahora',
+    bumpCartDesc: 'Para las noches en vela y los sofocos que no te dejan dormir',
+    bumpStruck: '14,97 €',
+    upsellCartDesc: 'Deshincha la barriga en 14 días, ideal para empezar ya',
+    upsellStruck: '16,97 €',
+    bothExtrasSave: 'Llévate los dos: ahorras 2 €',
 
     badges: ['Acceso inmediato', 'Pago seguro', 'Garantía 14 días'],
 
@@ -313,13 +328,15 @@ export const es: MenoDict = {
       },
       {
         q: '¿Es seguro pagar y en qué moneda?',
-        a: 'Pagas con tarjeta a través de Dodo Payments con conexión cifrada; no guardamos los datos de tu tarjeta. El importe se cobra en euros.',
+        a: 'Sí: pago cifrado y seguro con tarjeta, Apple Pay o Google Pay. No guardamos los datos de tu tarjeta y el importe se cobra en euros.',
       },
       {
         q: '¿Y si no me gusta?',
-        a: 'Tienes {days} días de garantía: si no es para ti, te devolvemos el dinero. Este plan es informativo y no sustituye la consulta médica.',
+        a: 'Tienes {days} días de garantía: si no es para ti, te devolvemos el dinero.',
       },
     ],
+
+    medicalDisclaimer: 'Este plan es informativo y no sustituye la consulta médica.',
 
     totalLabel: 'Total',
     checkoutError: 'No pudimos abrir el pago. Inténtalo de nuevo en un momento.',

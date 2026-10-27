@@ -107,7 +107,10 @@ export function Offer({ locale }: Props) {
   const [cartOpen, setCartOpen] = useState(false);
   const [remaining, setRemaining] = useState<number | null>(null);
 
-  const total = pr.main + (bump ? pr.bump : 0) + (upsell ? pr.upsell : 0);
+  // Al marcar los 2 extras (solo es) se descuentan 2 € vía código Dodo "EXTRAS2".
+  const bothExtras = bump && upsell;
+  const extrasDiscount = isEs && bothExtras ? 2 : 0;
+  const total = pr.main + (bump ? pr.bump : 0) + (upsell ? pr.upsell : 0) - extrasDiscount;
   const mainPrice = money(pr.main, nl, pr.currency);
   const bumpPrice = money(pr.bump, nl, pr.currency);
   const totalPrice = money(total, nl, pr.currency);
@@ -332,9 +335,23 @@ export function Offer({ locale }: Props) {
     const mainCover = esCover('main', o.mainName ?? 'Reto Abdomen Plano en 28 Días');
     const bumpCover = esCover('bump', o.bumpName);
     const upsellCover = esCover('upsell', o.upsellName ?? '');
-    const collage = [TESTI_PHOTOS[0], TESTI_PHOTOS[1], TESTI_PHOTOS[2]];
     const bigPhoto = TESTI_PHOTOS[3];
     const title = o.heroTitle ?? headline;
+
+    // Pago seguro: candado + línea + logos en una sola fila (reutilizado).
+    const securePay = (
+      <div className="m-securepay">
+        <p className="m-securepay__line">
+          <LockIcon /> {o.securePay}
+        </p>
+        <div className="m-paylogos">
+          {PAY_LOGOS.map((l) => (
+            <img key={l.src} className="m-paylogo" src={l.src} alt={l.alt}
+              height={22} loading="lazy" decoding="async" />
+          ))}
+        </div>
+      </div>
+    );
 
     // Barra fina de cuenta regresiva (se repite arriba y en el cuadro de compra).
     const countdownBar = (
@@ -382,7 +399,12 @@ export function Offer({ locale }: Props) {
               <CoverImg cover={bumpCover} className="m-cart__cover" sizes="56px" />
               <div className="m-cart__text">
                 <p className="m-cart__name">{o.bumpName}</p>
-                <span className="m-cart__add">{o.addLabel ?? 'Añadir'} · {bumpPrice}</span>
+                {o.bumpCartDesc && <p className="m-cart__note">{o.bumpCartDesc}</p>}
+                <span className="m-cart__add">
+                  {o.bumpStruck && <s className="m-cart__struck">{o.bumpStruck}</s>}
+                  <span className="m-cart__now">{bumpPrice}</span>
+                  {o.onlyNow && <em className="m-cart__only">{o.onlyNow}</em>}
+                </span>
               </div>
             </label>
 
@@ -393,9 +415,20 @@ export function Offer({ locale }: Props) {
                 <CoverImg cover={upsellCover} className="m-cart__cover" sizes="56px" />
                 <div className="m-cart__text">
                   <p className="m-cart__name">{o.upsellName}</p>
-                  <span className="m-cart__add">{o.addLabel ?? 'Añadir'} · {upsellPrice}</span>
+                  {o.upsellCartDesc && <p className="m-cart__note">{o.upsellCartDesc}</p>}
+                  <span className="m-cart__add">
+                    {o.upsellStruck && <s className="m-cart__struck">{o.upsellStruck}</s>}
+                    <span className="m-cart__now">{upsellPrice}</span>
+                    {o.onlyNow && <em className="m-cart__only">{o.onlyNow}</em>}
+                  </span>
                 </div>
               </label>
+            )}
+
+            {bothExtras && o.bothExtrasSave && (
+              <p className="m-cart__save">
+                <CheckIcon className="m-cart__save-icon" /> {o.bothExtrasSave}
+              </p>
             )}
           </div>
 
@@ -414,7 +447,7 @@ export function Offer({ locale }: Props) {
             <div className="m-paylogos m-cart__logos">
               {PAY_LOGOS.map((l) => (
                 <img key={l.src} className="m-paylogo" src={l.src} alt={l.alt}
-                  height={24} loading="lazy" decoding="async" />
+                  height={22} loading="lazy" decoding="async" />
               ))}
             </div>
             {o.guaranteeTitle && (
@@ -431,21 +464,28 @@ export function Offer({ locale }: Props) {
         <div className="m-countbar-top">{countdownBar}</div>
 
         <div className="m-shell m-shell--offer m-offer-es" ref={shellRef}>
-          {/* 1 · Hero: estrellas, titular, collage, chips, 1 CTA */}
+          {/* 1 · Hero: estrellas, etiqueta, titular, abanico, chips, 1 CTA, pago seguro */}
           <header className="m-hero m-hero--es">
             <div className="m-stars-top m-hero-in">
               <Stars label={o.social.ratingAria} />
               <strong>{o.social.rating}</strong>
             </div>
 
+            {o.heroLabel && (
+              <p className="m-hero__label m-hero-in">
+                <CheckIcon className="m-hero__label-icon" /> {o.heroLabel}
+              </p>
+            )}
+
             <h1 className="m-hero__title m-hero-in">{title}</h1>
 
-            <div className="m-collage m-hero-in">
-              {collage.map((src, i) => (
-                <img key={src} className={`m-collage__photo m-collage__photo--${i + 1}`} src={src}
-                  alt="" width={120} height={120} loading="eager" decoding="async" />
+            {/* Abanico: portada principal al frente + 4 bonus asomando detrás */}
+            <div className="m-fan m-hero-in">
+              {bonusSlots.map((slot, i) => (
+                <CoverImg key={slot} cover={esCover(slot, o.bonusNames[i])}
+                  className={`m-fan__bonus m-fan__bonus--${i + 1}`} sizes="126px" />
               ))}
-              <CoverImg cover={mainCover} className="m-collage__book" sizes="150px" priority />
+              <CoverImg cover={mainCover} className="m-fan__main" sizes="220px" priority />
             </div>
 
             {o.heroChips && o.heroChips.length > 0 && (
@@ -461,6 +501,7 @@ export function Offer({ locale }: Props) {
 
             <div className="m-hero-in">
               <button className="m-btn m-btn--glow" onClick={openCart}>{o.ctaMain}</button>
+              {securePay}
             </div>
           </header>
 
@@ -533,49 +574,49 @@ export function Offer({ locale }: Props) {
               {countdownBar}
 
               <button className="m-btn m-btn--glow m-valuebox__cta" onClick={openCart}>{o.ctaMain}</button>
+
+              {securePay}
             </div>
           </section>
 
-          {/* 5 · Reseñas */}
+          {/* 5 · Cómo funciona — 3 pasos con icono */}
+          {o.howSteps && o.howSteps.length > 0 && (
+            <section className="m-section m-reveal">
+              {o.howTitle && <h2>{o.howTitle}</h2>}
+              <ol className="m-howto">
+                {o.howSteps.map((s, i) => (
+                  <li key={i} className="m-howto__step">
+                    <span className="m-howto__icon">{HOW_ICONS[i] ?? <CheckIcon />}</span>
+                    <span className="m-howto__text">{s}</span>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
+
+          {/* 6 · Reseñas */}
           {socialSection}
 
-          {/* 6 · Compra — precio grande + 1 botón + logos + garantía */}
-          <section className="m-section m-reveal">
-            <div className="m-pricebox">
-              <span className="m-pricebox__now">{mainPrice}</span>
-              <p className="m-pricebox__note">{o.priceNote}</p>
-              <p className="m-pricebox__perday">{perDay}</p>
-            </div>
-
-            <button className="m-btn m-btn--glow m-cta-total" onClick={openCart}>
-              {o.ctaMain} · {mainPrice}
-            </button>
-
-            <div className="m-securepay">
-              <p className="m-securepay__line">
-                <LockIcon /> {o.securePay}
-              </p>
-              <div className="m-paylogos">
-                {PAY_LOGOS.map((l) => (
-                  <img key={l.src} className="m-paylogo" src={l.src} alt={l.alt}
-                    height={24} loading="lazy" decoding="async" />
-                ))}
-              </div>
-            </div>
-
-            {o.guaranteeTitle && (
+          {/* 7 · Garantía */}
+          {o.guaranteeTitle && (
+            <section className="m-section m-reveal">
               <div className="m-guarantee m-guarantee--big">
                 <GuaranteeSeal days={GUARANTEE_DAYS} />
                 <p className="m-guarantee__title">{withDays(o.guaranteeTitle)}</p>
                 {o.guaranteeBody && <p className="m-guarantee__body">{withDays(o.guaranteeBody)}</p>}
               </div>
-            )}
-          </section>
+            </section>
+          )}
 
           {/* FAQ */}
           {faqSection}
 
-          {footer}
+          <footer className="m-footer">
+            <a href={`/menopausia/${locale}/privacidad`}>{o.privacyLink}</a>
+            {' · '}
+            <a href={`/menopausia/${locale}/terminos`}>{o.termsLink}</a>
+            {o.medicalDisclaimer && <span className="m-footer__disclaimer">{o.medicalDisclaimer}</span>}
+          </footer>
         </div>
 
         {/* Botón fijo en móvil (tras el hero) — abre el carrito */}
@@ -746,3 +787,35 @@ function ChevronIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+function BagIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+      <path d="M3 6h18M16 10a4 4 0 0 1-8 0" />
+    </svg>
+  );
+}
+
+function MailIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <path d="m22 7-10 6L2 7" />
+    </svg>
+  );
+}
+
+function BoltIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M13 2 3 14h7l-1 8 10-12h-7z" />
+    </svg>
+  );
+}
+
+/** Iconos de los 3 pasos de "Cómo funciona" (orden = howSteps). */
+const HOW_ICONS = [<BagIcon />, <MailIcon />, <BoltIcon />];

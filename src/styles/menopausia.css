@@ -1202,22 +1202,17 @@ body {
 .m-paylogos {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
+  align-items: center;
+  flex-wrap: nowrap;
   gap: 0.5rem;
   margin-top: 0.7rem;
 }
 
-/* Logos oficiales: cada SVG va en un tile blanco uniforme (altura fija, ancho
-   según su proporción). box-sizing border-box → glifo ~20px, marco limpio. */
+/* Logos oficiales en una sola fila, 22px de alto, sin recuadros. */
 .m-paylogo {
-  box-sizing: border-box;
-  height: 34px;
+  height: 22px;
   width: auto;
-  padding: 6px 9px;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  box-shadow: var(--shadow-sm);
+  flex: none;
 }
 
 /* Garantía de 14 días con sello. -------------------------------------------- */
@@ -2128,6 +2123,122 @@ body {
   .m-cart.is-open .m-cart__panel {
     transform: none;
   }
+}
+
+/* Etiqueta sobre el titular del hero. --------------------------------------- */
+.m-hero__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 auto 0.9rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  background: var(--sage-soft);
+  color: var(--sage-dark);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.m-hero__label-icon {
+  flex: none;
+  width: 15px;
+  height: 15px;
+}
+
+/* Cómo funciona — 3 pasos con icono. ---------------------------------------- */
+.m-howto {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  counter-reset: howto;
+}
+
+.m-howto__step {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.m-howto__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: var(--sage-soft);
+  color: var(--sage-dark);
+}
+
+.m-howto__text {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--ink);
+  counter-increment: howto;
+}
+
+.m-howto__text::before {
+  content: counter(howto) ". ";
+  font-weight: 800;
+  color: var(--terra-hover);
+}
+
+/* Carrito · precios tachados y banner de ahorro. ---------------------------- */
+.m-cart__struck {
+  margin-right: 0.35rem;
+  color: var(--muted-text);
+  font-weight: 600;
+}
+
+.m-cart__now {
+  color: var(--terra-hover);
+  font-weight: 800;
+}
+
+.m-cart__only {
+  margin-left: 0.3rem;
+  font-style: normal;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted-text);
+}
+
+.m-cart__save {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.9rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius);
+  background: var(--sage-soft);
+  color: var(--sage-dark);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.m-cart__save-icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+
+/* Aviso médico — línea chica del pie. --------------------------------------- */
+.m-footer__disclaimer {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.74rem;
+  line-height: 1.4;
+  color: var(--muted-text);
 }
 
 /* FAQ accordion ------------------------------------------------------------- */

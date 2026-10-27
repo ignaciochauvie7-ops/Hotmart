@@ -29,6 +29,10 @@ export const POST: APIRoute = async ({ request }) => {
   if (bump && products.bump) cart.push({ product_id: products.bump, quantity: 1 });
   if (upsell && products.upsell) cart.push({ product_id: products.upsell, quantity: 1 });
 
+  // es: al llevar los 2 extras se aplica el código Dodo "EXTRAS2" (−2 € flat EUR).
+  const bothExtras = !!(bump && products.bump && upsell && products.upsell);
+  const discountCode = locale === 'es' && bothExtras ? 'EXTRAS2' : undefined;
+
   const metadata: Record<string, string> = {
     funnel: 'menopausia',
     bump: String(!!bump),
@@ -43,6 +47,7 @@ export const POST: APIRoute = async ({ request }) => {
       returnUrl: `${siteUrl(request.url)}/menopausia/${locale}/gracias`,
       metadata,
       locale,
+      discountCode,
     });
     return json({ checkout_url: session.checkout_url, session_id: session.session_id });
   } catch (err) {

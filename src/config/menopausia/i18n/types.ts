@@ -145,10 +145,26 @@ export interface MenoDict {
     // ── Solo `es` v2 · cuenta regresiva, hero collage, carrito ──────────
     /** Etiqueta de la barra de cuenta regresiva. */
     countdownLabel?: string;
+    /** Etiqueta sobre el titular del hero ("✓ Tu plan está listo…"). */
+    heroLabel?: string;
     /** Titular fijo del hero (sin personalización por edad). */
     heroTitle?: string;
     /** 5 chips de beneficio del hero. */
     heroChips?: string[];
+    /** "Cómo funciona" — 3 pasos con icono (tras "Qué incluye"). */
+    howTitle?: string;
+    howSteps?: string[];
+    /** Carrito · extras: descripción corta + precio tachado. */
+    bumpCartDesc?: string;
+    bumpStruck?: string;
+    upsellCartDesc?: string;
+    upsellStruck?: string;
+    /** Nota junto al precio del extra ("solo ahora"). */
+    onlyNow?: string;
+    /** Banner del carrito al marcar los dos extras ("Llévate los dos: ahorras 2 €"). */
+    bothExtrasSave?: string;
+    /** Aviso médico, línea chica del pie. */
+    medicalDisclaimer?: string;
     /** "¿Te suena?" — dolores con foto grande. */
     soundsTitle?: string;
     soundsPains?: string[];

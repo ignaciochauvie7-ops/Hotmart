@@ -40,6 +40,8 @@ export interface CreateCheckoutArgs {
   customerEmail?: string;
   metadata?: Record<string, string>;
   locale?: MenoLocale;
+  /** Código de descuento Dodo a aplicar (p. ej. "EXTRAS2" al llevar los 2 extras). */
+  discountCode?: string;
 }
 
 /** Create a checkout session. Returns { checkout_url, session_id }. */
@@ -51,6 +53,7 @@ export async function createCheckout(client: DodoPayments, args: CreateCheckoutA
   };
   if (args.customerEmail) payload.customer = { email: args.customerEmail };
   if (args.metadata) payload.metadata = args.metadata;
+  if (args.discountCode) payload.discount_code = args.discountCode;
   // Pass the UI language to Dodo (ignored by the API if unsupported).
   if (args.locale) payload.metadata = { ...(args.metadata ?? {}), locale: args.locale };
   // pl/cs checkout must render in the local language; others keep Dodo's default.
