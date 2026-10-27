@@ -21,6 +21,7 @@ export const files: Record<MenoLocale, Record<ProductBucket, string[]>> = {
   },
   pt: { main: [], bump: [], upsell: [] }, // TODO: nombres de archivos (pt)
   pl: { main: [], bump: [], upsell: [] }, // TODO: nombres de archivos (pl)
+  cs: { main: [], bump: [], upsell: [] }, // TODO: nombres de archivos (cs)
 };
 
 export function filesFor(locale: MenoLocale, bucket: ProductBucket): string[] {

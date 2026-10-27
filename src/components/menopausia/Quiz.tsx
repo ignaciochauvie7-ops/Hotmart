@@ -171,18 +171,22 @@ export function Quiz({ locale, dict }: Props) {
     next();
   }
 
-  // Multi-select symptoms. The last option ("Ninguno") is exclusive: picking it
-  // clears the rest, and picking any other symptom clears "Ninguno".
-  function toggleSymptom(index: number, noneIndex: number) {
+  // Multi-select symptoms. Only the explicit "none of these" option (noneIndex
+  // from the dict, if any) is exclusive: picking it clears the rest, and picking
+  // any other symptom clears it. Every other option combines freely. When the
+  // locale has no "none" option, noneIndex is undefined → nothing is exclusive.
+  function toggleSymptom(index: number, noneIndex: number | undefined) {
     const current = answers.symptoms ?? [];
     const has = current.includes(index);
     let nextArr: number[];
-    if (index === noneIndex) {
+    if (noneIndex != null && index === noneIndex) {
       nextArr = has ? [] : [noneIndex];
-    } else {
+    } else if (noneIndex != null) {
       nextArr = has
         ? current.filter((i) => i !== index)
         : [...current.filter((i) => i !== noneIndex), index];
+    } else {
+      nextArr = has ? current.filter((i) => i !== index) : [...current, index];
     }
     update({ symptoms: nextArr });
   }
@@ -297,9 +301,8 @@ export function Quiz({ locale, dict }: Props) {
               <div className="m-options">
                 {q.symptoms.options.map((opt, i) => {
                   const on = (answers.symptoms ?? []).includes(i);
-                  const noneIndex = q.symptoms.options.length - 1;
                   return (
-                    <button key={i} className={`m-option ${on ? 'is-selected' : ''}`} onClick={() => toggleSymptom(i, noneIndex)} aria-pressed={on}>
+                    <button key={i} className={`m-option ${on ? 'is-selected' : ''}`} onClick={() => toggleSymptom(i, q.symptoms.noneIndex)} aria-pressed={on}>
                       <span>{opt}</span>
                       <span className="m-option__check">{on && <Check />}</span>
                     </button>
@@ -308,7 +311,9 @@ export function Quiz({ locale, dict }: Props) {
               </div>
             </div>
             <div className="m-screen__foot">
-              <button className="m-btn" disabled={(answers.symptoms ?? []).length === 0} onClick={next}>
+              {/* Façade quiz: never blocks. No validation gates advancing — any
+                  combination (including none selected) reaches the offer. */}
+              <button className="m-btn" onClick={next}>
                 {dict.common.continue}
               </button>
             </div>

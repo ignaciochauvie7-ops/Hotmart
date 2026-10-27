@@ -6,7 +6,7 @@
  *   bump   → Vuelve a Descansar Bien en 21 Días (order bump) — 6,97 €
  *   upsell → Adiós Hinchazón en 14 Días (upsell en /gracias) — 7,47 €
  */
-export type MenoLocale = 'es' | 'pt' | 'pl';
+export type MenoLocale = 'es' | 'pt' | 'pl' | 'cs';
 
 export interface LocaleProducts {
   main: string;
@@ -26,6 +26,7 @@ export const products: Record<MenoLocale, LocaleProducts> = {
     bump: 'pdt_0Nqd1ybe9kHJIWaQTiAri',
     upsell: 'pdt_0Nqd2Eo5sxihDoOzXGUxw',
   },
+  cs: { main: '', bump: '', upsell: '' }, // TODO: IDs Dodo (cs) — checkout off hasta tenerlos
 };
 
 export interface LocalePricing {
@@ -45,6 +46,10 @@ export const pricing: Record<MenoLocale, LocalePricing> = {
   es: { currency: 'EUR', main: 16.97, bump: 6.97, upsell: 7.47 },
   pt: { currency: 'EUR', main: 16.97, bump: 6.97, upsell: 7.47 },
   pl: { currency: 'PLN', main: 69, bump: 29, upsell: 31 },
+  // TODO (cs): precios fijos en CZK (Localized Pricing de Dodo). 0 = placeholder,
+  // NO inventados. Deben coincidir exactamente con el precio CZK del producto en
+  // Dodo. Rellenar main/bump/upsell en cuanto se confirmen.
+  cs: { currency: 'CZK', main: 0, bump: 0, upsell: 0 },
 };
 
 export function getProducts(locale: MenoLocale): LocaleProducts {

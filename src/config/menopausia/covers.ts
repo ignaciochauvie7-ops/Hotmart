@@ -37,6 +37,7 @@ const covers: Record<MenoLocale, Partial<Record<CoverSlot, Cover>>> = {
   es: {},
   pt: {},
   pl,
+  cs: {}, // TODO: portadas con texto checo. Vacío → sin imágenes (no se cuela texto polaco).
 };
 
 export function getCovers(locale: MenoLocale): Partial<Record<CoverSlot, Cover>> {

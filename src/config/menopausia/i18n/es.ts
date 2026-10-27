@@ -71,6 +71,7 @@ export const es: MenoDict = {
         'Niebla mental',
         'Ninguno',
       ],
+      noneIndex: 7,
     },
     goal: {
       q: '¿Cuál es tu objetivo principal?',

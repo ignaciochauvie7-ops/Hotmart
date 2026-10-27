@@ -53,8 +53,8 @@ export async function createCheckout(client: DodoPayments, args: CreateCheckoutA
   if (args.metadata) payload.metadata = args.metadata;
   // Pass the UI language to Dodo (ignored by the API if unsupported).
   if (args.locale) payload.metadata = { ...(args.metadata ?? {}), locale: args.locale };
-  // pl checkout must render in Polish; other locales keep Dodo's default.
-  if (args.locale === 'pl') payload.force_language = 'pl';
+  // pl/cs checkout must render in the local language; others keep Dodo's default.
+  if (args.locale === 'pl' || args.locale === 'cs') payload.force_language = args.locale;
   return (client as any).checkoutSessions.create(payload) as Promise<{
     checkout_url?: string;
     session_id?: string;

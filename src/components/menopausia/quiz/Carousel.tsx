@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useState, type CSSProperties } from 'react';
 
 interface Props {
   images: string[]; // optimized WebP urls for this group
@@ -21,9 +21,11 @@ export const Carousel = memo(function Carousel({ images, speed = 26 }: Props) {
   if (images.length === 0) return null;
   // Two copies back-to-back; the keyframe moves the track by -50% (one copy).
   const loop = [...images, ...images];
+  // Duration is a CSS var so a media query can halve it on mobile (photos pass
+  // ~2× faster on a phone, where the strip is narrower and felt too slow).
   return (
     <div className="m-marquee" aria-hidden="true">
-      <div className="m-marquee__track" style={{ animationDuration: `${speed}s` }}>
+      <div className="m-marquee__track" style={{ '--m-marquee-speed': `${speed}s` } as CSSProperties}>
         {loop.map((src, i) => (
           <Slide key={i} src={src} />
         ))}

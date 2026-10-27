@@ -138,10 +138,19 @@ body {
   flex: 0 0 auto;
 }
 
-/* Continue button sits 28px below the last element, inside the centered block. */
+/* Continue button. Sticky to the bottom of the scrolling stage so it is ALWAYS
+   visible on a phone — when a screen is taller than the viewport the button
+   stays pinned above the fold instead of scrolling off below. A short fade
+   under it keeps the last option readable as it scrolls behind; the fade +
+   safe-area padding reserve space so the final option is never hidden. */
 .m-screen__foot {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
   margin-top: 28px;
-  padding-top: 0;
+  padding-top: 14px;
+  padding-bottom: calc(14px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--cream) 62%, transparent);
 }
 
 /* Quiz question titles are centered; the offer headline (no .m-stage) is not. */
@@ -552,8 +561,17 @@ body {
   gap: 12px;
   width: max-content;
   padding-inline: 6px;
-  animation: m-marquee-scroll linear infinite;
+  animation: m-marquee-scroll var(--m-marquee-speed, 26s) linear infinite;
   will-change: transform;
+  transform: translateZ(0); /* own compositor layer → smooth scroll on mobile */
+  backface-visibility: hidden;
+}
+
+/* Phones: pass the photos ~2× faster (strip is narrower, slow felt dead). */
+@media (max-width: 640px) {
+  .m-marquee__track {
+    animation-duration: calc(var(--m-marquee-speed, 26s) / 2);
+  }
 }
 
 .m-marquee__item {

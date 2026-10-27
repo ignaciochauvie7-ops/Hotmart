@@ -48,7 +48,10 @@ export interface MenoDict {
       errMax: string;
     };
     loading1: { texts: string[] };
-    symptoms: { q: string; options: string[] };
+    /** Multi-select. `noneIndex` (optional) marks the one exclusive "none of
+     *  these" option — picking it clears the rest, picking any other clears it.
+     *  Omit when there is no such option (then every option combines freely). */
+    symptoms: { q: string; options: string[]; noneIndex?: number };
     goal: { q: string; options: string[] };
     movement: { q: string; options: string[] };
     time: { q: string; options: string[]; after: string };

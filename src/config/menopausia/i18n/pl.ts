@@ -71,7 +71,9 @@ export const pl: MenoDict = {
         'Wahania nastroju',
         'Ochota na słodycze',
         'Zatrzymywanie wody',
+        'Żadne z powyższych',
       ],
+      noneIndex: 7,
     },
     goal: {
       q: 'Jaki jest Twój główny cel?',

@@ -18,4 +18,5 @@ export const REVIEWS: Record<MenoLocale, Review[]> = {
   es: [],
   pt: [],
   pl: [],
+  cs: [],
 };
