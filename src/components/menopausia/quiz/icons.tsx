@@ -33,7 +33,7 @@ export function Check({ className }: IconProps) {
 }
 
 // Fat-zone icons, aligned to quiz.fatZone.options order:
-// 0 Abdomen · 1 Caderas y muslos · 2 Brazos · 3 Todo el cuerpo
+// 0 Abdomen · 1 Caderas y muslos · 2 Brazos · 3 Espalda · 4 Por todo el cuerpo
 export const zoneIcons = [
   // Abdomen
   (p: IconProps) => (
@@ -63,7 +63,17 @@ export const zoneIcons = [
       <circle cx="18" cy="4" r="1.4" />
     </svg>
   ),
-  // Todo el cuerpo
+  // Espalda
+  (p: IconProps) => (
+    <svg className={p.className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
+      strokeLinecap="round" strokeLinejoin="round" width="26" height="26" aria-hidden="true">
+      <circle cx="12" cy="4.5" r="2.2" />
+      <path d="M12 6.7v10" />
+      <path d="M12 9c-2 0-3.5 1-3.5 3M12 9c2 0 3.5 1 3.5 3" />
+      <path d="M9 16.7 8 21M15 16.7 16 21" />
+    </svg>
+  ),
+  // Por todo el cuerpo
   (p: IconProps) => (
     <svg className={p.className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
       strokeLinecap="round" strokeLinejoin="round" width="26" height="26" aria-hidden="true">

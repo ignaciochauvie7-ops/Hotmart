@@ -136,7 +136,13 @@ export const pt: MenoDict = {
     headlineEvent: '{base}, a tempo para {event}',
     eventPhrases: ['as tuas férias', 'o teu casamento ou celebração', 'o teu aniversário', ''],
     profileGoalPrefix: 'O teu objetivo',
-    receiveTitle: 'O que recebes hoje',
+    benefits: [
+      'Rotina de 15 minutos por dia, sem equipamento',
+      'Plano de refeições pensado para a menopausa',
+      'Resultados visíveis na tua barriga em 28 dias',
+    ],
+    receiveTitle: 'O que inclui',
+    freeLabel: 'GRÁTIS',
     items: [
       { name: 'Desafio Barriga Lisa em 28 Dias: rotina de 15 min + plano de refeições + listas de compras', price: 67 },
       { name: 'Bónus 1: 30 receitas anti-inflamatórias', price: 19 },

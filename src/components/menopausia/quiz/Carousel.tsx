@@ -1,45 +1,51 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Props {
   images: string[]; // optimized WebP urls for this group
 }
 
 /**
- * Photos slide continuously to the left (marquee). The list is duplicated so the
- * loop is seamless. The first image loads eagerly; the rest lazy. Any image that
- * 404s falls back to a soft placeholder so the motion is always visible.
+ * One framed photo at a time, crossfading to the next every ~2.4s. The list
+ * loops. Any image that 404s falls back to a soft placeholder so the frame is
+ * never empty. Respects prefers-reduced-motion (holds the first photo).
  */
 export function Carousel({ images }: Props) {
+  const [active, setActive] = useState(0);
+  const reduce = useRef(false);
+
+  useEffect(() => {
+    reduce.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (images.length <= 1 || reduce.current) return;
+    const id = window.setInterval(() => {
+      setActive((i) => (i + 1) % images.length);
+    }, 2400);
+    return () => window.clearInterval(id);
+  }, [images.length]);
+
   if (images.length === 0) return null;
-  const loop = [...images, ...images];
+
   return (
     <div className="m-carousel" aria-hidden="true">
-      <div className="m-carousel__track" style={{ animationDuration: `${images.length * 2.6}s` }}>
-        {loop.map((src, i) => (
-          <Slide key={i} src={src} eager={i === 0} />
-        ))}
-      </div>
+      {images.map((src, i) => (
+        <div key={i} className={`m-carousel__item ${i === active ? 'is-active' : ''}`}>
+          <Slide src={src} eager={i === 0} />
+        </div>
+      ))}
     </div>
   );
 }
 
 function Slide({ src, eager }: { src: string; eager: boolean }) {
   const [failed, setFailed] = useState(false);
+  if (failed) return <div className="m-carousel__placeholder" />;
   return (
-    <div className="m-carousel__item">
-      {failed ? (
-        <div className="m-carousel__placeholder" />
-      ) : (
-        <img
-          src={src}
-          alt=""
-          loading={eager ? 'eager' : 'lazy'}
-          // @ts-expect-error fetchpriority is a valid DOM attribute
-          fetchpriority={eager ? 'high' : 'auto'}
-          decoding="async"
-          onError={() => setFailed(true)}
-        />
-      )}
-    </div>
+    <img
+      src={src}
+      alt=""
+      loading={eager ? 'eager' : 'lazy'}
+      fetchPriority={eager ? 'high' : 'auto'}
+      decoding="async"
+      onError={() => setFailed(true)}
+    />
   );
 }

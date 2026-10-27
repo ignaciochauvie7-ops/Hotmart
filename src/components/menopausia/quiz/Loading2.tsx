@@ -9,13 +9,13 @@ interface Props {
   onDone: () => void;
 }
 
-const FILL_MS = 2200; // per-row fill duration
-const POP_MS = 200; // check pop
+const FILL_MS = 2000; // per-row fill duration (~2s each, per spec)
+const GAP_MS = 350; // beat after a check pops before the next row fills
 
 /**
- * "Comparando con perfiles": two rows, each with its own thin bar that fills on a
- * single ease-in-out curve. The second row starts once the first reaches 50%, so
- * the wait stays short (~3.5s total). Checks pop in when each bar completes.
+ * "Comparando con perfiles": rows fill and complete one at a time. Each bar fills
+ * on a single ease-in-out curve (~2s each); its check pops in the moment it
+ * reaches 100%, then the next row begins.
  */
 export function Loading2({ rows, onDone }: Props) {
   const [fills, setFills] = useState<number[]>(rows.map(() => 0));
@@ -31,12 +31,11 @@ export function Loading2({ rows, onDone }: Props) {
       setChecks((prev) => prev.map((x, idx) => (idx === i ? true : x)));
 
     (async () => {
-      const row0 = tween(0, 100, FILL_MS, (v) => setFill(0, v), reg, easeInOut).then(() => setCheck(0));
-      await wait(FILL_MS / 2, reg); // second row joins at the first's halfway point
-      await tween(0, 100, FILL_MS, (v) => setFill(1, v), reg, easeInOut);
-      setCheck(1);
-      await row0;
-      await wait(POP_MS, reg);
+      for (let i = 0; i < rows.length; i++) {
+        await tween(0, 100, FILL_MS, (v) => setFill(i, v), reg, easeInOut);
+        setCheck(i);
+        await wait(GAP_MS, reg);
+      }
       if (!done.current) {
         done.current = true;
         onDone();

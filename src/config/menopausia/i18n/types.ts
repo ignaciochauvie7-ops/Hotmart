@@ -84,8 +84,12 @@ export interface MenoDict {
     /** phrase per event option index (aligned to quiz.event.options); empty = no addon. */
     eventPhrases: string[];
     profileGoalPrefix: string;
+    /** 3 short benefit lines shown under the pack image. */
+    benefits: string[];
     receiveTitle: string;
     items: ValueItem[];
+    /** Label shown in place of a price on the bonus rows (e.g. "GRATIS"). */
+    freeLabel: string;
     totalLabel: string;
     totalValue: number;
     todayLabel: string;

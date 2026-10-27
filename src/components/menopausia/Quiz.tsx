@@ -29,8 +29,34 @@ const LASTGOOD = 11;
 const LOADING2 = 12;
 const LAST = LOADING2;
 const LOADERS = new Set([LOADING1, LOADING2]);
-// The 10 steps that count toward the progress bar (loaders excluded).
+// The 10 steps that count toward the progress bar (loaders excluded), in flow order.
 const QUESTION_STEPS = [AGE, HEIGHT, WEIGHT, FATZONE, GOAL, TARGET, PERIOD, SYMPTOMS, MOVEMENT, LASTGOOD];
+// Session flag so Lead fires at most once even across reloads.
+const LEAD_KEY = 'meno_quiz_lead_v1';
+
+// Has this question step been answered? Drives the no-skip guard on reload.
+function isAnswered(step: number, a: QuizAnswers): boolean {
+  switch (step) {
+    case AGE: return a.age != null;
+    case HEIGHT: return a.height != null;
+    case WEIGHT: return a.weight != null;
+    case FATZONE: return a.fatZone != null;
+    case GOAL: return a.goal != null;
+    case TARGET: return a.target != null;
+    case PERIOD: return a.period != null;
+    case SYMPTOMS: return (a.symptoms?.length ?? 0) > 0;
+    case MOVEMENT: return a.movement != null;
+    case LASTGOOD: return a.lastGood != null;
+    default: return true;
+  }
+}
+
+// First question (in flow order) the visitor hasn't answered yet — the furthest
+// step they may legitimately be on. All answered → the last step (loader 2).
+function firstUnanswered(a: QuizAnswers): number {
+  for (const s of QUESTION_STEPS) if (!isAnswered(s, a)) return s;
+  return LAST;
+}
 
 export function Quiz({ locale, dict }: Props) {
   const q = dict.quiz;
@@ -38,24 +64,39 @@ export function Quiz({ locale, dict }: Props) {
   const [step, setStep] = useState(COVER);
   const [dir, setDir] = useState(1); // 1 = forward, -1 = back; drives slide direction
   const [answers, setAnswers] = useState<QuizAnswers>({});
-  const [lenUnit, setLenUnit] = useState<'cm' | 'ft'>('cm');
-  const [massUnit, setMassUnit] = useState<'kg' | 'lb'>('kg');
+  // One shared unit preference across height/weight/target (metric vs imperial).
+  // Picking ft/in on height carries lb over to the weight sliders and back.
+  const [imperial, setImperial] = useState(false);
   const firedView = useRef(false);
   const firedLead = useRef(false);
 
+  // Strong ease-out curve (matches the CSS --ease-out token). Exit is fast and
+  // short (120ms, −12px); enter is a touch longer and settling (200ms, 12→0).
+  const EASE = [0.22, 1, 0.36, 1] as const;
   const variants = {
-    enter: (d: number) => ({ opacity: 0, x: reduce ? 0 : d >= 0 ? 24 : -24 }),
-    center: { opacity: 1, x: 0 },
-    exit: (d: number) => ({ opacity: 0, x: reduce ? 0 : d >= 0 ? -24 : 24 }),
+    enter: (d: number) => ({ opacity: 0, x: reduce ? 0 : d >= 0 ? 12 : -12 }),
+    center: { opacity: 1, x: 0, transition: { duration: 0.2, ease: EASE } },
+    exit: (d: number) => ({
+      opacity: 0,
+      x: reduce ? 0 : d >= 0 ? -12 : 12,
+      transition: { duration: 0.12, ease: EASE },
+    }),
   };
 
   // Hydrate answers + last step from sessionStorage on mount (reload keeps place).
   // Never restore onto a loader step — those are transient and would bounce the
-  // visitor forward to the offer on reload.
+  // visitor forward to the offer on reload. Also clamp to the first unanswered
+  // question so a stale/tampered step can't skip ahead of the answers given.
   useEffect(() => {
-    setAnswers(loadAnswers());
+    const a = loadAnswers();
+    setAnswers(a);
+    if (sessionStorage.getItem(LEAD_KEY) === '1') firedLead.current = true;
     const saved = loadStep();
-    if (saved != null && saved > COVER && saved <= LAST && !LOADERS.has(saved)) setStep(saved);
+    if (saved != null && saved > COVER) {
+      let target = Math.min(saved, firstUnanswered(a));
+      while (target > COVER && LOADERS.has(target)) target -= 1;
+      if (target > COVER && target <= LAST) setStep(target);
+    }
   }, []);
 
   // Persist the step on every change so a reload lands on the same screen.
@@ -83,10 +124,12 @@ export function Quiz({ locale, dict }: Props) {
     }
   }, [step, locale]);
 
-  // End of the quiz: fire Lead once, then go straight to the offer.
+  // End of the quiz: fire Lead once (deduped across reloads via sessionStorage),
+  // then go straight to the offer.
   function finish() {
     if (!firedLead.current) {
       firedLead.current = true;
+      try { sessionStorage.setItem(LEAD_KEY, '1'); } catch { /* ignore */ }
       track('Lead', { content_name: 'quiz_menopausia', locale });
     }
     window.location.href = `/menopausia/${locale}/oferta`;
@@ -121,6 +164,7 @@ export function Quiz({ locale, dict }: Props) {
     setAnswers({});
     firedView.current = false;
     firedLead.current = false;
+    try { sessionStorage.removeItem(LEAD_KEY); } catch { /* ignore */ }
     go(COVER, -1);
   }
 
@@ -130,11 +174,19 @@ export function Quiz({ locale, dict }: Props) {
     next();
   }
 
-  function toggleSymptom(index: number) {
+  // Multi-select symptoms. The last option ("Ninguno") is exclusive: picking it
+  // clears the rest, and picking any other symptom clears "Ninguno".
+  function toggleSymptom(index: number, noneIndex: number) {
     const current = answers.symptoms ?? [];
-    const nextArr = current.includes(index)
-      ? current.filter((i) => i !== index)
-      : [...current, index];
+    const has = current.includes(index);
+    let nextArr: number[];
+    if (index === noneIndex) {
+      nextArr = has ? [] : [noneIndex];
+    } else {
+      nextArr = has
+        ? current.filter((i) => i !== index)
+        : [...current.filter((i) => i !== noneIndex), index];
+    }
     update({ symptoms: nextArr });
   }
 
@@ -169,7 +221,6 @@ export function Quiz({ locale, dict }: Props) {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
           >
             {renderStep()}
           </motion.div>
@@ -188,7 +239,7 @@ export function Quiz({ locale, dict }: Props) {
             <img
               className="m-cover-photo"
               src="/menopausia/portada.webp"
-              alt=""
+              alt={q.cover.photoAlt}
               width={900}
               height={1125}
               loading="eager"
@@ -205,18 +256,18 @@ export function Quiz({ locale, dict }: Props) {
 
       case HEIGHT:
         return <MeasureSlider key="height" type="height" q={q.height.q} dict={dict}
-          metricMin={140} metricMax={200} step={1} initial={answers.height ?? 165}
-          unit={lenUnit} onUnit={(u) => setLenUnit(u as 'cm' | 'ft')}
+          metricMin={140} metricMax={200} step={1} initial={answers.height ?? 162}
+          imperial={imperial} onImperial={setImperial}
           onSubmit={(v) => { update({ height: v }); next(); }} />;
 
       case WEIGHT:
         return <MeasureSlider key="weight" type="weight" q={q.weight.q} dict={dict}
           metricMin={40} metricMax={150} step={1} initial={answers.weight ?? 70}
-          unit={massUnit} onUnit={(u) => setMassUnit(u as 'kg' | 'lb')}
+          imperial={imperial} onImperial={setImperial}
           onSubmit={(v) => { update({ weight: v }); next(); }} />;
 
       case FATZONE:
-        return <Single q={q.fatZone.q} options={q.fatZone.options} selected={answers.fatZone} reduce={reduce}
+        return <Single q={q.fatZone.q} options={q.fatZone.options} selected={answers.fatZone}
           icons={zoneIcons} onPick={(i) => pickSingle('fatZone', i)} />;
 
       case LOADING1:
@@ -228,12 +279,13 @@ export function Quiz({ locale, dict }: Props) {
 
       case TARGET: {
         const w = answers.weight ?? 70;
-        const tMin = Math.max(40, w - 25);
-        const tMax = Math.max(tMin, w - 1);
+        // Range runs from 40 kg up to the current weight; start 5 kg below it.
+        const tMin = 40;
+        const tMax = Math.max(tMin, w);
         const init = Math.min(tMax, Math.max(tMin, answers.target ?? w - 5));
         return <MeasureSlider key={`target-${w}`} type="target" q={q.target.q} dict={dict}
           metricMin={tMin} metricMax={tMax} step={1} initial={init} weight={w}
-          unit={massUnit} onUnit={(u) => setMassUnit(u as 'kg' | 'lb')}
+          imperial={imperial} onImperial={setImperial}
           onSubmit={(v) => { update({ target: v }); next(); }} />;
       }
 
@@ -249,8 +301,9 @@ export function Quiz({ locale, dict }: Props) {
               <div className="m-options">
                 {q.symptoms.options.map((opt, i) => {
                   const on = (answers.symptoms ?? []).includes(i);
+                  const noneIndex = q.symptoms.options.length - 1;
                   return (
-                    <button key={i} className={`m-option ${on ? 'is-selected' : ''}`} onClick={() => toggleSymptom(i)} aria-pressed={on}>
+                    <button key={i} className={`m-option ${on ? 'is-selected' : ''}`} onClick={() => toggleSymptom(i, noneIndex)} aria-pressed={on}>
                       <span>{opt}</span>
                       <span className="m-option__check">{on && <Check />}</span>
                     </button>
@@ -328,7 +381,7 @@ function Single({
 
 // Big slider for height / weight / target. Always stores metric; display converts.
 function MeasureSlider({
-  type, q, metricMin, metricMax, step, initial, weight, unit, onUnit, dict, onSubmit,
+  type, q, metricMin, metricMax, step, initial, weight, imperial, onImperial, dict, onSubmit,
 }: {
   type: 'height' | 'weight' | 'target';
   q: string;
@@ -337,16 +390,14 @@ function MeasureSlider({
   step: number;
   initial: number;
   weight?: number;
-  unit: 'cm' | 'ft' | 'kg' | 'lb';
-  onUnit: (u: string) => void;
+  imperial: boolean;
+  onImperial: (b: boolean) => void;
   dict: MenoDict;
   onSubmit: (v: number) => void;
 }) {
   const [v, setV] = useState(Math.min(metricMax, Math.max(metricMin, Math.round(initial))));
   const isLength = type === 'height';
   const metricU = isLength ? 'cm' : 'kg';
-  const imperialU = isLength ? 'ft' : 'lb';
-  const imperial = unit === 'ft' || unit === 'lb';
 
   const main = displayMain(type, v, imperial);
   const suffix = imperial ? (isLength ? '' : 'lb') : metricU;
@@ -358,10 +409,10 @@ function MeasureSlider({
         <h1 className="m-q">{q}</h1>
 
         <div className="m-unit-toggle" role="group" aria-label={q}>
-          <button type="button" className={!imperial ? 'is-on' : ''} onClick={() => onUnit(metricU)}>
+          <button type="button" className={!imperial ? 'is-on' : ''} onClick={() => onImperial(false)}>
             {isLength ? 'cm' : 'kg'}
           </button>
-          <button type="button" className={imperial ? 'is-on' : ''} onClick={() => onUnit(imperialU)}>
+          <button type="button" className={imperial ? 'is-on' : ''} onClick={() => onImperial(true)}>
             {isLength ? 'ft/in' : 'lb'}
           </button>
         </div>

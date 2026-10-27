@@ -136,7 +136,13 @@ export const pl: MenoDict = {
     headlineEvent: '{base} — zdążysz na {event}',
     eventPhrases: ['swoje wakacje', 'swój ślub lub uroczystość', 'swoje urodziny', ''],
     profileGoalPrefix: 'Twój cel',
-    receiveTitle: 'Co dostajesz dzisiaj',
+    benefits: [
+      '15-minutowa rutyna dziennie, bez sprzętu',
+      'Plan posiłków pomyślany na menopauzę',
+      'Widoczne efekty na brzuchu w 28 dni',
+    ],
+    receiveTitle: 'Co zawiera',
+    freeLabel: 'GRATIS',
     items: [
       { name: 'Wyzwanie Płaski Brzuch w 28 Dni: 15-minutowa rutyna + plan posiłków + listy zakupów', price: 67 },
       { name: 'Bonus 1: 30 przepisów przeciwzapalnych', price: 19 },

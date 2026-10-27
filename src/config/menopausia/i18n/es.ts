@@ -34,15 +34,15 @@ export const es: MenoDict = {
     },
     age: {
       q: '¿Cuántos años tienes?',
-      options: ['40-44', '45-49', '50-54', '55-59', '60+'],
+      options: ['40-44', '45-49', '50-54', '55-59', '60 o más'],
     },
     period: {
       q: '¿Todavía tienes la regla?',
-      options: ['Sí, regular', 'Sí, pero irregular', 'No, hace más de 12 meses'],
+      options: ['Sí, regular', 'Sí, pero irregular', 'No, ya no', 'No estoy segura'],
     },
     fatZone: {
       q: '¿Dónde acumulas más grasa?',
-      options: ['Abdomen', 'Caderas y muslos', 'Brazos', 'Todo el cuerpo'],
+      options: ['Abdomen', 'Caderas y muslos', 'Brazos', 'Espalda', 'Por todo el cuerpo'],
     },
     reassure: {
       body:
@@ -62,13 +62,14 @@ export const es: MenoDict = {
     symptoms: {
       q: '¿Qué síntomas notas?',
       options: [
-        'Hinchazón abdominal',
         'Sofocos',
-        'Duermo mal',
+        'Hinchazón',
+        'Insomnio',
         'Cansancio',
-        'Cambios de ánimo',
-        'Antojos de dulce',
-        'Retención de líquidos',
+        'Cambios de humor',
+        'Antojos',
+        'Niebla mental',
+        'Ninguno',
       ],
     },
     goal: {
@@ -82,12 +83,12 @@ export const es: MenoDict = {
       ],
     },
     movement: {
-      q: '¿Cuánto te mueves en un día normal?',
+      q: '¿Cuánto te mueves?',
       options: [
         'Casi nada',
-        'Camino un poco',
-        'Hago ejercicio 1-2 veces por semana',
-        'Hago ejercicio 3 o más veces',
+        'Camino a veces',
+        '1-2 veces por semana',
+        '3 o más veces por semana',
       ],
     },
     time: {
@@ -97,7 +98,7 @@ export const es: MenoDict = {
     },
     lastGood: {
       q: '¿Cuándo te sentiste bien con tu cuerpo por última vez?',
-      options: ['Hace menos de 1 año', 'Hace 1-3 años', 'Hace más de 5 años', 'No lo recuerdo'],
+      options: ['Hace menos de 1 año', 'Hace 1-3 años', 'Hace más de 3 años', 'No lo recuerdo'],
     },
     event: {
       q: '¿Tienes algún evento próximo?',
@@ -134,7 +135,13 @@ export const es: MenoDict = {
     headlineEvent: '{base}, a tiempo para {event}',
     eventPhrases: ['tus vacaciones', 'tu boda o celebración', 'tu cumpleaños', ''],
     profileGoalPrefix: 'Tu objetivo',
-    receiveTitle: 'Lo que recibes hoy',
+    benefits: [
+      'Rutina de 15 minutos al día, sin equipo',
+      'Plan de comidas pensado para la menopausia',
+      'Resultados visibles en tu abdomen en 28 días',
+    ],
+    receiveTitle: 'Qué incluye',
+    freeLabel: 'GRATIS',
     items: [
       { name: 'Reto Abdomen Plano en 28 Días: rutina de 15 min + plan de comidas + listas de compras', price: 67 },
       { name: 'Bonus 1: 30 recetas antiinflamatorias', price: 19 },

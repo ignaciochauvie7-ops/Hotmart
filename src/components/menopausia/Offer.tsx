@@ -6,7 +6,6 @@ import { fotosC, showResultsCarousel } from '../../config/menopausia/photos';
 import { loadAnswers } from '../../lib/menopausia/state';
 import { getCookie, track } from '../../lib/menopausia/pixel';
 import { Check } from './quiz/icons';
-import { Testimonials } from './Testimonials';
 
 interface Props {
   locale: MenoLocale;
@@ -22,21 +21,15 @@ export function Offer({ locale }: Props) {
   const [remaining, setRemaining] = useState(COUNTDOWN_MS);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [headline, setHeadline] = useState(o.genericHeadline);
-  const [chips, setChips] = useState<string[]>([]);
 
-  // Personalize from the quiz answers (generic if entered directly).
+  // Personalize the headline from the quiz answers (generic if entered directly).
   useEffect(() => {
     const a = loadAnswers();
     const q = dict.quiz;
     if (a.age != null) {
       setHeadline(o.headline.replace('{age}', q.age.options[a.age]));
     }
-    const c: string[] = [];
-    if (a.goal != null) c.push(q.goal.options[a.goal]);
-    (a.symptoms ?? []).slice(0, 2).forEach((i) => c.push(q.symptoms.options[i]));
-    setChips(c);
   }, [dict, o]);
 
   // Countdown persisted in sessionStorage so a reload doesn't reset it.
@@ -105,37 +98,47 @@ export function Offer({ locale }: Props) {
     <>
       <CountBar text={o.reserved} remaining={remaining} />
 
-      <div className="m-shell" ref={shellRef}>
-        <motion.h1 className="m-q" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+      <div className="m-shell m-shell--offer" ref={shellRef}>
+        <motion.h1
+          className="m-q m-offer-title"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        >
           {headline}
         </motion.h1>
 
-        {chips.length > 0 && (
-          <div className="m-chips" style={{ marginBottom: '1rem' }}>
-            {chips.map((c, i) => <span key={i} className="m-chip">{c}</span>)}
-          </div>
-        )}
+        {/* TODO: imagen del pack principal (reemplazar el placeholder). */}
+        <div className="m-offer-media m-offer-media--pack" role="img" aria-label="" />
 
-        <Testimonials locale={locale} />
+        <ul className="m-benefits">
+          {o.benefits.map((b, i) => (
+            <li key={i} className="m-benefit">
+              <Check className="m-benefit__check" />
+              <span>{b}</span>
+            </li>
+          ))}
+        </ul>
 
         <section className="m-section">
           <h2>{o.receiveTitle}</h2>
-          <div className="m-value-list">
+          <div className="m-include-list">
             {o.items.map((item, i) => (
-              <div key={i} className="m-value-item">
-                <Check className="m-value-item__check" />
-                <span>{item.name}</span>
-                <span className="m-value-item__price">{money(item.price, dict.numberLocale)}</span>
+              <div key={i} className="m-include-row">
+                {/* TODO: i === 0 → portada del ebook principal; i > 0 → miniatura del bonus. */}
+                <div className="m-include-row__thumb" aria-hidden="true" />
+                <span className="m-include-row__name">{item.name}</span>
+                {i === 0 ? (
+                  <span className="m-include-row__price">{money(item.price, dict.numberLocale)}</span>
+                ) : (
+                  <span className="m-include-row__free">{o.freeLabel}</span>
+                )}
               </div>
             ))}
-            <div className="m-value-item" style={{ fontWeight: 700, marginTop: '0.25rem' }}>
-              <span>{o.totalLabel}</span>
-              <span className="m-value-item__price" style={{ textDecoration: 'line-through' }}>
-                {money(o.totalValue, dict.numberLocale)}
-              </span>
-            </div>
           </div>
         </section>
+
+        <Bump dict={dict} checked={bump} onToggle={() => setBump((b) => !b)} />
 
         <section className="m-section">
           <div className="m-price-block">
@@ -144,22 +147,6 @@ export function Offer({ locale }: Props) {
               {o.todayLabel}: {money(o.priceNow, dict.numberLocale)}
             </div>
             <span className="m-badge-off">{o.offLabel}</span>
-          </div>
-        </section>
-
-        <Bump dict={dict} checked={bump} onToggle={() => setBump((b) => !b)} />
-
-        <BuyBlock dict={dict} total={total} loading={loading} error={error} onBuy={buy} />
-
-        <section className="m-section">
-          <h2>{o.howTitle}</h2>
-          <div className="m-steps">
-            {o.howSteps.map((s, i) => (
-              <div key={i} className="m-step">
-                <span className="m-step__n">{i + 1}</span>
-                <span>{s}</span>
-              </div>
-            ))}
           </div>
         </section>
 
@@ -181,28 +168,10 @@ export function Offer({ locale }: Props) {
               <p className="m-muted" style={{ fontSize: '0.95rem' }}>{o.guaranteeBody}</p>
             </div>
           </div>
+          <div className="m-paysafe" style={{ marginTop: '0.75rem' }}>
+            <LockIcon /> {o.paySecure} · <span>Visa</span> · <span>Apple Pay</span> · <span>Google Pay</span>
+          </div>
         </section>
-
-        <section className="m-section">
-          <h2>{o.faqTitle}</h2>
-          {o.faq.map((item, i) => (
-            <div key={i} className="m-faq-item">
-              <button className="m-faq-q" onClick={() => setOpenFaq(openFaq === i ? null : i)} aria-expanded={openFaq === i}>
-                {item.q}
-                <span aria-hidden="true">{openFaq === i ? '–' : '+'}</span>
-              </button>
-              {openFaq === i && (
-                <motion.div className="m-faq-a" initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}>
-                  {item.a}
-                </motion.div>
-              )}
-            </div>
-          ))}
-        </section>
-
-        <div className="m-divider" />
-        <Bump dict={dict} checked={bump} onToggle={() => setBump((b) => !b)} />
-        <BuyBlock dict={dict} total={total} loading={loading} error={error} onBuy={buy} />
 
         <footer className="m-footer">
           <p>{o.footerDisclaimer}</p>
@@ -212,6 +181,17 @@ export function Offer({ locale }: Props) {
             <a href={`/menopausia/${locale}/terminos`}>{o.termsLink}</a>
           </p>
         </footer>
+      </div>
+
+      {/* Sticky buy bar — pinned to the bottom on mobile, with a soft pulse. */}
+      <div className="m-sticky-cta">
+        <button className="m-btn m-btn--pulse" onClick={buy} disabled={loading}>
+          {loading ? <span className="m-spin" /> : o.buy}
+        </button>
+        <p className="m-sticky-cta__price">
+          {o.todayLabel}: {money(total, dict.numberLocale)} · {o.accessEmail}
+        </p>
+        {error && <p className="m-field-error" style={{ margin: '0.4rem 0 0' }}>{error}</p>}
       </div>
     </>
   );
@@ -233,30 +213,11 @@ function Bump({ dict, checked, onToggle }: { dict: MenoDict; checked: boolean; o
   const label = dict.offer.bumpLabel.replace('{price}', money(prices.bump, dict.numberLocale));
   return (
     <label className="m-bump m-section" style={{ marginTop: '1.5rem' }}>
+      {/* TODO: miniatura del bump "Vuelve a Descansar Bien en 21 Días". */}
+      <div className="m-bump__thumb" aria-hidden="true" />
       <input type="checkbox" checked={checked} onChange={onToggle} />
       <span>{label}</span>
     </label>
-  );
-}
-
-function BuyBlock({
-  dict, total, loading, error, onBuy,
-}: { dict: MenoDict; total: number; loading: boolean; error: string; onBuy: () => void }) {
-  const o = dict.offer;
-  return (
-    <div className="m-section">
-      <button className="m-btn m-btn--pulse" onClick={onBuy} disabled={loading}>
-        {loading ? <span className="m-spin" /> : o.buy}
-      </button>
-      <p className="m-center m-muted" style={{ marginTop: '0.6rem', fontWeight: 600 }}>
-        {dict.offer.todayLabel}: {money(total, dict.numberLocale)}
-      </p>
-      {error && <p className="m-field-error">{error}</p>}
-      <div className="m-paysafe" style={{ marginTop: '0.75rem' }}>
-        <LockIcon /> {o.paySecure} · <span>Visa</span> · <span>Apple Pay</span> · <span>Google Pay</span>
-      </div>
-      <p className="m-center m-muted" style={{ fontSize: '0.85rem', marginTop: '0.4rem' }}>{o.accessEmail}</p>
-    </div>
   );
 }
 
