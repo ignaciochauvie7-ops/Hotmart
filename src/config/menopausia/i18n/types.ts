@@ -75,42 +75,69 @@ export interface MenoDict {
   };
 
   offer: {
-    /** {time} → mm:ss */
-    reserved: string;
-    /** {age} → age range label. */
+    // ── Bloque 1 · Promesa ──────────────────────────────────────────────
+    /** {age} → franja de edad del quiz. */
     headline: string;
-    /** appended to headline when an event was chosen. {event} filled. */
-    headlineEvent: string;
-    /** phrase per event option index (aligned to quiz.event.options); empty = no addon. */
-    eventPhrases: string[];
-    profileGoalPrefix: string;
-    /** 3 short benefit lines shown under the pack image. */
+    /** Titular sin personalizar (entrada directa, sin respuestas). */
+    genericHeadline: string;
+    subhead: string;
+    /** Línea sobre los chips del perfil, p. ej. "Según tus respuestas:". */
+    profileIntro: string;
+    /** 3 beneficios cortos. */
     benefits: string[];
-    receiveTitle: string;
-    items: ValueItem[];
-    /** Label shown in place of a price on the bonus rows (e.g. "GRATIS"). */
-    freeLabel: string;
-    totalLabel: string;
-    totalValue: number;
-    todayLabel: string;
-    priceNow: number;
-    priceOld: number;
-    offLabel: string;
+    ctaMain: string;
+    /** Línea de confianza bajo el CTA (pago seguro · PDF al instante). */
+    trustInline: string;
+
+    // ── Bloque 2 · Problema + solución ──────────────────────────────────
+    problemTitle: string;
+    problemBody: string[];
+    solutionTitle: string;
+    solutionBody: string;
+    includesTitle: string;
+    ebook: { name: string; blurb: string };
+    bonusesTitle: string;
+    bonuses: { name: string; blurb: string }[];
+
+    // ── Bloque 3 · Prueba honesta ───────────────────────────────────────
+    proofTitle: string;
+    proofSecure: string;
+    /** {days} → días de garantía. */
+    proofGuarantee: string;
+    proofDelivery: string;
+    /** Prefijo antes del email de soporte (solo si SUPPORT_EMAIL existe). */
+    proofSupportPrefix: string;
+
+    // ── Bloque 4 · Oferta ───────────────────────────────────────────────
+    offerTitle: string;
+    getListTitle: string;
+    getList: string[];
+    priceLead: string;
+    priceNote: string;
+    /** {price} → precio del bump en moneda local. */
     bumpLabel: string;
-    buy: string;
-    paySecure: string;
-    accessEmail: string;
-    howTitle: string;
-    howSteps: string[];
-    guaranteeTitle: string;
-    guaranteeBody: string;
+    ctaOffer: string;
+    /** {days} → días de garantía. */
+    guaranteeBadge: string;
+    paymentNote: string;
+    /** "Total hoy" cuando el bump está marcado. */
+    totalTodayLabel: string;
+
+    // ── Bloque 5 · FAQ + cierre ─────────────────────────────────────────
     faqTitle: string;
+    /** La respuesta de la garantía admite el token {days}. */
     faq: FaqItem[];
+    medicalNote: string;
+    finalTitle: string;
+    ctaFinal: string;
+
+    // ── Varios ──────────────────────────────────────────────────────────
+    freeLabel: string;
+    stickyPrefix: string;
+    checkoutError: string;
     footerDisclaimer: string;
     privacyLink: string;
     termsLink: string;
-    genericHeadline: string;
-    checkoutError: string;
   };
 
   gracias: {

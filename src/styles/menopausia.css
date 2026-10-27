@@ -823,142 +823,77 @@ body {
   font-weight: 600;
 }
 
-/* Offer --------------------------------------------------------------------- */
-.m-countbar {
-  position: sticky;
-  top: 0;
-  z-index: 30;
-  text-align: center;
-  padding: 0.7rem 1rem;
-  padding-top: calc(0.7rem + env(safe-area-inset-top));
-  background: var(--sage-dark);
-  color: #fff;
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.m-countbar b {
-  font-variant-numeric: tabular-nums;
-}
-
-.m-value-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.m-value-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.65rem;
-}
-
-.m-value-item__check {
-  flex: none;
-  width: 22px;
-  height: 22px;
-  color: var(--ok);
-  margin-top: 2px;
-}
-
-.m-value-item__price {
-  margin-left: auto;
-  white-space: nowrap;
-  color: var(--muted-text);
-  text-decoration: line-through;
-  font-size: 0.9rem;
-}
-
-.m-price-block {
-  text-align: center;
-  padding: 1.5rem;
-  background: var(--sage-soft);
-  border-radius: var(--radius-lg);
-}
-
-.m-price-old {
-  text-decoration: line-through;
-  color: var(--muted-text);
-  font-size: 1.1rem;
-}
-
-.m-price-now {
-  font-family: var(--font-serif);
-  font-size: 3rem;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1;
-}
-
-.m-badge-off {
-  display: inline-block;
-  margin-top: 0.5rem;
-  padding: 0.25rem 0.75rem;
-  background: var(--amber);
-  color: var(--ink);
-  border-radius: 999px;
-  font-size: 0.85rem;
-  font-weight: 700;
-}
-
-.m-bump {
-  border: 2px dashed var(--terra);
-  border-radius: var(--radius);
-  padding: 1rem 1.15rem;
-  background: color-mix(in srgb, var(--terra) 6%, var(--surface));
-  display: flex;
-  gap: 0.75rem;
-  align-items: flex-start;
-  cursor: pointer;
-}
-
-.m-bump input {
-  flex: none;
-  width: 26px;
-  height: 26px;
-  margin-top: 2px;
-  accent-color: var(--terra);
-  cursor: pointer;
-}
-
-/* Offer: lean mobile structure — title → pack → benefits → includes → bump →
-   price → CTA. Leave room at the bottom for the sticky buy bar. */
+/* ───────────────────────────────────────────────────────────────────────────
+   Offer (/oferta) — mobile-first long-form sales page. Single real price from
+   getPricing(locale); no countdown, no struck prices, no fake anchors.
+   Motion: transform + opacity only, scroll-reveal once, slide-in sticky bar.
+   ─────────────────────────────────────────────────────────────────────────── */
 .m-shell--offer {
-  padding-bottom: calc(150px + env(safe-area-inset-bottom));
+  /* Room for the fixed buy bar on mobile so it never covers content. */
+  padding-bottom: calc(132px + env(safe-area-inset-bottom));
 }
 
-.m-offer-title {
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
+/* Hero / promise ------------------------------------------------------------ */
+.m-hero {
+  padding-top: 2rem;
   text-align: center;
-  font-size: 1.6rem;
 }
 
-/* Product image placeholders — real art drops in later (see TODO in Offer.tsx).
-   Fixed 3:4 frames so the layout doesn't jump when the images arrive. */
-.m-offer-media {
-  width: 100%;
-  max-width: 240px;
-  margin: 0 auto 1.25rem;
-  aspect-ratio: 3 / 4;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, var(--sage-soft), var(--cream));
-  border: 1px solid var(--line);
+.m-hero__title {
+  font-size: clamp(1.75rem, 6.6vw, 2.15rem);
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.m-hero__sub {
+  margin: 0.9rem auto 0;
+  max-width: 34ch;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--muted-text);
+}
+
+.m-profile {
+  margin-top: 1.5rem;
+}
+
+.m-profile__intro {
+  margin-bottom: 0.6rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--sage-dark);
+}
+
+.m-profile .m-chips {
+  justify-content: center;
+}
+
+.m-profile .m-chip {
+  font-weight: 500;
+}
+
+.m-profile .m-chip__label {
+  font-weight: 700;
 }
 
 .m-benefits {
   list-style: none;
-  margin: 0 0 0.5rem;
+  margin: 1.75rem 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--s-3); /* 12px */
+  gap: var(--s-3);
+  text-align: left;
 }
 
 .m-benefit {
   display: flex;
   align-items: flex-start;
-  gap: var(--s-2); /* 8px */
+  gap: 0.6rem;
+  font-size: 1.02rem;
   font-weight: 500;
 }
 
@@ -967,66 +902,445 @@ body {
   width: 22px;
   height: 22px;
   color: var(--terra);
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
-.m-include-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-3); /* 12px */
+/* Primary CTA with a soft glow + one-pass sheen on hover (no looping). */
+.m-btn--glow {
+  position: relative;
+  overflow: hidden;
+  margin-top: 1.75rem;
+  box-shadow: 0 10px 26px rgba(214, 51, 108, 0.32);
 }
 
-.m-include-row {
+.m-btn--glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 38%, rgba(255, 255, 255, 0.28) 50%, transparent 62%);
+  transform: translateX(-130%);
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .m-btn--glow:hover {
+    box-shadow: 0 12px 30px rgba(214, 51, 108, 0.42);
+  }
+  .m-btn--glow:hover::after {
+    transform: translateX(130%);
+    transition: transform 720ms var(--ease-out);
+  }
+}
+
+.m-cta-trust {
   display: flex;
   align-items: center;
-  gap: var(--s-3); /* 12px */
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted-text);
 }
 
-/* Small 3:4 thumb placeholder for the ebook / bonus covers. */
-.m-include-row__thumb {
+.m-cta-trust svg {
   flex: none;
-  width: 48px;
-  aspect-ratio: 3 / 4;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--sage-soft), var(--cream));
-  border: 1px solid var(--line);
+  color: var(--sage-dark);
 }
 
-.m-include-row__name {
-  flex: 1;
+/* Invisible marker: when it scrolls above the fold, the sticky bar slides in. */
+.m-sentinel {
+  height: 1px;
+}
+
+/* Sections ------------------------------------------------------------------ */
+.m-section {
+  margin-top: 2.75rem;
+}
+
+.m-section > h2 {
+  font-size: clamp(1.35rem, 4.8vw, 1.5rem);
+  line-height: 1.22;
+  color: var(--sage);
+  margin-bottom: 1rem;
+  text-wrap: balance;
+}
+
+.m-prose {
+  margin-bottom: 0.85rem;
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+.m-subhead {
+  margin-top: 1.75rem;
+  margin-bottom: 1rem;
+  font-size: 1.15rem;
+  color: var(--ink);
+}
+
+/* Includes: ebook + 4 bonus. A plain list, not a grid of look-alike cards. */
+.m-features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.m-feature {
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-start;
+}
+
+.m-feature__mark {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sage-soft);
+  color: var(--sage-dark);
+  margin-top: 1px;
+}
+
+.m-feature__mark svg {
+  width: 16px;
+  height: 16px;
+}
+
+.m-feature__name {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+.m-tag {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--terra) 12%, var(--surface));
+  color: var(--terra-hover);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.m-feature__blurb {
+  margin-top: 0.2rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--muted-text);
+}
+
+/* Honest proof — one bordered panel, rows inside. No invented testimonials. */
+.m-trust {
+  list-style: none;
+  margin: 0;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.m-trust__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
   font-size: 0.98rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.m-trust__icon {
+  flex: none;
+  color: var(--sage-dark);
+  margin-top: 1px;
+}
+
+.m-trust__row a {
+  color: var(--terra);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.m-reviews {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.m-review {
+  margin: 0;
+  padding: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.m-review footer {
+  margin-top: 0.5rem;
+  font-weight: 700;
+  color: var(--sage-dark);
+}
+
+/* Offer card ---------------------------------------------------------------- */
+.m-offer-card {
+  padding: 1.5rem;
+  border: 2px solid color-mix(in srgb, var(--terra) 24%, var(--surface));
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+
+.m-offer-card__head {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--sage-dark);
+  margin-bottom: 0.9rem;
+}
+
+.m-get {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.m-get__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 1rem;
   font-weight: 500;
 }
 
-.m-include-row__price {
+.m-get__check {
   flex: none;
-  color: var(--muted-text);
-  text-decoration: line-through;
-  font-size: 0.9rem;
+  width: 20px;
+  height: 20px;
+  color: var(--terra);
+  margin-top: 3px;
 }
 
-.m-include-row__free {
-  flex: none;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  background: var(--terra);
-  color: #fff;
-  font-size: 0.75rem;
+.m-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.m-price__lead {
+  font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted-text);
 }
 
-.m-bump__thumb {
+.m-price__now {
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 11vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.m-price__note {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--muted-text);
+}
+
+.m-bump {
+  margin-top: 1.25rem;
+  padding: 0.95rem 1.1rem;
+  border: 1.5px dashed var(--terra);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--terra) 6%, var(--surface));
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  cursor: pointer;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.m-bump input {
   flex: none;
-  width: 44px;
-  aspect-ratio: 3 / 4;
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--sage-soft), var(--cream));
-  border: 1px solid var(--line);
+  width: 24px;
+  height: 24px;
+  margin-top: 1px;
+  accent-color: var(--terra);
+  cursor: pointer;
 }
 
-/* Sticky buy bar — pinned to the viewport bottom on every screen of this
-   mobile-first funnel. transform/opacity only; the pulse lives on .m-btn--pulse. */
+.m-total {
+  margin-top: 0.9rem;
+  text-align: center;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.m-total strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.m-guarantee {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.25rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--sage);
+  border-radius: var(--radius);
+  background: var(--sage-soft);
+  color: var(--sage-dark);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.m-guarantee svg {
+  flex: none;
+}
+
+.m-paynote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.85rem;
+  font-size: 0.85rem;
+  color: var(--muted-text);
+}
+
+.m-paynote svg {
+  flex: none;
+  color: var(--sage-dark);
+}
+
+/* FAQ accordion ------------------------------------------------------------- */
+.m-faq {
+  border-top: 1px solid var(--line);
+}
+
+.m-faq-item {
+  border-bottom: 1px solid var(--line);
+}
+
+.m-faq-item h3 {
+  margin: 0;
+  font: inherit;
+}
+
+.m-faq-q {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.05rem 0;
+  min-height: 56px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.m-faq-chevron {
+  flex: none;
+  color: var(--sage-dark);
+  transition: transform 220ms var(--ease-out);
+}
+
+.m-faq-item.is-open .m-faq-chevron {
+  transform: rotate(180deg);
+}
+
+/* Smooth open/close via grid-template-rows 0fr → 1fr (no layout jump). */
+.m-faq-a-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 260ms var(--ease-out);
+}
+
+.m-faq-item.is-open .m-faq-a-wrap {
+  grid-template-rows: 1fr;
+}
+
+.m-faq-a {
+  overflow: hidden;
+  min-height: 0;
+  color: var(--muted-text);
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.m-faq-item.is-open .m-faq-a {
+  padding-bottom: 1.1rem;
+}
+
+.m-medical {
+  margin-top: 1.5rem;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--sage-soft) 60%, var(--surface));
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--sage-dark);
+}
+
+/* Closing ------------------------------------------------------------------- */
+.m-final {
+  text-align: center;
+}
+
+.m-final > h2 {
+  margin-bottom: 0;
+  color: var(--ink);
+}
+
+/* Footer -------------------------------------------------------------------- */
+.m-footer {
+  text-align: center;
+  color: var(--muted-text);
+  font-size: 0.85rem;
+  padding-top: 2.5rem;
+}
+
+.m-footer a {
+  color: var(--sage-dark);
+  text-decoration: underline;
+}
+
+/* Fixed buy bar — slides in once past the first CTA; never covers content. */
 .m-sticky-cta {
   position: fixed;
   left: 0;
@@ -1036,142 +1350,54 @@ body {
   width: min(100% - 32px, 440px);
   margin-inline: auto;
   margin-bottom: calc(10px + env(safe-area-inset-bottom));
-  padding: var(--s-3) var(--s-4); /* 12px 16px */
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--cream) 94%, transparent);
-  backdrop-filter: blur(8px);
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--cream) 92%, transparent);
+  backdrop-filter: blur(10px);
   box-shadow: var(--shadow-lg);
+  transform: translateY(160%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 340ms var(--ease-out), opacity 340ms var(--ease-out);
+}
+
+.m-sticky-cta.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .m-sticky-cta .m-btn {
-  box-shadow: 0 6px 16px rgba(194, 122, 92, 0.28);
+  min-height: 54px;
+  margin-top: 0;
+  box-shadow: 0 6px 16px rgba(214, 51, 108, 0.3);
 }
 
 .m-sticky-cta__price {
-  margin: 0.5rem 0 0;
+  margin: 0.45rem 0 0;
   text-align: center;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--muted-text);
+  font-variant-numeric: tabular-nums;
 }
 
-/* Results photo carousel (/oferta) — photos only, horizontal snap scroll. */
-.m-results-carousel {
-  display: flex;
-  gap: 0.75rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 0.25rem;
+/* Hero entrance — staggered fade/rise, one authored moment on load. */
+@media (prefers-reduced-motion: no-preference) {
+  .m-hero-in {
+    opacity: 0;
+    animation: m-hero-in 520ms var(--ease-out) forwards;
+  }
+  .m-hero > .m-hero-in:nth-child(1) { animation-delay: 40ms; }
+  .m-hero > .m-hero-in:nth-child(2) { animation-delay: 110ms; }
+  .m-hero > .m-hero-in:nth-child(3) { animation-delay: 180ms; }
+  .m-hero > .m-hero-in:nth-child(4) { animation-delay: 250ms; }
+  .m-hero > .m-hero-in:nth-child(5) { animation-delay: 320ms; }
 }
 
-.m-results-carousel img {
-  flex: 0 0 auto;
-  width: 70%;
-  max-width: 260px;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  scroll-snap-align: center;
-}
-
-.m-faq-item {
-  border-bottom: 1px solid var(--line);
-}
-
-.m-faq-q {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 0;
-  background: none;
-  border: none;
-  text-align: left;
-  font-size: 1.0625rem;
-  font-weight: 600;
-  color: var(--ink);
-  cursor: pointer;
-}
-
-.m-faq-a {
-  overflow: hidden;
-  color: var(--muted-text);
-  padding-bottom: 1rem;
-}
-
-.m-steps {
-  display: grid;
-  gap: 1rem;
-}
-
-.m-step {
-  display: flex;
-  gap: 0.85rem;
-  align-items: flex-start;
-}
-
-.m-step__n {
-  flex: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--sage);
-  color: #fff;
-  display: grid;
-  place-items: center;
-  font-weight: 700;
-}
-
-.m-guarantee {
-  display: flex;
-  gap: 0.85rem;
-  align-items: center;
-  padding: 1.15rem;
-  border: 1px solid var(--sage);
-  border-radius: var(--radius);
-  background: var(--sage-soft);
-}
-
-.m-paysafe {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  color: var(--muted-text);
-  font-size: 0.85rem;
-}
-
-.m-footer {
-  text-align: center;
-  color: var(--muted-text);
-  font-size: 0.85rem;
-  padding-top: 2rem;
-}
-
-.m-footer a {
-  color: var(--sage-dark);
-  text-decoration: underline;
-}
-
-.m-section {
-  margin-top: 2.25rem;
-}
-
-.m-section > h2 {
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
-  color: var(--sage); /* teal section titles */
-}
-
-.m-divider {
-  height: 1px;
-  background: var(--line);
-  border: none;
-  margin: 2rem 0;
+@keyframes m-hero-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
 }
 
 /* Result chart -------------------------------------------------------------- */
@@ -1251,4 +1477,54 @@ body {
   .m-btn--pulse {
     animation: none;
   }
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Shared upsell styles used by /gracias (kept here so that page is unaffected
+   by the /oferta redesign). Not used on /oferta.
+   ─────────────────────────────────────────────────────────────────────────── */
+.m-value-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.m-value-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.m-value-item__check {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  color: var(--ok);
+  margin-top: 2px;
+}
+
+.m-price-block {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--sage-soft);
+  border-radius: var(--radius-lg);
+}
+
+.m-price-now {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.m-badge-off {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--amber);
+  color: var(--ink);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
 }

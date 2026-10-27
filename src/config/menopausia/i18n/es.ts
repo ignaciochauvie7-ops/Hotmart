@@ -130,54 +130,130 @@ export const es: MenoDict = {
   },
 
   offer: {
-    reserved: 'Tu descuento está reservado: {time}',
-    headline: 'Tu plan para desinflamar el abdomen en 28 días, para mujeres de {age}',
-    headlineEvent: '{base}, a tiempo para {event}',
-    eventPhrases: ['tus vacaciones', 'tu boda o celebración', 'tu cumpleaños', ''],
-    profileGoalPrefix: 'Tu objetivo',
+    // Bloque 1 · Promesa
+    headline: 'Tu plan de 28 días para sentirte más ligera, hecho para mujeres de {age}',
+    genericHeadline: 'Tu plan de 28 días para sentirte más ligera en la menopausia',
+    subhead:
+      'Rutinas cortas y comidas sencillas que encajan en tu día, sin pasar hambre ni pisar el gimnasio.',
+    profileIntro: 'Según tus respuestas:',
     benefits: [
-      'Rutina de 15 minutos al día, sin equipo',
-      'Plan de comidas pensado para la menopausia',
-      'Resultados visibles en tu abdomen en 28 días',
+      '15 minutos al día, en casa y sin equipo',
+      'Comidas pensadas para esta etapa, sin dietas imposibles',
+      'Pasos sencillos para notar menos hinchazón día a día',
     ],
-    receiveTitle: 'Qué incluye',
-    freeLabel: 'GRATIS',
-    items: [
-      { name: 'Reto Abdomen Plano en 28 Días: rutina de 15 min + plan de comidas + listas de compras', price: 67 },
-      { name: 'Bonus 1: 30 recetas antiinflamatorias', price: 19 },
-      { name: 'Bonus 2: Tracker imprimible de 28 días', price: 9 },
-      { name: 'Bonus 3: Come fuera sin hincharte', price: 12 },
-      { name: 'Bonus 4: Plan Rescate de 3 días', price: 12 },
+    ctaMain: 'Quiero mi plan',
+    trustInline: 'Pago seguro · Lo recibes en PDF al instante',
+
+    // Bloque 2 · Problema + solución
+    problemTitle: 'Si sientes que tu cuerpo ya no responde como antes, no es culpa tuya',
+    problemBody: [
+      'En la menopausia tus hormonas cambian las reglas: la rutina de siempre deja de funcionar y aparecen la hinchazón, el cansancio y las noches en vela.',
+      'No necesitas más fuerza de voluntad. Necesitas un plan pensado para esta etapa, que se adapte a tu tiempo y a tu cuerpo de hoy.',
     ],
-    totalLabel: 'Valor total',
-    totalValue: 119,
-    todayLabel: 'Hoy',
-    priceNow: 16.97,
-    priceOld: 67,
-    offLabel: '-75%',
+    solutionTitle: 'Un plan de 28 días que encaja en tu vida',
+    solutionBody:
+      'Solo 15 minutos al día, en casa, con comidas sencillas y las listas de la compra ya hechas. Lo abres en el móvil o lo imprimes, y empiezas hoy mismo.',
+    includesTitle: 'Qué incluye tu plan',
+    ebook: {
+      name: 'Reto Abdomen Plano en 28 Días',
+      blurb: 'La rutina guiada de 15 minutos al día, el plan de comidas y las listas de la compra, paso a paso.',
+    },
+    bonusesTitle: 'Y 4 extras de regalo',
+    bonuses: [
+      { name: '30 recetas antiinflamatorias', blurb: 'Platos fáciles y sabrosos para cocinar sin complicarte.' },
+      { name: 'Tracker imprimible de 28 días', blurb: 'Una hoja para marcar cada día y ver tu avance de un vistazo.' },
+      { name: 'Come fuera sin hincharte', blurb: 'Qué pedir en restaurantes y reuniones para seguir tu plan sin renunciar a nada.' },
+      { name: 'Plan Rescate de 3 días', blurb: 'Un reinicio corto para los días en que te notas más hinchada.' },
+    ],
+
+    // Bloque 3 · Prueba honesta
+    proofTitle: 'Comprar es seguro y sin riesgos',
+    proofSecure:
+      'Pago protegido y procesado por Dodo Payments. No guardamos los datos de tu tarjeta.',
+    proofGuarantee: 'Garantía de {days} días: si no es para ti, te devolvemos el dinero.',
+    proofDelivery: 'Entrega inmediata: recibes todo en tu email nada más pagar.',
+    proofSupportPrefix: '¿Tienes dudas? Escríbenos a',
+
+    // Bloque 4 · Oferta
+    offerTitle: 'Todo tu plan, en un solo pago',
+    getListTitle: 'Esto recibes hoy',
+    getList: [
+      'Reto Abdomen Plano en 28 Días',
+      '30 recetas antiinflamatorias',
+      'Tracker imprimible de 28 días',
+      'Come fuera sin hincharte',
+      'Plan Rescate de 3 días',
+    ],
+    priceLead: 'Hoy',
+    priceNote: 'Pago único · Sin suscripción · Sin cargos ocultos',
     bumpLabel:
-      'Sí, agrega Vuelve a Descansar Bien en 21 Días: plan de 21 noches para dormir de corrido y frenar los sofocos. Solo {price}',
-    buy: 'Quiero mi plan ahora',
-    paySecure: 'Pago seguro',
-    accessEmail: 'Acceso inmediato por email',
-    howTitle: 'Cómo funciona',
-    howSteps: ['Pagas de forma segura', 'Recibes todo por email al instante', 'Empiezas hoy mismo'],
-    guaranteeTitle: 'Garantía de 30 días',
-    guaranteeBody: 'Si no te sirve, te devolvemos el dinero.',
+      'Añade Vuelve a Descansar Bien en 21 Días: un plan de 21 noches para dormir mejor. Solo {price}.',
+    ctaOffer: 'Quiero mi plan',
+    guaranteeBadge: 'Garantía de {days} días',
+    paymentNote: 'Acceso inmediato por email tras el pago',
+    totalTodayLabel: 'Total hoy',
+
+    // Bloque 5 · FAQ + cierre
     faqTitle: 'Preguntas frecuentes',
     faq: [
-      { q: '¿Necesito equipo?', a: 'No. Solo una pared, una esterilla y una silla.' },
-      { q: '¿Cuánto tiempo al día?', a: '15 minutos al día.' },
-      { q: '¿Cómo lo recibo?', a: 'En PDF por email, al instante tras el pago.' },
-      { q: '¿Sirve si ya no tengo la regla?', a: 'Sí. El plan está pensado para todas las etapas de la menopausia.' },
-      { q: '¿Es un pago único?', a: 'Sí, un único pago. Sin suscripciones.' },
+      {
+        q: '¿Qué recibo exactamente y en qué formato?',
+        a: 'Recibes el plan completo de 28 días y los 4 extras en PDF: puedes leerlos en el móvil, la tablet o el ordenador, o imprimirlos si lo prefieres.',
+      },
+      {
+        q: '¿Cuándo me llega?',
+        a: 'Al instante. En cuanto se confirma el pago te enviamos todo a tu email, normalmente en menos de 5 minutos.',
+      },
+      {
+        q: '¿Funciona en el celular?',
+        a: 'Sí. Son archivos PDF que se abren en cualquier teléfono, tablet u ordenador, sin instalar nada.',
+      },
+      {
+        q: '¿Necesito gimnasio o aparatos?',
+        a: 'No. Los ejercicios se hacen en casa con tu propio cuerpo; como mucho una silla y una esterilla.',
+      },
+      {
+        q: '¿Sirve para mi edad y mi etapa de la menopausia?',
+        a: 'Sí. Está pensado para mujeres de 45 a 60 años, tengas o no la regla: premenopausia, menopausia o posmenopausia.',
+      },
+      {
+        q: '¿Es una suscripción?',
+        a: 'No. Es un pago único. No hay cuotas ni cargos recurrentes.',
+      },
+      {
+        q: '¿Cómo se paga y en qué moneda?',
+        a: 'Pagas con tarjeta de forma segura. El importe se muestra y se cobra en euros.',
+      },
+      {
+        q: '¿Es seguro pagar?',
+        a: 'Sí. El pago lo procesa Dodo Payments con conexión cifrada; nosotros no vemos ni guardamos los datos de tu tarjeta.',
+      },
+      {
+        q: '¿Qué pasa si no me gusta?',
+        a: 'Tienes {days} días de garantía. Si no es para ti, escríbenos y te devolvemos el dinero.',
+      },
+      {
+        q: '¿Cómo imprimo el tracker?',
+        a: 'Abre el PDF del tracker y pulsa imprimir desde el móvil o el ordenador. También puedes marcarlo en pantalla si prefieres no gastar papel.',
+      },
+      {
+        q: '¿A quién escribo si no me llega?',
+        a: 'Revisa primero las carpetas de spam y promociones. Si en unos minutos sigues sin verlo, responde al email de tu compra y te lo reenviamos enseguida.',
+      },
     ],
+    medicalNote:
+      'Este plan es informativo y de estilo de vida: no sustituye la consulta médica. Si tienes alguna condición de salud, consulta a tu médico antes de empezar.',
+    finalTitle: 'Empieza hoy tu plan de 28 días',
+    ctaFinal: 'Quiero mi plan ahora',
+
+    // Varios
+    freeLabel: 'Incluido',
+    stickyPrefix: 'Hoy',
+    checkoutError: 'No pudimos abrir el pago. Inténtalo de nuevo en un momento.',
     footerDisclaimer:
       'Este programa es informativo y no sustituye el consejo de un profesional de la salud.',
     privacyLink: 'Privacidad',
     termsLink: 'Términos',
-    genericHeadline: 'Tu plan para desinflamar el abdomen en 28 días, para mujeres de 45 a 60 años',
-    checkoutError: 'No pudimos abrir el pago. Inténtalo de nuevo en un momento.',
   },
 
   gracias: {
@@ -229,7 +305,7 @@ export const es: MenoDict = {
     termsBody: [
       'Al comprar aceptas que recibirás un producto digital descargable de acceso inmediato por email.',
       'El producto es informativo y no sustituye el consejo de un profesional de la salud. Consulta a tu médico antes de empezar cualquier plan.',
-      'Ofrecemos una garantía de devolución de 30 días: si el producto no te sirve, te devolvemos el importe pagado.',
+      'Ofrecemos una garantía de devolución de 14 días: si el producto no te sirve, te devolvemos el importe pagado.',
       'El pago es único, sin suscripciones ni cargos recurrentes.',
     ],
     backHome: 'Volver',

@@ -131,54 +131,130 @@ export const pt: MenoDict = {
   },
 
   offer: {
-    reserved: 'O teu desconto está reservado: {time}',
-    headline: 'O teu plano para desinchar a barriga em 28 dias, para mulheres dos {age}',
-    headlineEvent: '{base}, a tempo para {event}',
-    eventPhrases: ['as tuas férias', 'o teu casamento ou celebração', 'o teu aniversário', ''],
-    profileGoalPrefix: 'O teu objetivo',
+    // Bloco 1 · Promessa
+    headline: 'O teu plano de 28 dias para te sentires mais leve, feito para mulheres dos {age}',
+    genericHeadline: 'O teu plano de 28 dias para te sentires mais leve na menopausa',
+    subhead:
+      'Rotinas curtas e refeições simples que encaixam no teu dia, sem passar fome nem ir ao ginásio.',
+    profileIntro: 'De acordo com as tuas respostas:',
     benefits: [
-      'Rotina de 15 minutos por dia, sem equipamento',
-      'Plano de refeições pensado para a menopausa',
-      'Resultados visíveis na tua barriga em 28 dias',
+      '15 minutos por dia, em casa e sem equipamento',
+      'Refeições pensadas para esta fase, sem dietas impossíveis',
+      'Passos simples para sentir menos inchaço dia após dia',
     ],
-    receiveTitle: 'O que inclui',
-    freeLabel: 'GRÁTIS',
-    items: [
-      { name: 'Desafio Barriga Lisa em 28 Dias: rotina de 15 min + plano de refeições + listas de compras', price: 67 },
-      { name: 'Bónus 1: 30 receitas anti-inflamatórias', price: 19 },
-      { name: 'Bónus 2: Registo para imprimir de 28 dias', price: 9 },
-      { name: 'Bónus 3: Comer fora sem inchar', price: 12 },
-      { name: 'Bónus 4: Plano Resgate de 3 dias', price: 12 },
+    ctaMain: 'Quero o meu plano',
+    trustInline: 'Pagamento seguro · Recebe-lo em PDF de imediato',
+
+    // Bloco 2 · Problema + solução
+    problemTitle: 'Se sentes que o teu corpo já não responde como antes, a culpa não é tua',
+    problemBody: [
+      'Na menopausa as hormonas mudam as regras: a rotina de sempre deixa de funcionar e surgem o inchaço, o cansaço e as noites sem dormir.',
+      'Não precisas de mais força de vontade. Precisas de um plano pensado para esta fase, que se adapte ao teu tempo e ao teu corpo de hoje.',
     ],
-    totalLabel: 'Valor total',
-    totalValue: 119,
-    todayLabel: 'Hoje',
-    priceNow: 16.97,
-    priceOld: 67,
-    offLabel: '-75%',
+    solutionTitle: 'Um plano de 28 dias que encaixa na tua vida',
+    solutionBody:
+      'Só 15 minutos por dia, em casa, com refeições simples e as listas de compras já feitas. Abres no telemóvel ou imprimes e começas hoje mesmo.',
+    includesTitle: 'O que inclui o teu plano',
+    ebook: {
+      name: 'Desafio Barriga Lisa em 28 Dias',
+      blurb: 'A rotina guiada de 15 minutos por dia, o plano de refeições e as listas de compras, passo a passo.',
+    },
+    bonusesTitle: 'E 4 extras de oferta',
+    bonuses: [
+      { name: '30 receitas anti-inflamatórias', blurb: 'Pratos fáceis e saborosos para cozinhar sem complicações.' },
+      { name: 'Registo para imprimir de 28 dias', blurb: 'Uma folha para marcar cada dia e ver o teu progresso de relance.' },
+      { name: 'Comer fora sem inchar', blurb: 'O que pedir em restaurantes e encontros para seguir o teu plano sem abdicar de nada.' },
+      { name: 'Plano Resgate de 3 dias', blurb: 'Um reinício curto para os dias em que te sentes mais inchada.' },
+    ],
+
+    // Bloco 3 · Prova honesta
+    proofTitle: 'Comprar é seguro e sem riscos',
+    proofSecure:
+      'Pagamento protegido e processado pela Dodo Payments. Não guardamos os dados do teu cartão.',
+    proofGuarantee: 'Garantia de {days} dias: se não for para ti, devolvemos-te o dinheiro.',
+    proofDelivery: 'Entrega imediata: recebes tudo no teu email assim que pagas.',
+    proofSupportPrefix: 'Tens dúvidas? Escreve-nos para',
+
+    // Bloco 4 · Oferta
+    offerTitle: 'Todo o teu plano, num único pagamento',
+    getListTitle: 'Isto recebes hoje',
+    getList: [
+      'Desafio Barriga Lisa em 28 Dias',
+      '30 receitas anti-inflamatórias',
+      'Registo para imprimir de 28 dias',
+      'Comer fora sem inchar',
+      'Plano Resgate de 3 dias',
+    ],
+    priceLead: 'Hoje',
+    priceNote: 'Pagamento único · Sem subscrição · Sem custos ocultos',
     bumpLabel:
-      'Sim, adiciona Volta a Descansar Bem em 21 Dias: plano de 21 noites para dormir sem interrupções e travar os afrontamentos. Só {price}',
-    buy: 'Quero o meu plano agora',
-    paySecure: 'Pagamento seguro',
-    accessEmail: 'Acesso imediato por email',
-    howTitle: 'Como funciona',
-    howSteps: ['Pagas em segurança', 'Recebes tudo por email de imediato', 'Começas hoje mesmo'],
-    guaranteeTitle: 'Garantia de 30 dias',
-    guaranteeBody: 'Se não resultar para ti, devolvemos-te o dinheiro.',
+      'Adiciona Volta a Descansar Bem em 21 Dias: um plano de 21 noites para dormir melhor. Só {price}.',
+    ctaOffer: 'Quero o meu plano',
+    guaranteeBadge: 'Garantia de {days} dias',
+    paymentNote: 'Acesso imediato por email após o pagamento',
+    totalTodayLabel: 'Total hoje',
+
+    // Bloco 5 · FAQ + fecho
     faqTitle: 'Perguntas frequentes',
     faq: [
-      { q: 'Preciso de equipamento?', a: 'Não. Só uma parede, um tapete e uma cadeira.' },
-      { q: 'Quanto tempo por dia?', a: '15 minutos por dia.' },
-      { q: 'Como o recebo?', a: 'Em PDF por email, de imediato após o pagamento.' },
-      { q: 'Resulta se já não tenho menstruação?', a: 'Sim. O plano foi pensado para todas as fases da menopausa.' },
-      { q: 'É um pagamento único?', a: 'Sim, um único pagamento. Sem subscrições.' },
+      {
+        q: 'O que recebo exatamente e em que formato?',
+        a: 'Recebes o plano completo de 28 dias e os 4 extras em PDF: podes lê-los no telemóvel, no tablet ou no computador, ou imprimi-los se preferires.',
+      },
+      {
+        q: 'Quando me chega?',
+        a: 'De imediato. Assim que o pagamento é confirmado enviamos tudo para o teu email, normalmente em menos de 5 minutos.',
+      },
+      {
+        q: 'Funciona no telemóvel?',
+        a: 'Sim. São ficheiros PDF que abrem em qualquer telemóvel, tablet ou computador, sem instalar nada.',
+      },
+      {
+        q: 'Preciso de ginásio ou aparelhos?',
+        a: 'Não. Os exercícios fazem-se em casa com o teu próprio corpo; quando muito uma cadeira e um tapete.',
+      },
+      {
+        q: 'Serve para a minha idade e a minha fase da menopausa?',
+        a: 'Sim. Foi pensado para mulheres dos 45 aos 60 anos, tenhas ou não menstruação: pré-menopausa, menopausa ou pós-menopausa.',
+      },
+      {
+        q: 'É uma subscrição?',
+        a: 'Não. É um pagamento único. Não há mensalidades nem custos recorrentes.',
+      },
+      {
+        q: 'Como se paga e em que moeda?',
+        a: 'Pagas com cartão de forma segura. O valor é mostrado e cobrado em euros.',
+      },
+      {
+        q: 'É seguro pagar?',
+        a: 'Sim. O pagamento é processado pela Dodo Payments com ligação cifrada; nós não vemos nem guardamos os dados do teu cartão.',
+      },
+      {
+        q: 'E se não gostar?',
+        a: 'Tens {days} dias de garantia. Se não for para ti, escreve-nos e devolvemos-te o dinheiro.',
+      },
+      {
+        q: 'Como imprimo o registo?',
+        a: 'Abre o PDF do registo e carrega em imprimir no telemóvel ou no computador. Também o podes marcar no ecrã se preferires não gastar papel.',
+      },
+      {
+        q: 'A quem escrevo se não me chegar?',
+        a: 'Verifica primeiro as pastas de spam e promoções. Se ao fim de alguns minutos continuares sem o ver, responde ao email da tua compra e reenviamos-to.',
+      },
     ],
+    medicalNote:
+      'Este plano é informativo e de estilo de vida: não substitui a consulta médica. Se tens alguma condição de saúde, consulta o teu médico antes de começar.',
+    finalTitle: 'Começa hoje o teu plano de 28 dias',
+    ctaFinal: 'Quero o meu plano agora',
+
+    // Vários
+    freeLabel: 'Incluído',
+    stickyPrefix: 'Hoje',
+    checkoutError: 'Não foi possível abrir o pagamento. Tenta novamente dentro de momentos.',
     footerDisclaimer:
       'Este programa é informativo e não substitui o aconselhamento de um profissional de saúde.',
     privacyLink: 'Privacidade',
     termsLink: 'Termos',
-    genericHeadline: 'O teu plano para desinchar a barriga em 28 dias, para mulheres dos 45 aos 60 anos',
-    checkoutError: 'Não foi possível abrir o pagamento. Tenta novamente dentro de momentos.',
   },
 
   gracias: {
@@ -230,7 +306,7 @@ export const pt: MenoDict = {
     termsBody: [
       'Ao comprar aceitas que vais receber um produto digital descarregável, com acesso imediato por email.',
       'O produto é informativo e não substitui o aconselhamento de um profissional de saúde. Consulta o teu médico antes de iniciar qualquer plano.',
-      'Oferecemos uma garantia de devolução de 30 dias: se o produto não resultar para ti, devolvemos o valor pago.',
+      'Oferecemos uma garantia de devolução de 14 dias: se o produto não resultar para ti, devolvemos o valor pago.',
       'O pagamento é único, sem subscrições nem cobranças recorrentes.',
     ],
     backHome: 'Voltar',

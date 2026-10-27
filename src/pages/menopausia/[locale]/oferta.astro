@@ -10,8 +10,11 @@ export function getStaticPaths() {
 const { locale } = Astro.params;
 if (!isLocale(locale)) return Astro.redirect('/menopausia/es');
 const dict = getDict(locale);
+
+// Email de soporte opcional: si no existe, la UI no muestra ese dato.
+const supportEmail = import.meta.env.SUPPORT_EMAIL ?? process.env.SUPPORT_EMAIL ?? '';
 ---
 
 <MenoLayout locale={locale} title={dict.meta.offerTitle} description={dict.meta.offerDesc}>
-  <Offer locale={locale} client:load />
+  <Offer locale={locale} supportEmail={supportEmail} client:load />
 </MenoLayout>
