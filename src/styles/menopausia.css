@@ -526,15 +526,8 @@ body {
   box-shadow: 0 2px 8px rgba(194, 122, 92, 0.45);
 }
 
-/* Loading screens: bars sit near the top, the photo marquee fills below ------ */
-/* Top-align loader screens (otherwise .m-screen centers them mid-stage). This
-   lifts the progress bars up and gives the marquee room underneath. */
-.m-stage .m-screen:has(.m-loader) {
-  margin-block: 0;
-  justify-content: flex-start;
-  padding-top: 2.5rem;
-}
-
+/* Loading screens: the whole block (bars + marquee) is centered vertically in
+   the stage as one group — the default .m-screen margin-block:auto handles it. */
 .m-loader {
   padding-top: 0;
 }
