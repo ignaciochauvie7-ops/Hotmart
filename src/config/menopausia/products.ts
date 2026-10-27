@@ -21,18 +21,38 @@ export const products: Record<MenoLocale, LocaleProducts> = {
     upsell: 'pdt_0Nqaa8qsvax3nojHzn1El',
   },
   pt: { main: '', bump: '', upsell: '' }, // TODO: IDs Dodo (pt)
-  pl: { main: '', bump: '', upsell: '' }, // TODO: IDs Dodo (pl)
+  pl: {
+    main: 'pdt_0Nqd1e1Vh0BBPV8WMDEY0',
+    bump: 'pdt_0Nqd1ybe9kHJIWaQTiAri',
+    upsell: 'pdt_0Nqd2Eo5sxihDoOzXGUxw',
+  },
 };
 
-/** Reference prices in EUR (used for Pixel/CAPI value + UI display). */
-export const prices = {
-  main: 16.97,
-  bump: 6.97,
-  upsell: 7.47,
-} as const;
+export interface LocalePricing {
+  /** ISO 4217 — drives Intl display + Dodo billing_currency. */
+  currency: string;
+  /** Charged + displayed amounts. pl is fixed in PLN (never converted from EUR). */
+  main: number;
+  bump: number;
+  upsell: number;
+}
+
+/**
+ * Per-locale pricing. es/pt in EUR; pl in fixed PLN (69/29/31) — shown with
+ * Intl pl-PL ("69 zł") and billed in PLN. No EUR conversion for pl.
+ */
+export const pricing: Record<MenoLocale, LocalePricing> = {
+  es: { currency: 'EUR', main: 16.97, bump: 6.97, upsell: 7.47 },
+  pt: { currency: 'EUR', main: 16.97, bump: 6.97, upsell: 7.47 },
+  pl: { currency: 'PLN', main: 69, bump: 29, upsell: 31 },
+};
 
 export function getProducts(locale: MenoLocale): LocaleProducts {
   return products[locale];
+}
+
+export function getPricing(locale: MenoLocale): LocalePricing {
+  return pricing[locale];
 }
 
 /** Reverse lookup: product_id → { locale, bucket }. Used by webhook/download. */

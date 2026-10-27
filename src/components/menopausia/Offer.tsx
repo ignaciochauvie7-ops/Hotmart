@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { getDict, money, type MenoDict, type MenoLocale } from '../../config/menopausia/i18n';
-import { prices } from '../../config/menopausia/products';
+import { getPricing } from '../../config/menopausia/products';
 import { fotosC, showResultsCarousel } from '../../config/menopausia/photos';
 import { loadAnswers } from '../../lib/menopausia/state';
 import { getCookie, track } from '../../lib/menopausia/pixel';
@@ -17,6 +17,8 @@ const COUNTDOWN_MS = 15 * 60 * 1000;
 export function Offer({ locale }: Props) {
   const dict = getDict(locale);
   const o = dict.offer;
+  const pr = getPricing(locale);
+  const nl = dict.numberLocale;
   const [bump, setBump] = useState(false);
   const [remaining, setRemaining] = useState(COUNTDOWN_MS);
   const [loading, setLoading] = useState(false);
@@ -69,12 +71,12 @@ export function Offer({ locale }: Props) {
     return () => io.disconnect();
   }, []);
 
-  const total = prices.main + (bump ? prices.bump : 0);
+  const total = pr.main + (bump ? pr.bump : 0);
 
   async function buy() {
     setError('');
     setLoading(true);
-    track('InitiateCheckout', { value: total, currency: 'EUR', content_name: 'menopausia_main' });
+    track('InitiateCheckout', { value: total, currency: pr.currency, content_name: 'menopausia_main' });
     try {
       const res = await fetch('/api/menopausia/checkout', {
         method: 'POST',
@@ -129,7 +131,7 @@ export function Offer({ locale }: Props) {
                 <div className="m-include-row__thumb" aria-hidden="true" />
                 <span className="m-include-row__name">{item.name}</span>
                 {i === 0 ? (
-                  <span className="m-include-row__price">{money(item.price, dict.numberLocale)}</span>
+                  <span className="m-include-row__price">{money(item.price, nl, pr.currency)}</span>
                 ) : (
                   <span className="m-include-row__free">{o.freeLabel}</span>
                 )}
@@ -138,13 +140,13 @@ export function Offer({ locale }: Props) {
           </div>
         </section>
 
-        <Bump dict={dict} checked={bump} onToggle={() => setBump((b) => !b)} />
+        <Bump dict={dict} locale={locale} checked={bump} onToggle={() => setBump((b) => !b)} />
 
         <section className="m-section">
           <div className="m-price-block">
-            <div className="m-price-old">{money(o.priceOld, dict.numberLocale)}</div>
+            <div className="m-price-old">{money(o.priceOld, nl, pr.currency)}</div>
             <div className="m-price-now">
-              {o.todayLabel}: {money(o.priceNow, dict.numberLocale)}
+              {o.todayLabel}: {money(pr.main, nl, pr.currency)}
             </div>
             <span className="m-badge-off">{o.offLabel}</span>
           </div>
@@ -189,7 +191,7 @@ export function Offer({ locale }: Props) {
           {loading ? <span className="m-spin" /> : o.buy}
         </button>
         <p className="m-sticky-cta__price">
-          {o.todayLabel}: {money(total, dict.numberLocale)} · {o.accessEmail}
+          {o.todayLabel}: {money(total, nl, pr.currency)} · {o.accessEmail}
         </p>
         {error && <p className="m-field-error" style={{ margin: '0.4rem 0 0' }}>{error}</p>}
       </div>
@@ -209,8 +211,9 @@ function CountBar({ text, remaining }: { text: string; remaining: number }) {
   );
 }
 
-function Bump({ dict, checked, onToggle }: { dict: MenoDict; checked: boolean; onToggle: () => void }) {
-  const label = dict.offer.bumpLabel.replace('{price}', money(prices.bump, dict.numberLocale));
+function Bump({ dict, locale, checked, onToggle }: { dict: MenoDict; locale: MenoLocale; checked: boolean; onToggle: () => void }) {
+  const pr = getPricing(locale);
+  const label = dict.offer.bumpLabel.replace('{price}', money(pr.bump, dict.numberLocale, pr.currency));
   return (
     <label className="m-bump m-section" style={{ marginTop: '1.5rem' }}>
       {/* TODO: miniatura del bump "Vuelve a Descansar Bien en 21 Días". */}

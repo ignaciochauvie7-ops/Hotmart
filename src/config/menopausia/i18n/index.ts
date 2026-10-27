@@ -20,11 +20,11 @@ export function getDict(locale: MenoLocale): MenoDict {
   return dicts[locale];
 }
 
-/** EUR formatter per locale: "16,97 €", integers drop decimals ("67 €"). */
-export function money(value: number, numberLocale: string): string {
+/** Currency formatter per locale: "16,97 €" (EUR), "69 zł" (PLN). Integers drop decimals. */
+export function money(value: number, numberLocale: string, currency = 'EUR'): string {
   return new Intl.NumberFormat(numberLocale, {
     style: 'currency',
-    currency: 'EUR',
+    currency,
     minimumFractionDigits: Number.isInteger(value) ? 0 : 2,
     maximumFractionDigits: 2,
   }).format(value);

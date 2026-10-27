@@ -6,7 +6,7 @@ import { Gracias } from '../../../components/menopausia/Gracias';
 import { getDict, isLocale } from '../../../config/menopausia/i18n';
 import { getDodoClient, retrievePayment, paymentIsPaid } from '../../../lib/menopausia/dodo';
 import { bucketsFromPayment, buildDownloads, type DownloadLink } from '../../../lib/menopausia/order';
-import { prices, type ProductBucket } from '../../../config/menopausia/products';
+import { getPricing, type ProductBucket } from '../../../config/menopausia/products';
 
 const { locale } = Astro.params;
 if (!isLocale(locale)) return Astro.redirect('/menopausia/es');
@@ -18,8 +18,8 @@ const statusParam = (params.get('status') ?? '').toLowerCase();
 let email = params.get('email') ?? undefined;
 
 let paid = false;
-let value = prices.main;
-let currency = 'EUR';
+let value = getPricing(locale).main;
+let currency = getPricing(locale).currency;
 let downloads: DownloadLink[] = [];
 
 const client = getDodoClient();

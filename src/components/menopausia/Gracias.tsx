@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getDict, money, type MenoLocale } from '../../config/menopausia/i18n';
-import { prices } from '../../config/menopausia/products';
+import { getPricing } from '../../config/menopausia/products';
 import { getCookie, track } from '../../lib/menopausia/pixel';
 import { Check } from './quiz/icons';
 
@@ -22,6 +22,8 @@ interface Props {
 export function Gracias({ locale, paid, value, currency, eventId, email, downloads = [] }: Props) {
   const dict = getDict(locale);
   const g = dict.gracias;
+  const pr = getPricing(locale);
+  const upsellPrice = money(pr.upsell, dict.numberLocale, pr.currency);
   const [loading, setLoading] = useState(false);
 
   // Verified Purchase — fire the Pixel event with event_id = payment_id (dedup).
@@ -66,7 +68,7 @@ export function Gracias({ locale, paid, value, currency, eventId, email, downloa
       <p className="m-chip" style={{ marginBottom: '1rem' }}>{g.upsellTag}</p>
       <h1 className="m-q">{g.upsellTitle}</h1>
       <p style={{ marginBottom: '1.25rem' }}>
-        {g.upsellBody.replace('{price}', money(prices.upsell, dict.numberLocale))}
+        {g.upsellBody.replace('{price}', upsellPrice)}
       </p>
 
       <div className="m-card">
@@ -79,7 +81,7 @@ export function Gracias({ locale, paid, value, currency, eventId, email, downloa
           ))}
         </div>
         <div className="m-price-block" style={{ marginTop: '1.25rem' }}>
-          <div className="m-price-now">{money(prices.upsell, dict.numberLocale)}</div>
+          <div className="m-price-now">{upsellPrice}</div>
           <span className="m-badge-off">{g.upsellPriceLabel}</span>
         </div>
       </div>

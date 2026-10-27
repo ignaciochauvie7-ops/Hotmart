@@ -1,5 +1,5 @@
 import DodoPayments from 'dodopayments';
-import type { MenoLocale } from '../../config/menopausia/products';
+import { getPricing, type MenoLocale } from '../../config/menopausia/products';
 
 function env(name: string): string {
   const meta = import.meta.env as Record<string, string | undefined>;
@@ -46,13 +46,15 @@ export interface CreateCheckoutArgs {
 export async function createCheckout(client: DodoPayments, args: CreateCheckoutArgs) {
   const payload: Record<string, unknown> = {
     product_cart: args.productCart,
-    billing_currency: 'EUR',
+    billing_currency: args.locale ? getPricing(args.locale).currency : 'EUR',
     return_url: args.returnUrl,
   };
   if (args.customerEmail) payload.customer = { email: args.customerEmail };
   if (args.metadata) payload.metadata = args.metadata;
   // Pass the UI language to Dodo (ignored by the API if unsupported).
   if (args.locale) payload.metadata = { ...(args.metadata ?? {}), locale: args.locale };
+  // pl checkout must render in Polish; other locales keep Dodo's default.
+  if (args.locale === 'pl') payload.force_language = 'pl';
   return (client as any).checkoutSessions.create(payload) as Promise<{
     checkout_url?: string;
     session_id?: string;
