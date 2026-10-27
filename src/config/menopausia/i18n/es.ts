@@ -162,6 +162,50 @@ export const es: MenoDict = {
       'Pruébalo sin riesgo. Si no estás conforme, escríbenos dentro de los {days} días y te devolvemos el dinero.',
     guaranteeCta: 'Empezar sin riesgo',
 
+    // ── Cuenta regresiva ──────────────────────────────────────────────
+    countdownLabel: 'Extras gratis solo hasta:',
+
+    // ── Hero ──────────────────────────────────────────────────────────
+    heroTitle: 'Reto de 28 días: dile adiós a los rollitos y vuelve a sentirte tú',
+    heroChips: [
+      'Adiós rollitos y barriga hinchada',
+      'Tu ropa vuelve a quedarte bien',
+      'Más energía para tu día',
+      'Vuelve a sentirte guapa y segura',
+      'Duerme mejor, despierta con ganas',
+    ],
+
+    // ── ¿Te suena? ─────────────────────────────────────────────────────
+    soundsTitle: '¿Te suena?',
+    soundsPains: [
+      'Te miras al espejo y la ropa ya no te cierra como antes',
+      'Un cansancio que no se te quita ni durmiendo',
+      'Evitas fotos y planes por cómo te ves',
+      'La barriga hinchada no se va, hagas lo que hagas',
+    ],
+    soundsResultsTitle: 'Con el reto',
+    soundsResults: [
+      'Vuelves a ponerte tu ropa favorita con comodidad',
+      'Te levantas con energía y menos hinchazón',
+      'Te sientes a gusto en las fotos y los planes',
+      'Un vientre más plano semana a semana',
+    ],
+
+    // ── Cuadro "Qué incluye" ───────────────────────────────────────────
+    valuePrefix: 'Valor',
+    mainValue: '29,97 €',
+    bonusValues: ['7,97 €', '4,97 €', '4,97 €', '3,97 €'],
+    totalStruck: '51,85 €',
+    todayLabel: 'Hoy',
+
+    // ── Carrito ────────────────────────────────────────────────────────
+    cartTitle: 'Tu pedido',
+    cartClose: 'Cerrar',
+    cartPlanNote: 'Reto de 28 días + 4 extras gratis',
+    cartExtrasTitle: '¿Quieres añadir algo más?',
+    addLabel: 'Añadir',
+    cartCta: 'Ir al pago seguro',
+
     badges: ['Acceso inmediato', 'Pago seguro', 'Garantía 14 días'],
 
     includesTitle: 'Qué incluye tu plan',

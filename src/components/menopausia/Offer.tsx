@@ -15,13 +15,47 @@ const GUARANTEE_DAYS = 14;
 /** Fotos de las reseñas (una por testimonio, orden = social.items). */
 const TESTI_PHOTOS = [1, 2, 3, 4, 5, 6].map((n) => `/menopausia/testimonios/t${n}.webp`);
 
-/** Logos de pago (SVG locales, sin peticiones externas). */
+/**
+ * Logos de pago — SVG oficiales locales (sets MIT: gilbarbara/logos +
+ * glifo oficial de Klarna). Solo métodos que Dodo acepta para EUR en Europa
+ * (PayPal está deshabilitado temporalmente; iDEAL/Bancontact son NL/BE).
+ */
 const PAY_LOGOS = [
   { src: '/menopausia/pay/visa.svg', alt: 'Visa' },
   { src: '/menopausia/pay/mastercard.svg', alt: 'Mastercard' },
+  { src: '/menopausia/pay/amex.svg', alt: 'American Express' },
   { src: '/menopausia/pay/apple-pay.svg', alt: 'Apple Pay' },
   { src: '/menopausia/pay/google-pay.svg', alt: 'Google Pay' },
+  { src: '/menopausia/pay/klarna.svg', alt: 'Klarna' },
 ];
+
+/** Cuenta regresiva de la oferta `es`: arranca en 25–55 min, persiste en
+ *  localStorage para no cambiar al recargar y se reinicia al llegar a 0. */
+const COUNTDOWN_KEY = 'meno_es_offer_deadline';
+const randCountdownMs = () => (25 + Math.floor(Math.random() * 31)) * 60_000; // 25..55 min
+function readCountdownDeadline(): number {
+  const now = Date.now();
+  try {
+    const raw = localStorage.getItem(COUNTDOWN_KEY);
+    const v = raw ? parseInt(raw, 10) : NaN;
+    if (Number.isFinite(v) && v > now) return v;
+  } catch {
+    /* localStorage no disponible → cuenta en memoria, sin persistir */
+  }
+  const d = now + randCountdownMs();
+  try {
+    localStorage.setItem(COUNTDOWN_KEY, String(d));
+  } catch {
+    /* ignore */
+  }
+  return d;
+}
+function fmtMMSS(ms: number): string {
+  const s = Math.max(0, Math.ceil(ms / 1000));
+  const mm = Math.floor(s / 60);
+  const ss = s % 60;
+  return `${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
+}
 
 /** Portada responsive (480w/960w). No se renderiza si el locale no la tiene. */
 function CoverImg({
@@ -61,14 +95,17 @@ export function Offer({ locale }: Props) {
   const covers = getCovers(locale);
   const isEs = locale === 'es';
 
-  // `es` preselecciona el pack completo (bump + upsell); el resto arranca sin extras.
-  const [bump, setBump] = useState(isEs);
-  const [upsell, setUpsell] = useState(isEs);
+  // Extras arrancan sin marcar: se eligen dentro del carrito.
+  const [bump, setBump] = useState(false);
+  const [upsell, setUpsell] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [headline, setHeadline] = useState(o.genericHeadline);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [showSticky, setShowSticky] = useState(false);
+  // Carrito (solo `es`) y cuenta regresiva.
+  const [cartOpen, setCartOpen] = useState(false);
+  const [remaining, setRemaining] = useState<number | null>(null);
 
   const total = pr.main + (bump ? pr.bump : 0) + (upsell ? pr.upsell : 0);
   const mainPrice = money(pr.main, nl, pr.currency);
@@ -120,6 +157,43 @@ export function Offer({ locale }: Props) {
     return () => io.disconnect();
   }, []);
 
+  // Cuenta regresiva (solo `es`): tick cada segundo; al llegar a 0, nuevo valor.
+  useEffect(() => {
+    if (!isEs) return;
+    let deadline = readCountdownDeadline();
+    const tick = () => {
+      let left = deadline - Date.now();
+      if (left <= 0) {
+        try {
+          localStorage.removeItem(COUNTDOWN_KEY);
+        } catch {
+          /* ignore */
+        }
+        deadline = readCountdownDeadline();
+        left = deadline - Date.now();
+      }
+      setRemaining(left);
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [isEs]);
+
+  // Bloquea el scroll del fondo mientras el carrito está abierto.
+  useEffect(() => {
+    if (!cartOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setCartOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [cartOpen]);
+
   async function buy() {
     setError('');
     setLoading(true);
@@ -155,13 +229,13 @@ export function Offer({ locale }: Props) {
     alt,
   });
 
-  // Paquete seleccionado (es): 0 solo plan · 1 plan+descanso · 2 pack completo.
-  const pkg = upsell ? 2 : bump ? 1 : 0;
-  const selectPkg = (i: number) => {
-    setBump(i >= 1);
-    setUpsell(i >= 2);
+  // Todos los CTA de `es` abren el carrito; el pago real sale desde el carrito.
+  const openCart = () => {
+    track('AddToCart', { value: total, currency: pr.currency, content_name: 'menopausia_main' });
+    setCartOpen(true);
   };
-  const pkgTotals = [pr.main, pr.main + pr.bump, pr.main + pr.bump + pr.upsell];
+  const upsellPrice = money(pr.upsell, nl, pr.currency);
+  const countdown = remaining == null ? '--:--' : fmtMMSS(remaining);
 
   const buyButton = (extraClass = '') => (
     <button className={`m-btn m-btn--glow m-cta-total ${extraClass}`} onClick={buy} disabled={loading}>
@@ -256,31 +330,127 @@ export function Offer({ locale }: Props) {
   // ── Landing `es` — visual, orientada a imágenes ─────────────────────────────
   if (isEs) {
     const mainCover = esCover('main', o.mainName ?? 'Reto Abdomen Plano en 28 Días');
-    const esBonusCovers = bonusSlots.map((slot, i) => esCover(slot, o.bonusNames[i]));
+    const bumpCover = esCover('bump', o.bumpName);
+    const upsellCover = esCover('upsell', o.upsellName ?? '');
+    const collage = [TESTI_PHOTOS[0], TESTI_PHOTOS[1], TESTI_PHOTOS[2]];
+    const bigPhoto = TESTI_PHOTOS[3];
+    const title = o.heroTitle ?? headline;
+
+    // Barra fina de cuenta regresiva (se repite arriba y en el cuadro de compra).
+    const countdownBar = (
+      <div className="m-countbar" role="status">
+        <ClockIcon />
+        <span className="m-countbar__label">{o.countdownLabel}</span>
+        <strong className="m-countbar__time">{countdown}</strong>
+      </div>
+    );
+
+    // Carrito (drawer): plan + 2 extras con casilla, total en vivo, pago seguro.
+    const cart = (
+      <div
+        className={`m-cart${cartOpen ? ' is-open' : ''}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label={o.cartTitle ?? 'Tu pedido'}
+        aria-hidden={!cartOpen}
+      >
+        <div className="m-cart__backdrop" onClick={() => setCartOpen(false)} />
+        <div className="m-cart__panel">
+          <div className="m-cart__head">
+            <h2 className="m-cart__title">{o.cartTitle ?? 'Tu pedido'}</h2>
+            <button className="m-cart__close" aria-label={o.cartClose ?? 'Cerrar'} onClick={() => setCartOpen(false)}>
+              <XIcon />
+            </button>
+          </div>
+
+          <div className="m-cart__body">
+            {/* Plan principal — fijo */}
+            <div className="m-cart__line">
+              <CoverImg cover={mainCover} className="m-cart__cover" sizes="56px" />
+              <div className="m-cart__text">
+                <p className="m-cart__name">{o.mainName}</p>
+                {o.cartPlanNote && <p className="m-cart__note">{o.cartPlanNote}</p>}
+              </div>
+              <span className="m-cart__price">{mainPrice}</span>
+            </div>
+
+            {o.cartExtrasTitle && <p className="m-cart__extras-title">{o.cartExtrasTitle}</p>}
+
+            {/* Extra 1 · Descanso (bump) */}
+            <label className="m-cart__extra">
+              <input type="checkbox" checked={bump} onChange={() => setBump((b) => !b)} />
+              <CoverImg cover={bumpCover} className="m-cart__cover" sizes="56px" />
+              <div className="m-cart__text">
+                <p className="m-cart__name">{o.bumpName}</p>
+                <span className="m-cart__add">{o.addLabel ?? 'Añadir'} · {bumpPrice}</span>
+              </div>
+            </label>
+
+            {/* Extra 2 · Hinchazón (upsell) */}
+            {o.upsellName && (
+              <label className="m-cart__extra">
+                <input type="checkbox" checked={upsell} onChange={() => setUpsell((u) => !u)} />
+                <CoverImg cover={upsellCover} className="m-cart__cover" sizes="56px" />
+                <div className="m-cart__text">
+                  <p className="m-cart__name">{o.upsellName}</p>
+                  <span className="m-cart__add">{o.addLabel ?? 'Añadir'} · {upsellPrice}</span>
+                </div>
+              </label>
+            )}
+          </div>
+
+          <div className="m-cart__foot">
+            <div className="m-cart__total">
+              <span>{o.totalLabel}</span>
+              <strong>{totalPrice}</strong>
+            </div>
+            <button className="m-btn m-btn--glow m-cart__cta" onClick={buy} disabled={loading}>
+              {loading ? <span className="m-spin" /> : (o.cartCta ?? o.ctaOffer)}
+            </button>
+            {error && <p className="m-field-error" style={{ marginTop: '0.5rem' }}>{error}</p>}
+            <p className="m-securepay__line m-cart__secure">
+              <LockIcon /> {o.securePay}
+            </p>
+            <div className="m-paylogos m-cart__logos">
+              {PAY_LOGOS.map((l) => (
+                <img key={l.src} className="m-paylogo" src={l.src} alt={l.alt}
+                  height={24} loading="lazy" decoding="async" />
+              ))}
+            </div>
+            {o.guaranteeTitle && (
+              <p className="m-cart__guarantee">{withDays(o.guaranteeTitle)}</p>
+            )}
+          </div>
+        </div>
+      </div>
+    );
 
     return (
       <>
+        {/* Barra fina con cuenta regresiva, fija arriba */}
+        <div className="m-countbar-top">{countdownBar}</div>
+
         <div className="m-shell m-shell--offer m-offer-es" ref={shellRef}>
-          {/* 1 · Hero: estrellas, titular, abanico de portadas, chips de beneficio, CTA */}
+          {/* 1 · Hero: estrellas, titular, collage, chips, 1 CTA */}
           <header className="m-hero m-hero--es">
             <div className="m-stars-top m-hero-in">
               <Stars label={o.social.ratingAria} />
               <strong>{o.social.rating}</strong>
             </div>
 
-            <h1 className="m-hero__title m-hero-in">{headline}</h1>
+            <h1 className="m-hero__title m-hero-in">{title}</h1>
 
-            <div className="m-fan m-hero-in" aria-hidden="true">
-              <CoverImg cover={esBonusCovers[0]} className="m-fan__bonus m-fan__bonus--1" sizes="120px" />
-              <CoverImg cover={esBonusCovers[1]} className="m-fan__bonus m-fan__bonus--2" sizes="120px" />
-              <CoverImg cover={esBonusCovers[2]} className="m-fan__bonus m-fan__bonus--3" sizes="120px" />
-              <CoverImg cover={esBonusCovers[3]} className="m-fan__bonus m-fan__bonus--4" sizes="120px" />
-              <CoverImg cover={mainCover} className="m-fan__main" sizes="200px" priority />
+            <div className="m-collage m-hero-in">
+              {collage.map((src, i) => (
+                <img key={src} className={`m-collage__photo m-collage__photo--${i + 1}`} src={src}
+                  alt="" width={120} height={120} loading="eager" decoding="async" />
+              ))}
+              <CoverImg cover={mainCover} className="m-collage__book" sizes="150px" priority />
             </div>
 
-            {o.mainBenefits && o.mainBenefits.length > 0 && (
+            {o.heroChips && o.heroChips.length > 0 && (
               <ul className="m-chips m-hero-in">
-                {o.mainBenefits.slice(0, 4).map((b, i) => (
+                {o.heroChips.map((b, i) => (
                   <li key={i} className="m-chip">
                     <CheckIcon className="m-chip__icon" />
                     <span>{b}</span>
@@ -290,114 +460,97 @@ export function Offer({ locale }: Props) {
             )}
 
             <div className="m-hero-in">
-              <button className="m-btn m-btn--glow" onClick={buy} disabled={loading}>
-                {loading ? <span className="m-spin" /> : o.ctaMain}
-              </button>
+              <button className="m-btn m-btn--glow" onClick={openCart}>{o.ctaMain}</button>
             </div>
           </header>
 
           <div ref={sentinelRef} aria-hidden="true" className="m-sentinel" />
 
-          {/* 2 · Franja de 3 señales de confianza */}
-          {o.badges && o.badges.length === 3 && (
-            <ul className="m-trustbar m-reveal">
-              <li><BoltIcon /><span>{o.badges[0]}</span></li>
-              <li><LockIcon /><span>{o.badges[1]}</span></li>
-              <li><ShieldIcon /><span>{o.badges[2]}</span></li>
-            </ul>
-          )}
-
-          {/* 3 · Sin el plan / Con el plan */}
-          {o.compareWithout && o.compareWith && (
+          {/* 3 · ¿Te suena? — dolores con foto grande + resultados "Con el reto" */}
+          {o.soundsPains && o.soundsPains.length > 0 && (
             <section className="m-section m-reveal">
-              {o.compareTitle && <h2>{o.compareTitle}</h2>}
-              <div className="m-compare">
-                <div className="m-compare__col m-compare__col--no">
-                  <p className="m-compare__head">{o.withoutTitle}</p>
+              {o.soundsTitle && <h2>{o.soundsTitle}</h2>}
+              <div className="m-sounds">
+                <img className="m-sounds__photo" src={bigPhoto} alt="" width={320} height={320}
+                  loading="lazy" decoding="async" />
+                <ul className="m-sounds__pains">
+                  {o.soundsPains.map((t, i) => (
+                    <li key={i}><XIcon className="m-compare__x" /><span>{t}</span></li>
+                  ))}
+                </ul>
+              </div>
+              {o.soundsResults && o.soundsResults.length > 0 && (
+                <div className="m-sounds__results">
+                  {o.soundsResultsTitle && <p className="m-sounds__results-title">{o.soundsResultsTitle}</p>}
                   <ul>
-                    {o.compareWithout.map((t, i) => (
-                      <li key={i}><XIcon className="m-compare__x" /><span>{t}</span></li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="m-compare__col m-compare__col--yes">
-                  <p className="m-compare__head">{o.withTitle}</p>
-                  <ul>
-                    {o.compareWith.map((t, i) => (
+                    {o.soundsResults.map((t, i) => (
                       <li key={i}><CheckIcon className="m-compare__check" /><span>{t}</span></li>
                     ))}
                   </ul>
                 </div>
-              </div>
+              )}
             </section>
           )}
 
-          {/* 4 · Qué incluye — tarjeta por ebook (principal + 4 bonus GRATIS) */}
-          <section className="m-section m-reveal">
+          {/* 4 · Qué incluye — UN cuadro: filas con valor tachado + GRATIS, total y CTA */}
+          <section className="m-section m-reveal" id="comprar">
             <h2>{o.includesTitle ?? o.bonusesTitle}</h2>
-            <ul className="m-incl">
-              <li className="m-incl__item">
-                <CoverImg cover={mainCover} className="m-incl__cover" sizes="88px" />
-                <div className="m-incl__text">
-                  <p className="m-incl__name">{o.mainName}</p>
-                  {o.mainBlurb && <p className="m-incl__blurb">{o.mainBlurb}</p>}
-                </div>
-              </li>
-              {bonusSlots.map((slot, i) => (
-                <li key={slot} className="m-incl__item">
-                  <CoverImg cover={esBonusCovers[i]} className="m-incl__cover" sizes="88px" />
-                  <div className="m-incl__text">
-                    <p className="m-incl__name">
-                      {o.bonusNames[i]} <span className="m-incl__free">{o.freeTag}</span>
-                    </p>
-                    {o.bonusBlurbs && o.bonusBlurbs[i] && (
-                      <p className="m-incl__blurb">{o.bonusBlurbs[i]}</p>
-                    )}
-                  </div>
+            <div className="m-valuebox">
+              <ul className="m-valuelist">
+                <li className="m-valuerow">
+                  <CoverImg cover={mainCover} className="m-valuerow__cover" sizes="48px" />
+                  <span className="m-valuerow__name">{o.mainName}</span>
+                  {o.mainValue && (
+                    <span className="m-valuerow__value">
+                      {o.valuePrefix} <s>{o.mainValue}</s>
+                    </span>
+                  )}
                 </li>
-              ))}
-            </ul>
+                {bonusSlots.map((slot, i) => (
+                  <li key={slot} className="m-valuerow">
+                    <CoverImg cover={esCover(slot, o.bonusNames[i])} className="m-valuerow__cover" sizes="48px" />
+                    <span className="m-valuerow__name">{o.bonusNames[i]}</span>
+                    {o.bonusValues && o.bonusValues[i] && (
+                      <span className="m-valuerow__value">
+                        <s>{o.bonusValues[i]}</s> <span className="m-valuerow__free">{o.freeTag}</span>
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="m-valuebox__totals">
+                {o.totalStruck && (
+                  <p className="m-valuebox__struck">
+                    {o.totalLabel} <s>{o.totalStruck}</s>
+                  </p>
+                )}
+                <p className="m-valuebox__today">
+                  {o.todayLabel} <strong>{mainPrice}</strong>
+                </p>
+              </div>
+
+              {countdownBar}
+
+              <button className="m-btn m-btn--glow m-valuebox__cta" onClick={openCart}>{o.ctaMain}</button>
+            </div>
           </section>
 
           {/* 5 · Reseñas */}
           {socialSection}
 
-          {/* 6 · Compra — 3 paquetes seleccionables, total en el botón */}
-          <section className="m-section m-reveal" id="comprar">
-            {o.packagesTitle && <h2>{o.packagesTitle}</h2>}
-            {o.packages && o.packages.length === 3 && (
-              <div className="m-packs" role="radiogroup" aria-label={o.packagesTitle}>
-                {o.packages.map((p, i) => {
-                  const sel = pkg === i;
-                  const rec = i === 2;
-                  return (
-                    <button
-                      key={i}
-                      type="button"
-                      role="radio"
-                      aria-checked={sel}
-                      className={`m-pack${sel ? ' is-selected' : ''}${rec ? ' m-pack--rec' : ''}`}
-                      onClick={() => selectPkg(i)}
-                    >
-                      {rec && o.recommendedTag && <span className="m-pack__tag">{o.recommendedTag}</span>}
-                      <span className="m-pack__radio" aria-hidden="true" />
-                      <span className="m-pack__body">
-                        <span className="m-pack__name">{p.name}</span>
-                        <span className="m-pack__desc">{p.desc}</span>
-                      </span>
-                      <span className="m-pack__price">{money(pkgTotals[i], nl, pr.currency)}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            )}
+          {/* 6 · Compra — precio grande + 1 botón + logos + garantía */}
+          <section className="m-section m-reveal">
+            <div className="m-pricebox">
+              <span className="m-pricebox__now">{mainPrice}</span>
+              <p className="m-pricebox__note">{o.priceNote}</p>
+              <p className="m-pricebox__perday">{perDay}</p>
+            </div>
 
-            <p className="m-pricebox__note m-packs__note">{o.priceNote} · {perDay}</p>
+            <button className="m-btn m-btn--glow m-cta-total" onClick={openCart}>
+              {o.ctaMain} · {mainPrice}
+            </button>
 
-            {buyButton()}
-            {error && <p className="m-field-error" style={{ marginTop: '0.6rem' }}>{error}</p>}
-
-            {/* Pago seguro + logos */}
             <div className="m-securepay">
               <p className="m-securepay__line">
                 <LockIcon /> {o.securePay}
@@ -405,33 +558,32 @@ export function Offer({ locale }: Props) {
               <div className="m-paylogos">
                 {PAY_LOGOS.map((l) => (
                   <img key={l.src} className="m-paylogo" src={l.src} alt={l.alt}
-                    width={48} height={30} loading="lazy" decoding="async" />
+                    height={24} loading="lazy" decoding="async" />
                 ))}
               </div>
             </div>
-          </section>
 
-          {/* 7 · Garantía grande con sello + CTA */}
-          {o.guaranteeTitle && (
-            <section className="m-section m-reveal">
+            {o.guaranteeTitle && (
               <div className="m-guarantee m-guarantee--big">
                 <GuaranteeSeal days={GUARANTEE_DAYS} />
                 <p className="m-guarantee__title">{withDays(o.guaranteeTitle)}</p>
                 {o.guaranteeBody && <p className="m-guarantee__body">{withDays(o.guaranteeBody)}</p>}
-                <button className="m-btn m-btn--glow m-guarantee__cta" onClick={buy} disabled={loading}>
-                  {loading ? <span className="m-spin" /> : (o.guaranteeCta ?? o.ctaMain)}
-                </button>
               </div>
-            </section>
-          )}
+            )}
+          </section>
 
-          {/* 8 · FAQ */}
+          {/* FAQ */}
           {faqSection}
 
           {footer}
         </div>
 
-        {stickyBar}
+        {/* Botón fijo en móvil (tras el hero) — abre el carrito */}
+        <div className={`m-sticky-cta${showSticky ? ' is-visible' : ''}`}>
+          <button className="m-btn" onClick={openCart}>{o.ctaMain} · {mainPrice}</button>
+        </div>
+
+        {cart}
       </>
     );
   }
@@ -552,21 +704,12 @@ function XIcon({ className }: { className?: string }) {
   );
 }
 
-function BoltIcon({ className }: { className?: string }) {
+function ClockIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M13 2 4 14h7l-1 8 9-12h-7z" />
-    </svg>
-  );
-}
-
-function ShieldIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M12 3 5 6v5c0 4.4 3 8 7 9 4-1 7-4.6 7-9V6z" />
-      <path d="m9.5 12 1.8 1.8 3.3-3.6" />
+    <svg className={className} viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+      strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
     </svg>
   );
 }

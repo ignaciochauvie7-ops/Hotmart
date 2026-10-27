@@ -142,6 +142,32 @@ export interface MenoDict {
     /** 3 paquetes: solo plan / plan+descanso / pack completo. */
     packages?: { name: string; desc: string }[];
 
+    // ── Solo `es` v2 · cuenta regresiva, hero collage, carrito ──────────
+    /** Etiqueta de la barra de cuenta regresiva. */
+    countdownLabel?: string;
+    /** Titular fijo del hero (sin personalización por edad). */
+    heroTitle?: string;
+    /** 5 chips de beneficio del hero. */
+    heroChips?: string[];
+    /** "¿Te suena?" — dolores con foto grande. */
+    soundsTitle?: string;
+    soundsPains?: string[];
+    soundsResultsTitle?: string;
+    soundsResults?: string[];
+    /** Cuadro "Qué incluye": valores tachados + total. */
+    valuePrefix?: string;
+    mainValue?: string;
+    bonusValues?: string[];
+    totalStruck?: string;
+    todayLabel?: string;
+    /** Carrito (drawer). */
+    cartTitle?: string;
+    cartClose?: string;
+    cartPlanNote?: string;
+    cartExtrasTitle?: string;
+    addLabel?: string;
+    cartCta?: string;
+
     // ── 2 · Cuadrícula de bonus ─────────────────────────────────────────
     bonusesTitle: string;
     /** 4 nombres cortos, una línea cada uno (orden = bonus1..bonus4). */

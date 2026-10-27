@@ -1207,10 +1207,17 @@ body {
   margin-top: 0.7rem;
 }
 
+/* Logos oficiales: cada SVG va en un tile blanco uniforme (altura fija, ancho
+   según su proporción). box-sizing border-box → glifo ~20px, marco limpio. */
 .m-paylogo {
-  width: 48px;
-  height: 30px;
-  border-radius: 4px;
+  box-sizing: border-box;
+  height: 34px;
+  width: auto;
+  padding: 6px 9px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  box-shadow: var(--shadow-sm);
 }
 
 /* Garantía de 14 días con sello. -------------------------------------------- */
@@ -1635,6 +1642,492 @@ body {
 
 .m-guarantee__cta {
   margin-top: 1.1rem;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Solo `es` v2 · cuenta regresiva, hero collage, "¿Te suena?", cuadro de valor
+   y carrito (drawer).
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* Barra fina de cuenta regresiva, fija arriba. */
+.m-countbar-top {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.m-countbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1rem;
+  background: var(--terra);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.m-countbar svg {
+  flex: none;
+}
+
+.m-countbar__time {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  background: rgba(255, 255, 255, 0.18);
+  padding: 0.1rem 0.45rem;
+  border-radius: 6px;
+}
+
+/* La barra del cuadro de valor no es sticky: estilo bloque centrado. */
+.m-valuebox .m-countbar {
+  margin: 1rem 0 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--terra) 10%, var(--surface));
+  color: var(--terra-hover);
+}
+
+.m-valuebox .m-countbar__time {
+  background: var(--terra);
+  color: #fff;
+}
+
+/* El hero arranca con algo menos de padding porque la barra ya ocupa arriba. */
+.m-hero--es {
+  padding-top: 1.25rem;
+}
+
+/* Hero collage: libro al frente + 3 fotos redondeadas detrás. */
+.m-collage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin: 1.5rem auto 0;
+  padding: 0 40px;
+  min-height: 230px;
+}
+
+.m-collage__book {
+  position: relative;
+  z-index: 3;
+  width: 150px;
+  height: auto;
+  border-radius: 14px;
+  box-shadow: 0 22px 50px rgba(61, 58, 53, 0.28);
+}
+
+.m-collage__photo {
+  position: absolute;
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 3px solid var(--surface);
+  box-shadow: 0 10px 24px rgba(61, 58, 53, 0.2);
+  z-index: 1;
+}
+
+.m-collage__photo--1 { top: 4px; left: calc(50% - 150px); transform: rotate(-8deg); }
+.m-collage__photo--2 { top: 90px; left: calc(50% - 160px); transform: rotate(6deg); z-index: 2; }
+.m-collage__photo--3 { top: 24px; left: calc(50% + 54px); transform: rotate(9deg); }
+
+@media (min-width: 600px) {
+  .m-collage { min-height: 280px; }
+  .m-collage__book { width: 190px; }
+  .m-collage__photo { width: 120px; height: 120px; }
+  .m-collage__photo--1 { left: calc(50% - 190px); }
+  .m-collage__photo--2 { top: 118px; left: calc(50% - 205px); }
+  .m-collage__photo--3 { left: calc(50% + 70px); }
+}
+
+/* ¿Te suena? — foto grande + dolores; luego resultados "Con el reto". */
+.m-sounds {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.m-sounds__photo {
+  flex: none;
+  width: 38%;
+  max-width: 180px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+
+.m-sounds__pains {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.m-sounds__pains li,
+.m-sounds__results li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.m-sounds__results {
+  margin-top: 1.5rem;
+  padding: 1.1rem 1.2rem;
+  border-radius: var(--radius);
+  background: var(--sage-soft);
+  border: 1px solid color-mix(in srgb, var(--sage) 22%, var(--surface));
+}
+
+.m-sounds__results-title {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.m-sounds__results ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+/* Cuadro "Qué incluye" — un solo recuadro con valores tachados + total + CTA. */
+.m-valuebox {
+  padding: 1.25rem;
+  border: 2px solid color-mix(in srgb, var(--terra) 22%, var(--surface));
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+
+.m-valuelist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.m-valuerow {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.m-valuerow__cover {
+  flex: none;
+  width: 40px;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: var(--shadow-sm);
+}
+
+.m-valuerow__name {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.m-valuerow__value {
+  flex: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted-text);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.m-valuerow__value s {
+  color: var(--muted-text);
+}
+
+.m-valuerow__free {
+  display: inline-block;
+  margin-left: 0.3rem;
+  padding: 0.08rem 0.45rem;
+  border-radius: 999px;
+  background: var(--sage-soft);
+  color: var(--sage-dark);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.m-valuebox__totals {
+  margin-top: 0.9rem;
+  text-align: center;
+}
+
+.m-valuebox__struck {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--muted-text);
+}
+
+.m-valuebox__struck s {
+  color: var(--muted-text);
+}
+
+.m-valuebox__today {
+  margin: 0.2rem 0 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.m-valuebox__today strong {
+  font-family: var(--font-serif);
+  font-size: 1.9rem;
+  color: var(--terra-hover);
+  margin-left: 0.3rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.m-valuebox__cta {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* Carrito (drawer deslizante desde la derecha / abajo en móvil). */
+.m-cart {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  visibility: hidden;
+}
+
+.m-cart.is-open {
+  visibility: visible;
+}
+
+.m-cart__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(43, 27, 51, 0.5);
+  opacity: 0;
+  transition: opacity 240ms var(--ease-out);
+}
+
+.m-cart.is-open .m-cart__backdrop {
+  opacity: 1;
+}
+
+.m-cart__panel {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: min(420px, 100%);
+  display: flex;
+  flex-direction: column;
+  background: var(--cream);
+  box-shadow: var(--shadow-lg);
+  transform: translateX(100%);
+  transition: transform 300ms var(--ease-out);
+}
+
+.m-cart.is-open .m-cart__panel {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m-cart__panel,
+  .m-cart__backdrop {
+    transition: none;
+  }
+}
+
+.m-cart__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.m-cart__title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.m-cart__close {
+  display: flex;
+  padding: 0.35rem;
+  border: none;
+  background: none;
+  color: var(--muted-text);
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.m-cart__close:hover {
+  background: var(--line);
+}
+
+.m-cart__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.1rem 1.25rem;
+}
+
+.m-cart__line,
+.m-cart__extra {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+}
+
+.m-cart__line {
+  border-bottom: 1px solid var(--line);
+}
+
+.m-cart__extra {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border: 1.5px dashed var(--terra);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--terra) 5%, var(--surface));
+  cursor: pointer;
+}
+
+.m-cart__extra input {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  accent-color: var(--terra);
+  cursor: pointer;
+}
+
+.m-cart__cover {
+  flex: none;
+  width: 44px;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: var(--shadow-sm);
+}
+
+.m-cart__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.m-cart__name {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.m-cart__note {
+  margin: 0.15rem 0 0;
+  font-size: 0.82rem;
+  color: var(--muted-text);
+}
+
+.m-cart__add {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--terra-hover);
+}
+
+.m-cart__price {
+  flex: none;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.m-cart__extras-title {
+  margin: 1.1rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.m-cart__foot {
+  padding: 1rem 1.25rem calc(1rem + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.m-cart__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.7rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.m-cart__total strong {
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.m-cart__cta {
+  width: 100%;
+  margin-top: 0;
+}
+
+.m-cart__secure {
+  margin-top: 0.8rem;
+}
+
+.m-cart__logos {
+  margin-top: 0.6rem;
+}
+
+.m-cart__guarantee {
+  margin: 0.7rem 0 0;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--sage-dark);
+}
+
+/* En móvil el carrito entra desde abajo, ocupando casi toda la altura. */
+@media (max-width: 599px) {
+  .m-cart__panel {
+    right: 0;
+    left: 0;
+    top: auto;
+    width: 100%;
+    max-height: 92vh;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    transform: translateY(100%);
+  }
+  .m-cart.is-open .m-cart__panel {
+    transform: none;
+  }
 }
 
 /* FAQ accordion ------------------------------------------------------------- */
