@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { getProducts } from '../../../config/menopausia/products';
+import { getProducts, getExtrasDiscount } from '../../../config/menopausia/products';
 import { isLocale } from '../../../config/menopausia/i18n';
 import { createCheckout, getDodoClient, siteUrl } from '../../../lib/menopausia/dodo';
 
@@ -29,9 +29,10 @@ export const POST: APIRoute = async ({ request }) => {
   if (bump && products.bump) cart.push({ product_id: products.bump, quantity: 1 });
   if (upsell && products.upsell) cart.push({ product_id: products.upsell, quantity: 1 });
 
-  // es: al llevar los 2 extras se aplica el código Dodo "EXTRAS2" (−2 € flat EUR).
+  // Al llevar los 2 extras se aplica el código Dodo del locale, monto fijo en
+  // moneda local (es EXTRAS2 −2 €, pl EXTRAS2PL −9 zł, cs EXTRAS2CS −49 Kč).
   const bothExtras = !!(bump && products.bump && upsell && products.upsell);
-  const discountCode = locale === 'es' && bothExtras ? 'EXTRAS2' : undefined;
+  const discountCode = bothExtras ? getExtrasDiscount(locale)?.code : undefined;
 
   const metadata: Record<string, string> = {
     funnel: 'menopausia',

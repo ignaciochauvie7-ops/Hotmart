@@ -54,6 +54,23 @@ export const pricing: Record<MenoLocale, LocalePricing> = {
   cs: { currency: 'CZK', main: 409, bump: 179, upsell: 189 },
 };
 
+/**
+ * "Lleva los 2 extras" cart discount: a flat amount off (in the locale's own
+ * currency) plus the Dodo discount code that applies the *same* amount at
+ * checkout. `amount` MUST equal what the Dodo code subtracts, so the cart total
+ * and the Dodo total agree exactly. Locales absent here get no discount.
+ *   es → 2 €   (EXTRAS2)   · pl → 9 zł (EXTRAS2PL) · cs → 49 Kč (EXTRAS2CS)
+ */
+export const extrasDiscount: Partial<Record<MenoLocale, { amount: number; code: string }>> = {
+  es: { amount: 2, code: 'EXTRAS2' },
+  pl: { amount: 9, code: 'EXTRAS2PL' },
+  cs: { amount: 49, code: 'EXTRAS2CS' },
+};
+
+export function getExtrasDiscount(locale: MenoLocale): { amount: number; code: string } | undefined {
+  return extrasDiscount[locale];
+}
+
 export function getProducts(locale: MenoLocale): LocaleProducts {
   return products[locale];
 }

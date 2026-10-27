@@ -194,6 +194,7 @@ export const pl: MenoDict = {
     bumpStruck: '59 zł',
     upsellCartDesc: 'Szybka ulga w gazach i wzdęciu po jedzeniu: kluczowe napary i produkty. Idealne uzupełnienie wyzwania.',
     upsellStruck: '59 zł',
+    bothExtrasSave: 'Weź oba: oszczędzasz 9 zł',
 
     includesTitle: 'Co zawiera Twój plan',
     mainName: 'Wyzwanie Płaski Brzuch w 28 Dni',

@@ -195,6 +195,7 @@ export const cs: MenoDict = {
     bumpStruck: '349 Kč',
     upsellCartDesc: 'Rychlá úleva od plynů a nadýmání po jídle: klíčové nálevy a potraviny. Ideální doplněk výzvy.',
     upsellStruck: '369 Kč',
+    bothExtrasSave: 'Vezmi oba: ušetříš 49 Kč',
 
     includesTitle: 'Co tvůj plán obsahuje',
     mainName: 'Výzva Ploché Břicho za 28 Dní',

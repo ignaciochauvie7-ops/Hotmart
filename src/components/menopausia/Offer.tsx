@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { getDict, money, usesVisualOffer, type MenoLocale } from '../../config/menopausia/i18n';
-import { getPricing } from '../../config/menopausia/products';
+import { getPricing, getExtrasDiscount } from '../../config/menopausia/products';
 import { getCovers, type Cover, type CoverSlot } from '../../config/menopausia/covers';
 import { loadAnswers } from '../../lib/menopausia/state';
 import { getCookie, track } from '../../lib/menopausia/pixel';
@@ -118,9 +118,11 @@ export function Offer({ locale }: Props) {
   const [cartOpen, setCartOpen] = useState(false);
   const [remaining, setRemaining] = useState<number | null>(null);
 
-  // Al marcar los 2 extras (solo es) se descuentan 2 € vía código Dodo "EXTRAS2".
+  // Al marcar los 2 extras se descuenta un monto fijo en moneda local vía el
+  // código Dodo del locale (es 2 €, pl 9 zł, cs 49 Kč). Debe cuadrar con Dodo.
   const bothExtras = bump && upsell;
-  const extrasDiscount = isEs && bothExtras ? 2 : 0;
+  const extrasDiscountCfg = getExtrasDiscount(locale);
+  const extrasDiscount = bothExtras && extrasDiscountCfg ? extrasDiscountCfg.amount : 0;
   const total = pr.main + (bump ? pr.bump : 0) + (upsell ? pr.upsell : 0) - extrasDiscount;
   const mainPrice = money(pr.main, nl, pr.currency);
   const bumpPrice = money(pr.bump, nl, pr.currency);
