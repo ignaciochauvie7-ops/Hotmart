@@ -966,6 +966,11 @@ body {
   margin-top: 2.75rem;
 }
 
+/* Sección pegada a la anterior (estampilla de garantía tras el cuadro). */
+.m-section--tight {
+  margin-top: 0.9rem;
+}
+
 .m-section > h2 {
   font-size: clamp(1.35rem, 4.8vw, 1.5rem);
   line-height: 1.22;
@@ -1213,7 +1218,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  margin: 2rem auto 0;
+  margin: 2.25rem auto 0;
   padding: 0.3rem 0.7rem;
   border-radius: 999px;
   background: color-mix(in srgb, var(--sage) 14%, var(--surface));

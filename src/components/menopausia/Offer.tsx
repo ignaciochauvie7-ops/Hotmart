@@ -639,7 +639,7 @@ export function Offer({ locale }: Props) {
 
           {/* 5 · Garantía — sello estampilla, justo tras los métodos de pago */}
           {o.guaranteeTitle && (
-            <section className="m-section m-reveal">
+            <section className="m-section m-section--tight m-reveal">
               <div className="m-guarantee m-guarantee--big m-guarantee--stamp">
                 <GuaranteeSeal days={GUARANTEE_DAYS} unit={o.guaranteeUnit} stamp />
                 <p className="m-guarantee__title">{withDays(o.guaranteeTitle)}</p>
