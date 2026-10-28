@@ -652,6 +652,9 @@ export function Offer({ locale }: Props) {
           {o.howSteps && o.howSteps.length > 0 && (
             <section className="m-section m-reveal">
               {o.howTitle && <h2>{o.howTitle}</h2>}
+              {locale === 'pl' && (
+                <HowVideo src="/menopausia/pl/como-funciona-hyperframes.mp4" />
+              )}
               <ol className="m-howto">
                 {o.howSteps.map((s, i) => (
                   <li key={i} className="m-howto__step">
@@ -832,6 +835,44 @@ function GuaranteeSeal({ days, unit = 'DÍAS', stamp = false }: { days: number; 
       <text x="40" y="35" textAnchor="middle" fontSize="22" fontWeight="700" fill="currentColor">{days}</text>
       <text x="40" y="51" textAnchor="middle" fontSize="10" fontWeight="700" letterSpacing="1" fill="currentColor">{unit}</text>
     </svg>
+  );
+}
+
+/** Video de "cómo funciona": carga diferida — solo pide el archivo y se
+ *  reproduce cuando está a punto de entrar en pantalla (preload="none"). */
+function HowVideo({ src }: { src: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [load, setLoad] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setLoad(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: '200px 0px' },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  useEffect(() => {
+    if (load) ref.current?.play().catch(() => {});
+  }, [load]);
+  return (
+    <video
+      ref={ref}
+      className="m-howvideo"
+      src={load ? src : undefined}
+      muted
+      loop
+      playsInline
+      autoPlay
+      preload="none"
+      aria-hidden="true"
+    />
   );
 }
 

@@ -178,7 +178,7 @@ export const pl: MenoDict = {
     howTitle: 'Jak to działa',
     howSteps: [
       'Kupujesz w 1 minutę',
-      'Dostajesz wszystko na e-mail od razu',
+      'Pliki pobierasz od razu po płatności',
       'Zaczynasz jeszcze dziś',
     ],
 

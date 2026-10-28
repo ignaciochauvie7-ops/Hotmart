@@ -2361,6 +2361,19 @@ body {
 }
 
 /* Cómo funciona — 3 pasos con icono. ---------------------------------------- */
+/* Video de "cómo funciona" (solo pl): mismo ancho/borde/radio que las
+   tarjetas de los pasos, cuadrado. */
+.m-howvideo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  margin-bottom: 0.75rem;
+}
+
 .m-howto {
   list-style: none;
   margin: 0;
