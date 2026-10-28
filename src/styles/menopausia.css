@@ -1208,6 +1208,24 @@ body {
   margin-top: 0.6rem;
 }
 
+/* Línea de garantía bajo los métodos de pago (solo en el CTA del hero). */
+.m-securepay__guarantee {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.65rem auto 0;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sage) 14%, var(--surface));
+  color: var(--sage-dark);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.m-securepay__guarantee svg {
+  flex: none;
+}
+
 /* Logos oficiales en una sola fila, discretos (18px), sin recuadros. */
 .m-paylogo {
   height: 18px;
@@ -1634,6 +1652,30 @@ body {
 .m-guarantee--big .m-guarantee__body {
   max-width: 42ch;
   margin-inline: auto;
+}
+
+/* Estampilla de garantía: sello terra que llama la atención. */
+.m-guarantee--stamp {
+  border-color: color-mix(in srgb, var(--terra) 30%, var(--surface));
+  background: color-mix(in srgb, var(--terra) 7%, var(--surface));
+}
+
+.m-guarantee--big .m-guarantee__seal--stamp {
+  width: 96px;
+  height: 96px;
+  color: var(--terra);
+  transform: rotate(-8deg);
+  filter: drop-shadow(0 5px 12px color-mix(in srgb, var(--terra) 38%, transparent));
+  animation: m-stamp-pop 2.6s ease-in-out infinite;
+}
+
+@keyframes m-stamp-pop {
+  0%, 100% { transform: rotate(-8deg) scale(1); }
+  50% { transform: rotate(-8deg) scale(1.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m-guarantee__seal--stamp { animation: none; }
 }
 
 .m-guarantee__cta {

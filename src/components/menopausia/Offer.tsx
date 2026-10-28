@@ -10,7 +10,7 @@ interface Props {
 }
 
 /** Días de garantía — variable única usada en copy. */
-const GUARANTEE_DAYS = 14;
+const GUARANTEE_DAYS = 30;
 
 /** Fotos de las reseñas (una por testimonio, orden = social.items). */
 const TESTI_PHOTOS = [1, 2, 3, 4, 5, 6].map((n) => `/menopausia/testimonios/t${n}.webp`);
@@ -41,7 +41,7 @@ const PAY_LOGOS = [
 /** Cuenta regresiva de la oferta `es`: arranca en 25–55 min, persiste en
  *  localStorage para no cambiar al recargar y se reinicia al llegar a 0. */
 const COUNTDOWN_KEY = 'meno_es_offer_deadline';
-const randCountdownMs = () => (25 + Math.floor(Math.random() * 31)) * 60_000; // 25..55 min
+const randCountdownMs = () => (120 + Math.floor(Math.random() * 121)) * 60_000; // 2h..4h
 function readCountdownDeadline(): number {
   const now = Date.now();
   try {
@@ -59,11 +59,13 @@ function readCountdownDeadline(): number {
   }
   return d;
 }
-function fmtMMSS(ms: number): string {
+function fmtClock(ms: number): string {
   const s = Math.max(0, Math.ceil(ms / 1000));
-  const mm = Math.floor(s / 60);
+  const hh = Math.floor(s / 3600);
+  const mm = Math.floor((s % 3600) / 60);
   const ss = s % 60;
-  return `${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
+  const p = (n: number) => String(n).padStart(2, '0');
+  return hh > 0 ? `${p(hh)}:${p(mm)}:${p(ss)}` : `${p(mm)}:${p(ss)}`;
 }
 
 /** Portada responsive (480w/960w). No se renderiza si el locale no la tiene. */
@@ -251,7 +253,7 @@ export function Offer({ locale }: Props) {
     setCartOpen(true);
   };
   const upsellPrice = money(pr.upsell, nl, pr.currency);
-  const countdown = remaining == null ? '--:--' : fmtMMSS(remaining);
+  const countdown = remaining == null ? '--:--' : fmtClock(remaining);
 
   const buyButton = (extraClass = '') => (
     <button className={`m-btn m-btn--glow m-cta-total ${extraClass}`} onClick={buy} disabled={loading}>
@@ -355,7 +357,8 @@ export function Offer({ locale }: Props) {
     const title = o.heroTitle ?? headline;
 
     // Pago seguro: candado + línea + logos en una sola fila (reutilizado).
-    const securePay = (
+    // `withGuarantee` añade, bajo los métodos de pago, la línea de garantía.
+    const securePay = (withGuarantee = false) => (
       <div className="m-securepay">
         <p className="m-securepay__line">
           <LockIcon /> {o.securePay}
@@ -366,6 +369,11 @@ export function Offer({ locale }: Props) {
               height={18} loading="lazy" decoding="async" />
           ))}
         </div>
+        {withGuarantee && o.guaranteeTitle && (
+          <p className="m-securepay__guarantee">
+            <ShieldCheckIcon /> {withDays(o.guaranteeTitle)}
+          </p>
+        )}
       </div>
     );
 
@@ -529,7 +537,7 @@ export function Offer({ locale }: Props) {
 
             <div className="m-hero-in">
               <button className="m-btn m-btn--glow" onClick={openCart}>{o.ctaMain}</button>
-              {securePay}
+              {securePay(true)}
             </div>
           </header>
 
@@ -621,11 +629,22 @@ export function Offer({ locale }: Props) {
 
               <button className="m-btn m-btn--glow m-valuebox__cta" onClick={openCart}>{o.ctaMain}</button>
 
-              {securePay}
+              {securePay(false)}
             </div>
           </section>
 
-          {/* 5 · Cómo funciona — 3 pasos con icono */}
+          {/* 5 · Garantía — sello estampilla, justo tras los métodos de pago */}
+          {o.guaranteeTitle && (
+            <section className="m-section m-reveal">
+              <div className="m-guarantee m-guarantee--big m-guarantee--stamp">
+                <GuaranteeSeal days={GUARANTEE_DAYS} unit={o.guaranteeUnit} stamp />
+                <p className="m-guarantee__title">{withDays(o.guaranteeTitle)}</p>
+                {o.guaranteeBody && <p className="m-guarantee__body">{withDays(o.guaranteeBody)}</p>}
+              </div>
+            </section>
+          )}
+
+          {/* 6 · Cómo funciona — 3 pasos con icono */}
           {o.howSteps && o.howSteps.length > 0 && (
             <section className="m-section m-reveal">
               {o.howTitle && <h2>{o.howTitle}</h2>}
@@ -640,19 +659,8 @@ export function Offer({ locale }: Props) {
             </section>
           )}
 
-          {/* 6 · Reseñas */}
+          {/* 7 · Reseñas */}
           {socialSection}
-
-          {/* 7 · Garantía */}
-          {o.guaranteeTitle && (
-            <section className="m-section m-reveal">
-              <div className="m-guarantee m-guarantee--big">
-                <GuaranteeSeal days={GUARANTEE_DAYS} unit={o.guaranteeUnit} />
-                <p className="m-guarantee__title">{withDays(o.guaranteeTitle)}</p>
-                {o.guaranteeBody && <p className="m-guarantee__body">{withDays(o.guaranteeBody)}</p>}
-              </div>
-            </section>
-          )}
 
           {/* FAQ */}
           {faqSection}
@@ -801,13 +809,34 @@ function ClockIcon({ className }: { className?: string }) {
   );
 }
 
-function GuaranteeSeal({ days, unit = 'DÍAS' }: { days: number; unit?: string }) {
+function GuaranteeSeal({ days, unit = 'DÍAS', stamp = false }: { days: number; unit?: string; stamp?: boolean }) {
+  if (stamp) {
+    // Estampilla: círculo relleno (color via CSS), número blanco grande, borde dentado.
+    return (
+      <svg className="m-guarantee__seal m-guarantee__seal--stamp" viewBox="0 0 80 80" width="96" height="96" aria-hidden="true">
+        <circle cx="40" cy="40" r="38" fill="currentColor" />
+        <circle cx="40" cy="40" r="33" fill="none" stroke="#fff" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.85" />
+        <text x="40" y="39" textAnchor="middle" fontSize="27" fontWeight="800" fill="#fff">{days}</text>
+        <text x="40" y="55" textAnchor="middle" fontSize="11" fontWeight="700" letterSpacing="1.5" fill="#fff">{unit}</text>
+      </svg>
+    );
+  }
   return (
     <svg className="m-guarantee__seal" viewBox="0 0 80 80" width="64" height="64" aria-hidden="true">
       <circle cx="40" cy="40" r="37" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="4 3" />
       <circle cx="40" cy="40" r="30" fill="currentColor" opacity="0.08" />
       <text x="40" y="35" textAnchor="middle" fontSize="22" fontWeight="700" fill="currentColor">{days}</text>
       <text x="40" y="51" textAnchor="middle" fontSize="10" fontWeight="700" letterSpacing="1" fill="currentColor">{unit}</text>
+    </svg>
+  );
+}
+
+function ShieldCheckIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 2 4 5v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V5z" />
+      <path d="m9 12 2 2 4-4" />
     </svg>
   );
 }
