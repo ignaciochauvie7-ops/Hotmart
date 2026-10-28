@@ -38,10 +38,14 @@ const PAY_LOGOS = [
   { src: '/menopausia/pay/klarna.svg', alt: 'Klarna' },
 ];
 
-/** Cuenta regresiva de la oferta `es`: arranca en 25–55 min, persiste en
- *  localStorage para no cambiar al recargar y se reinicia al llegar a 0. */
-const COUNTDOWN_KEY = 'meno_es_offer_deadline';
-const randCountdownMs = () => (120 + Math.floor(Math.random() * 121)) * 60_000; // 2h..4h
+/** Cuenta regresiva de la oferta `es`: arranca en un punto aleatorio entre 2 y
+ *  4 horas (al segundo, nunca en número redondo, para que parezca real),
+ *  persiste en localStorage para no cambiar al recargar y se reinicia al 0. */
+const COUNTDOWN_KEY = 'meno_es_offer_deadline_v2';
+const COUNTDOWN_MIN_S = 2 * 3600; // 2 h
+const COUNTDOWN_MAX_S = 4 * 3600; // 4 h
+const randCountdownMs = () =>
+  (COUNTDOWN_MIN_S + Math.floor(Math.random() * (COUNTDOWN_MAX_S - COUNTDOWN_MIN_S + 1))) * 1000;
 function readCountdownDeadline(): number {
   const now = Date.now();
   try {
