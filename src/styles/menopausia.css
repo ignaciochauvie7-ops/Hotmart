@@ -1191,6 +1191,14 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  gap: 12px;
+}
+
+/* El gap del contenedor ya separa los elementos: anulamos los márgenes
+   propios para que el espaciado sea uniforme (12px) entre cada uno. */
+.m-securepay > .m-paylogos,
+.m-securepay__guarantee {
+  margin-top: 0;
 }
 
 .m-securepay__line {
@@ -2068,6 +2076,30 @@ body {
 
 .m-valuerow__value s {
   color: var(--muted-text);
+}
+
+/* Fila del producto principal: precio anterior tachado (gris, pequeño) encima
+   del precio real de hoy (rosa, negrita, más grande). */
+.m-valuerow__value--main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.1;
+}
+
+.m-valuerow__was {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted-text);
+}
+
+.m-valuerow__now {
+  margin-top: 0.12rem;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--terra-hover);
+  font-variant-numeric: tabular-nums;
 }
 
 .m-valuerow__free {

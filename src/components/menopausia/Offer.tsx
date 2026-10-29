@@ -364,6 +364,11 @@ export function Offer({ locale }: Props) {
     // `withGuarantee` añade, bajo los métodos de pago, la línea de garantía.
     const securePay = (withGuarantee = false) => (
       <div className="m-securepay">
+        {withGuarantee && o.guaranteeTitle && (
+          <p className="m-securepay__guarantee">
+            <ShieldCheckIcon /> {withDays(o.guaranteeTitle)}
+          </p>
+        )}
         <p className="m-securepay__line">
           <LockIcon /> {o.securePay}
         </p>
@@ -373,11 +378,6 @@ export function Offer({ locale }: Props) {
               height={18} loading="lazy" decoding="async" />
           ))}
         </div>
-        {withGuarantee && o.guaranteeTitle && (
-          <p className="m-securepay__guarantee">
-            <ShieldCheckIcon /> {withDays(o.guaranteeTitle)}
-          </p>
-        )}
       </div>
     );
 
@@ -597,8 +597,9 @@ export function Offer({ locale }: Props) {
                     {o.mainSub && <span className="m-valuerow__sub">{o.mainSub}</span>}
                   </span>
                   {o.mainValue && (
-                    <span className="m-valuerow__value">
-                      {o.valuePrefix} <s>{o.mainValue}</s>
+                    <span className="m-valuerow__value m-valuerow__value--main">
+                      <s className="m-valuerow__was">{o.mainValue}</s>
+                      <strong className="m-valuerow__now">{mainPrice}</strong>
                     </span>
                   )}
                 </li>
