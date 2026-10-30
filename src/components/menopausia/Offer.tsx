@@ -359,6 +359,9 @@ export function Offer({ locale }: Props) {
     const bumpCover = coverFor('bump', o.bumpName);
     const upsellCover = coverFor('upsell', o.upsellName ?? '');
     const title = o.heroTitle ?? headline;
+    // pl/cs: imagen de promesa (titular dentro) como primer visual del hero.
+    const promiseImg =
+      locale === 'pl' || locale === 'cs' ? `/menopausia/${locale}/portada.webp` : null;
 
     // Pago seguro: candado + línea + logos en una sola fila (reutilizado).
     // `withGuarantee` añade, bajo los métodos de pago, la línea de garantía.
@@ -510,33 +513,66 @@ export function Offer({ locale }: Props) {
                 </span>
               </p>
 
-              {o.heroLabel && (
+              {!promiseImg && o.heroLabel && (
                 <p className="m-herocred__ready">
                   <CheckIcon className="m-herocred__ready-icon" /> {o.heroLabel}
                 </p>
               )}
             </div>
 
-            <h1 className="m-hero__title m-hero-in">{title}</h1>
+            {promiseImg && (
+              <img
+                className="m-hero__promise-img m-hero-in"
+                src={promiseImg}
+                alt={title}
+                width={900}
+                height={1125}
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+              />
+            )}
 
-            {/* Abanico: portada principal al frente + 4 bonus asomando detrás */}
-            <div className="m-fan m-hero-in">
-              {bonusSlots.map((slot, i) => (
-                <CoverImg key={slot} cover={coverFor(slot, o.bonusNames[i])}
-                  className={`m-fan__bonus m-fan__bonus--${i + 1}`} sizes="126px" />
-              ))}
-              <CoverImg cover={mainCover} className="m-fan__main" sizes="220px" priority />
-            </div>
+            {/* pl/cs mueven titular+abanico a la sección "Qué incluye" (abajo). */}
+            {!promiseImg && (
+              <>
+                <h1 className="m-hero__title m-hero-in">{title}</h1>
 
-            {o.heroChips && o.heroChips.length > 0 && (
-              <ul className="m-chips m-hero-in">
-                {o.heroChips.map((b, i) => (
-                  <li key={i} className="m-chip">
-                    <CheckIcon className="m-chip__icon" />
-                    <span>{b}</span>
-                  </li>
-                ))}
-              </ul>
+                {/* Abanico: portada principal al frente + 4 bonus asomando detrás */}
+                <div className="m-fan m-hero-in">
+                  {bonusSlots.map((slot, i) => (
+                    <CoverImg key={slot} cover={coverFor(slot, o.bonusNames[i])}
+                      className={`m-fan__bonus m-fan__bonus--${i + 1}`} sizes="126px" />
+                  ))}
+                  <CoverImg cover={mainCover} className="m-fan__main" sizes="220px" priority />
+                </div>
+              </>
+            )}
+
+            {promiseImg && o.pains && o.pains.length > 0 ? (
+              /* pl/cs: sección de dolores (sustituye los chips bajo la promesa). */
+              <section className="m-dolores m-hero-in">
+                {o.painsTitle && <h2 className="m-dolores__title">{o.painsTitle}</h2>}
+                <ul className="m-dolores__list">
+                  {o.pains.map((p, i) => (
+                    <li key={i} className="m-dolores__card">
+                      <span className="m-dolores__ic">{PAIN_ICONS[i] ?? <CheckIcon />}</span>
+                      <span className="m-dolores__text">{p}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : (
+              o.heroChips && o.heroChips.length > 0 && (
+                <ul className="m-chips m-hero-in">
+                  {o.heroChips.map((b, i) => (
+                    <li key={i} className="m-chip">
+                      <CheckIcon className="m-chip__icon" />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+              )
             )}
 
           </header>
@@ -584,6 +620,19 @@ export function Offer({ locale }: Props) {
           {/* 4 · Qué incluye — UN cuadro: filas con valor tachado + GRATIS, total y CTA */}
           <section className="m-section m-reveal" id="comprar">
             <h2>{o.includesTitle ?? o.bonusesTitle}</h2>
+            {/* pl/cs: titular + abanico de libros reubicados aquí, sobre el cuadro. */}
+            {promiseImg && (
+              <>
+                <h3 className="m-hero__title m-includes-head">{title}</h3>
+                <div className="m-fan">
+                  {bonusSlots.map((slot, i) => (
+                    <CoverImg key={slot} cover={coverFor(slot, o.bonusNames[i])}
+                      className={`m-fan__bonus m-fan__bonus--${i + 1}`} sizes="126px" />
+                  ))}
+                  <CoverImg cover={mainCover} className="m-fan__main" sizes="220px" priority />
+                </div>
+              </>
+            )}
             <div className="m-valuebox">
               <ul className="m-valuelist">
                 <li className="m-valuerow">
@@ -936,3 +985,77 @@ function BoltIcon({ className }: { className?: string }) {
 
 /** Iconos de los 3 pasos de "Cómo funciona" (orden = howSteps). */
 const HOW_ICONS = [<BagIcon />, <MailIcon />, <BoltIcon />];
+
+// ── Iconos de línea para la sección de dolores (pl/cs), orden = pains ────────
+function PainScaleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+      strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 3v16" />
+      <path d="M7 20h10" />
+      <path d="M5 6h14" />
+      <path d="M12 4.5 6 6l3 5a3 3 0 0 1-6 0z" />
+      <path d="M12 4.5 18 6l-3 5a3 3 0 0 0 6 0z" />
+    </svg>
+  );
+}
+
+function PainTiredIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+      strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="7" width="17" height="10" rx="2.5" />
+      <path d="M22 10.5v3" />
+      <path d="M6 12h4" />
+    </svg>
+  );
+}
+
+function PainBloatIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+      strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M7 13c1.4 1.5 3.3 1.5 5 0s3.6-1.5 5 0" />
+    </svg>
+  );
+}
+
+function PainSleepIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+      strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+    </svg>
+  );
+}
+
+function PainDietIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+      strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6 3v6a2 2 0 0 0 4 0V3" />
+      <path d="M8 11v10" />
+      <path d="M17 3c-1.6 0-2.5 2.2-2.5 4.5S15.4 11 17 11v10" />
+    </svg>
+  );
+}
+
+function PainClothesIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+      strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M9 3 3 7l3 3v10h12V10l3-3-6-4-3 2z" />
+    </svg>
+  );
+}
+
+/** Iconos de los 6 dolores (orden = pains de pl/cs). */
+const PAIN_ICONS = [
+  <PainScaleIcon />,
+  <PainTiredIcon />,
+  <PainBloatIcon />,
+  <PainSleepIcon />,
+  <PainDietIcon />,
+  <PainClothesIcon />,
+];

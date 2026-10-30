@@ -151,6 +151,15 @@ export const cs: MenoDict = {
       'Zase se cítit krásná a sebejistá',
       'Spi líp, probouzej se s chutí',
     ],
+    painsTitle: 'Tohle je pro tebe, pokud…',
+    pains: [
+      'Přibíráš na váze snadněji než dřív',
+      'Většinu dní se cítíš unavená',
+      'Po jídle se cítíš nafouklá a těžká',
+      'Spíš špatně a vstáváš bez chuti',
+      'Zkoušela jsi diety a nepomohly',
+      'Tvoje oblečení ti už nesedí jako dřív',
+    ],
 
     // ── Zní ti to povědomě? ────────────────────────────────────────────
     soundsTitle: 'Zní ti to povědomě?',

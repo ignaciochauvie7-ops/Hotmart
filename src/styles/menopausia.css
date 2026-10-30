@@ -1355,6 +1355,82 @@ body {
   padding-top: 1.5rem;
 }
 
+/* pl/cs: titular reubicado sobre el cuadro de "Qué incluye". */
+.m-includes-head {
+  margin-top: 0.75rem;
+}
+
+/* pl/cs: imagen de promesa (titular dentro) como primer visual del hero. */
+.m-hero__promise-img {
+  display: block;
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  margin: 1.1rem auto 0;
+  border-radius: 18px;
+}
+
+/* pl/cs: sección de dolores bajo la promesa (sustituye los chips). */
+.m-dolores {
+  margin: 2.4rem 0 0;
+  text-align: center;
+}
+
+/* Título tipo pastilla: letra blanca sobre el mismo rosa del botón principal. */
+.m-root .m-dolores__title {
+  display: inline-block;
+  margin: 0 auto 2.4rem;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  background: var(--terra);
+  box-shadow: 0 8px 20px rgba(214, 51, 108, 0.28);
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  line-height: 1.2;
+  font-weight: 600;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.m-dolores__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.m-dolores__card {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.85rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.m-dolores__ic {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #FDE7EC;
+  color: var(--terra);
+}
+
+.m-dolores__text {
+  font-size: 1.06rem;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--ink);
+}
+
 .m-stars-top {
   display: inline-flex;
   align-items: center;

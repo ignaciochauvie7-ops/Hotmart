@@ -156,6 +156,15 @@ export const pl: MenoDict = {
       'Znów poczuj się piękna i pewna siebie',
       'Śpij lepiej, budź się z ochotą',
     ],
+    painsTitle: 'To jest dla Ciebie, jeśli…',
+    pains: [
+      'Łatwiej przybierasz na wadze niż kiedyś',
+      'Przez większość dni czujesz się zmęczona',
+      'Po jedzeniu czujesz się wzdęta i ociężała',
+      'Śpisz źle i wstajesz bez ochoty',
+      'Próbowałaś diet i nie przyniosły efektu',
+      'Twoje ubrania już nie leżą tak jak dawniej',
+    ],
 
     // ── Brzmi znajomo? ─────────────────────────────────────────────────
     soundsTitle: 'Brzmi znajomo?',
