@@ -2055,6 +2055,38 @@ body {
   z-index: 2;
 }
 
+/* Variante UGC (pl/cs): una sola imagen compuesta antes/después, a lo ancho. */
+.m-transform--single {
+  margin-bottom: 1.25rem;
+}
+
+.m-transform__single {
+  margin: 0;
+  width: 100%;
+  max-width: 440px;
+  padding: 6px;
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: 0 14px 34px rgba(61, 58, 53, 0.22);
+}
+
+.m-transform__single img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 11px;
+}
+
+/* 2 fotos de cuerpo reducidas, debajo de la imagen UGC. */
+.m-transform--mini {
+  margin-top: 0.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.m-transform--mini .m-transform__shot img {
+  height: clamp(140px, 32vw, 200px);
+}
+
 /* Antes vs Con el reto — dos tarjetas con relieve y contraste de color. */
 .m-compare2 {
   display: grid;

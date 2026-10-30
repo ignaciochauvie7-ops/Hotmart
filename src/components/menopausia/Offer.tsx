@@ -362,6 +362,9 @@ export function Offer({ locale }: Props) {
     // pl/cs: imagen de promesa (titular dentro) como primer visual del hero.
     const promiseImg =
       locale === 'pl' || locale === 'cs' ? `/menopausia/${locale}/portada.webp` : null;
+    // pl/cs: imagen UGC antes/después (una sola) en vez de las 2 fotos de es.
+    const ugcTransform =
+      locale === 'pl' || locale === 'cs' ? `/menopausia/${locale}/antes-despues.jpg` : null;
 
     // Pago seguro: candado + línea + logos en una sola fila (reutilizado).
     // `withGuarantee` añade, bajo los métodos de pago, la línea de garantía.
@@ -582,38 +585,60 @@ export function Offer({ locale }: Props) {
           {/* 3 · ¿Te suena? — prueba antes/después + dos tarjetas (dolor vs reto) */}
           {o.soundsPains && o.soundsPains.length > 0 && (
             <section className="m-section m-reveal">
-              {/* Banda antes/después: 2 fotos a lo ancho, superpuestas con profundidad */}
-              <div className="m-transform">
-                {TRANSFORM_SHOTS.map((s, i) => (
-                  <figure key={s.src} className={`m-transform__shot m-transform__shot--${i + 1}`}>
-                    <img src={s.src} alt={o.soundsTitle ?? 'Antes y después'}
-                      width={s.w} height={s.h} loading="lazy" decoding="async" />
-                  </figure>
-                ))}
-              </div>
-
-              {/* Dolor (antes) vs Con el reto (después): dos tarjetas con relieve */}
-              <div className="m-compare2">
-                <div className="m-compare2__card m-compare2__card--pain">
-                  {o.soundsTitle && <p className="m-compare2__title">{o.soundsTitle}</p>}
-                  <ul className="m-compare2__list">
-                    {o.soundsPains.map((t, i) => (
-                      <li key={i}><XIcon className="m-compare2__x" /><span>{t}</span></li>
+              {/* pl/cs: imagen UGC compuesta arriba + 2 fotos de cuerpo (más pequeñas) debajo */}
+              {ugcTransform ? (
+                <>
+                  <div className="m-transform m-transform--single">
+                    <figure className="m-transform__single">
+                      <img src={ugcTransform} alt={o.soundsTitle ?? 'Antes y después'}
+                        width={900} height={1124} loading="lazy" decoding="async" />
+                    </figure>
+                  </div>
+                  <div className="m-transform m-transform--mini">
+                    {TRANSFORM_SHOTS.map((s, i) => (
+                      <figure key={s.src} className={`m-transform__shot m-transform__shot--${i + 1}`}>
+                        <img src={s.src} alt={o.soundsTitle ?? 'Antes y después'}
+                          width={s.w} height={s.h} loading="lazy" decoding="async" />
+                      </figure>
                     ))}
-                  </ul>
+                  </div>
+                </>
+              ) : (
+                <>
+                {/* Banda antes/después: 2 fotos a lo ancho, superpuestas con profundidad */}
+                <div className="m-transform">
+                  {TRANSFORM_SHOTS.map((s, i) => (
+                    <figure key={s.src} className={`m-transform__shot m-transform__shot--${i + 1}`}>
+                      <img src={s.src} alt={o.soundsTitle ?? 'Antes y después'}
+                        width={s.w} height={s.h} loading="lazy" decoding="async" />
+                    </figure>
+                  ))}
                 </div>
 
-                {o.soundsResults && o.soundsResults.length > 0 && (
-                  <div className="m-compare2__card m-compare2__card--win">
-                    {o.soundsResultsTitle && <p className="m-compare2__title">{o.soundsResultsTitle}</p>}
+                {/* Dolor (antes) vs Con el reto (después): dos tarjetas con relieve */}
+                <div className="m-compare2">
+                  <div className="m-compare2__card m-compare2__card--pain">
+                    {o.soundsTitle && <p className="m-compare2__title">{o.soundsTitle}</p>}
                     <ul className="m-compare2__list">
-                      {o.soundsResults.map((t, i) => (
-                        <li key={i}><CheckIcon className="m-compare2__check" /><span>{t}</span></li>
+                      {o.soundsPains.map((t, i) => (
+                        <li key={i}><XIcon className="m-compare2__x" /><span>{t}</span></li>
                       ))}
                     </ul>
                   </div>
-                )}
-              </div>
+
+                  {o.soundsResults && o.soundsResults.length > 0 && (
+                    <div className="m-compare2__card m-compare2__card--win">
+                      {o.soundsResultsTitle && <p className="m-compare2__title">{o.soundsResultsTitle}</p>}
+                      <ul className="m-compare2__list">
+                        {o.soundsResults.map((t, i) => (
+                          <li key={i}><CheckIcon className="m-compare2__check" /><span>{t}</span></li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+                </>
+              )}
             </section>
           )}
 
