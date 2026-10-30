@@ -204,6 +204,7 @@ export function Quiz({ locale, dict }: Props) {
           <div className="m-center m-cover">
             <span className="m-cover-badge">{q.cover.badge}</span>
             <h1 className="m-q m-cover-title">{q.cover.title}</h1>
+            {q.cover.subtitle && <p className="m-cover-sub">{q.cover.subtitle}</p>}
             <img
               className="m-cover-photo"
               src="/menopausia/portada.webp"
@@ -214,7 +215,15 @@ export function Quiz({ locale, dict }: Props) {
               fetchPriority="high"
               decoding="async"
             />
+            {q.cover.bullets && q.cover.bullets.length > 0 && (
+              <ul className="m-cover-bullets">
+                {q.cover.bullets.map((b, i) => (
+                  <li key={i}><Check className="m-cover-bullets__check" /><span>{b}</span></li>
+                ))}
+              </ul>
+            )}
             <button className="m-btn" onClick={next}>{q.cover.cta}</button>
+            {q.cover.microcopy && <p className="m-cover-fine">{q.cover.microcopy}</p>}
           </div>
         );
 

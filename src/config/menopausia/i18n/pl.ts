@@ -30,8 +30,15 @@ export const pl: MenoDict = {
   quiz: {
     cover: {
       badge: 'Test w 1 minutę',
-      title: 'Odkryj swój spersonalizowany plan na płaski brzuch bez wzdęć',
-      cta: 'Stwórz mój plan',
+      title: 'Dlaczego po 45. roku życia brzuch rośnie, choć jesz tak samo? Poznaj swój plan na 28 dni',
+      subtitle: 'Odpowiedz na kilka krótkich pytań i dowiedz się, co może pomóc w Twojej sytuacji.',
+      bullets: [
+        '15 minut dziennie',
+        'Bez siłowni i bez liczenia kalorii',
+        'Plan na 28 dni dopasowany do Twoich odpowiedzi',
+      ],
+      cta: 'Zacznij test (1 min)',
+      microcopy: '30-dniowa gwarancja zwrotu pieniędzy',
       photoAlt: 'Uśmiechnięta kobieta około pięćdziesiątki',
     },
     age: {
