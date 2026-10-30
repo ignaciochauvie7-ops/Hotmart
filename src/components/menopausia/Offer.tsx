@@ -539,10 +539,6 @@ export function Offer({ locale }: Props) {
               </ul>
             )}
 
-            <div className="m-hero-in">
-              <button className="m-btn m-btn--glow" onClick={openCart}>{o.ctaMain}</button>
-              {securePay(true)}
-            </div>
           </header>
 
           <div ref={sentinelRef} aria-hidden="true" className="m-sentinel" />
