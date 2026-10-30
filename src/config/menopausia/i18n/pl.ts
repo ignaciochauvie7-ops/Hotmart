@@ -31,7 +31,6 @@ export const pl: MenoDict = {
     cover: {
       badge: 'Test w 1 minutę',
       title: 'Dlaczego po 45. roku życia brzuch rośnie, choć jesz tak samo? Poznaj swój plan na 28 dni',
-      subtitle: 'Odpowiedz na kilka krótkich pytań i dowiedz się, co może pomóc w Twojej sytuacji.',
       bullets: [
         '15 minut dziennie',
         'Bez siłowni i bez liczenia kalorii',
