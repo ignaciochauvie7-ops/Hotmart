@@ -43,15 +43,15 @@ export interface LocalePricing {
 }
 
 /**
- * Per-locale pricing. es/pt in EUR; pl in fixed PLN (69/29/31) — shown with
- * Intl pl-PL ("69 zł") and billed in PLN. No EUR conversion for pl.
+ * Per-locale pricing. es/pt in EUR; pl in fixed PLN (57/29/31) — shown with
+ * Intl pl-PL ("57 zł") and billed in PLN. No EUR conversion for pl.
  */
 export const pricing: Record<MenoLocale, LocalePricing> = {
   es: { currency: 'EUR', main: 16.97, bump: 6.97, upsell: 7.47 },
   pt: { currency: 'EUR', main: 16.97, bump: 6.97, upsell: 7.47 },
-  pl: { currency: 'PLN', main: 69, bump: 29, upsell: 31 },
-  // cs: precios fijos en CZK, exactos como en Dodo (409/179/189 Kč).
-  cs: { currency: 'CZK', main: 409, bump: 179, upsell: 189 },
+  pl: { currency: 'PLN', main: 57, bump: 29, upsell: 31 },
+  // cs: precios fijos en CZK, exactos como en Dodo (297/179/189 Kč).
+  cs: { currency: 'CZK', main: 297, bump: 179, upsell: 189 },
 };
 
 /**

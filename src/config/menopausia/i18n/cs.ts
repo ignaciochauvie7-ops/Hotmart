@@ -179,9 +179,9 @@ export const cs: MenoDict = {
 
     // ── Cuadro "Qué incluye" (anclas en CZK, no se cobran) ─────────────
     valuePrefix: 'Hodnota',
-    mainValue: '699 Kč',
-    bonusValues: ['229 Kč', '149 Kč', '149 Kč', '119 Kč'],
-    totalStruck: '1 345 Kč',
+    mainValue: '549 Kč',
+    bonusValues: ['99 Kč', '49 Kč', '79 Kč', '59 Kč'],
+    totalStruck: '835 Kč',
     todayLabel: 'Dnes',
 
     // ── Cómo funciona ──────────────────────────────────────────────────

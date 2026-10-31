@@ -184,9 +184,9 @@ export const pl: MenoDict = {
 
     // ── Cuadro "Qué incluye" (anclas en PLN, no se cobran) ─────────────
     valuePrefix: 'Wartość',
-    mainValue: '129 zł',
-    bonusValues: ['39 zł', '29 zł', '29 zł', '25 zł'],
-    totalStruck: '251 zł',
+    mainValue: '99 zł',
+    bonusValues: ['19 zł', '9 zł', '15 zł', '12 zł'],
+    totalStruck: '154 zł',
     todayLabel: 'Dziś',
 
     // ── Cómo funciona ──────────────────────────────────────────────────
