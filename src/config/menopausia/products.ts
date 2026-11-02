@@ -49,7 +49,7 @@ export interface LocalePricing {
 export const pricing: Record<MenoLocale, LocalePricing> = {
   es: { currency: 'EUR', main: 16.97, bump: 3.97, upsell: 4.97 },
   pt: { currency: 'EUR', main: 16.97, bump: 3.97, upsell: 4.97 },
-  pl: { currency: 'PLN', main: 57, bump: 16.99, upsell: 19.99 },
+  pl: { currency: 'PLN', main: 57, bump: 16, upsell: 19 },
   // cs: precios fijos en CZK, exactos como en Dodo (297/99/119 Kč).
   cs: { currency: 'CZK', main: 297, bump: 99, upsell: 119 },
 };
