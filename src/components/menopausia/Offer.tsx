@@ -724,7 +724,10 @@ export function Offer({ locale }: Props) {
             <section className="m-section m-reveal">
               {o.howTitle && <h2>{o.howTitle}</h2>}
               {locale === 'pl' && (
-                <HowVideo src="/menopausia/pl/como-funciona-hyperframes.mp4" />
+                <HowVideo src="/menopausia/pl/como-funciona-pl.mp4" />
+              )}
+              {locale === 'cs' && (
+                <HowVideo src="/menopausia/cs/como-funciona-cs.mp4" />
               )}
               <ol className="m-howto">
                 {o.howSteps.map((s, i) => (
