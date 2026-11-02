@@ -38,20 +38,27 @@ const PAY_LOGOS = [
   { src: '/menopausia/pay/klarna.svg', alt: 'Klarna' },
 ];
 
-/** Cuenta regresiva de la oferta `es`: arranca en un punto aleatorio entre 2 y
- *  4 horas (al segundo, nunca en número redondo, para que parezca real),
- *  persiste en localStorage para no cambiar al recargar y se reinicia al 0. */
-const COUNTDOWN_KEY = 'meno_es_offer_deadline_v2';
-const COUNTDOWN_MIN_S = 2 * 3600; // 2 h
-const COUNTDOWN_MAX_S = 4 * 3600; // 4 h
-const randCountdownMs = () =>
-  (COUNTDOWN_MIN_S + Math.floor(Math.random() * (COUNTDOWN_MAX_S - COUNTDOWN_MIN_S + 1))) * 1000;
+/** Cuenta regresiva de la oferta: arranca en un punto aleatorio entre 6 y 10
+ *  horas, nunca en número redondo (minutos != 00 y no múltiplos de 5, segundos
+ *  != 00), persiste en localStorage la hora de fin para no cambiar al recargar.
+ *  Si lo guardado venció o quedan < 3 h, se genera un valor nuevo. */
+const COUNTDOWN_KEY = 'meno_offer_deadline_v3';
+const COUNTDOWN_MIN_REMAINING_MS = 3 * 3600 * 1000; // nunca mostrar < 3 h al cargar
+const randInt = (min: number, max: number) => min + Math.floor(Math.random() * (max - min + 1));
+/** Duración aleatoria 6h–10h, nunca redonda: hh 6–9, mm 1–59 no múltiplo de 5, ss 1–59. */
+const randCountdownMs = () => {
+  const hh = randInt(6, 9);
+  let mm = randInt(1, 59);
+  while (mm % 5 === 0) mm = randInt(1, 59);
+  const ss = randInt(1, 59);
+  return (hh * 3600 + mm * 60 + ss) * 1000;
+};
 function readCountdownDeadline(): number {
   const now = Date.now();
   try {
     const raw = localStorage.getItem(COUNTDOWN_KEY);
     const v = raw ? parseInt(raw, 10) : NaN;
-    if (Number.isFinite(v) && v > now) return v;
+    if (Number.isFinite(v) && v - now >= COUNTDOWN_MIN_REMAINING_MS) return v;
   } catch {
     /* localStorage no disponible → cuenta en memoria, sin persistir */
   }
