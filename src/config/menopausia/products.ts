@@ -3,8 +3,8 @@
  * These are NOT secrets — safe to keep in the repo.
  *
  *   main   → Reto Abdomen Plano en 28 Días — 16,97 €
- *   bump   → Vuelve a Descansar Bien en 21 Días (order bump) — 6,97 €
- *   upsell → Adiós Hinchazón en 14 Días (upsell en /gracias) — 7,47 €
+ *   bump   → Vuelve a Descansar Bien en 21 Días (order bump) — 3,97 €
+ *   upsell → Adiós Hinchazón en 14 Días (upsell en /gracias) — 4,97 €
  */
 export type MenoLocale = 'es' | 'pt' | 'pl' | 'cs';
 
@@ -47,11 +47,11 @@ export interface LocalePricing {
  * Intl pl-PL ("57 zł") and billed in PLN. No EUR conversion for pl.
  */
 export const pricing: Record<MenoLocale, LocalePricing> = {
-  es: { currency: 'EUR', main: 16.97, bump: 6.97, upsell: 7.47 },
-  pt: { currency: 'EUR', main: 16.97, bump: 6.97, upsell: 7.47 },
-  pl: { currency: 'PLN', main: 57, bump: 29, upsell: 31 },
-  // cs: precios fijos en CZK, exactos como en Dodo (297/179/189 Kč).
-  cs: { currency: 'CZK', main: 297, bump: 179, upsell: 189 },
+  es: { currency: 'EUR', main: 16.97, bump: 3.97, upsell: 4.97 },
+  pt: { currency: 'EUR', main: 16.97, bump: 3.97, upsell: 4.97 },
+  pl: { currency: 'PLN', main: 57, bump: 16.99, upsell: 19.99 },
+  // cs: precios fijos en CZK, exactos como en Dodo (297/99/119 Kč).
+  cs: { currency: 'CZK', main: 297, bump: 99, upsell: 119 },
 };
 
 /**
