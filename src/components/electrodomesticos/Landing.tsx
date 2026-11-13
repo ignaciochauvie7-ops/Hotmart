@@ -19,7 +19,7 @@ import {
 } from '../../config/electrodomesticos';
 import { getCookie, track } from '../../lib/menopausia/pixel';
 import { Img } from './Img';
-import { Wheel, wheelClaimed } from './Wheel';
+import { Wheel } from './Wheel';
 
 interface Props {
   /** Archivos presentes en /public/electrodomesticos (null = desconocido). */
@@ -56,11 +56,6 @@ function useCountdown(iso: string): number | null {
 export function Landing({ images }: Props) {
   const [bump, setBump] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  // Descuento de la ruleta ya reclamado (ahora o en una visita anterior).
-  const [claimed, setClaimed] = useState(false);
-  useEffect(() => {
-    if (wheelClaimed()) setClaimed(true);
-  }, []);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -276,11 +271,10 @@ export function Landing({ images }: Props) {
             </div>
           )}
 
-          {claimed && (
-            <p className="m-valuebox__deal">
-              {t.offer.dealLabel} <s>{eur(t.product.courseValue)}</s> <strong>{eur(PRICE_MAIN)}</strong>
-            </p>
-          )}
+          {/* Siempre visible: el 40% se muestra aunque no se gire la ruleta. */}
+          <p className="m-valuebox__deal">
+            {t.offer.dealLabel} <s>{eur(t.product.courseValue)}</s> <strong>{eur(PRICE_MAIN)}</strong>
+          </p>
 
           <button
             className="m-btn m-btn--glow m-valuebox__cta"
@@ -428,7 +422,7 @@ export function Landing({ images }: Props) {
         {!SUPPORT_EMAIL && DEV && <span className="m-footer__disclaimer">dev: falta SUPPORT_EMAIL en la config</span>}
       </footer>
 
-      <Wheel onClaim={() => setClaimed(true)} />
+      <Wheel />
 
       {/* Mini carrito: curso ya añadido + guía opcional + total + checkout de Dodo */}
       <div

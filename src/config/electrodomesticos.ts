@@ -169,7 +169,7 @@ export const texts = {
   // 5-6 · Oferta, botón de compra y medios de pago (logos: `paymentMethods`)
   offer: {
     valueTotalLabel: 'Valor total:',
-    // Mini texto sobre el botón, visible tras reclamar el descuento de la ruleta.
+    // Mini texto sobre el botón, siempre visible (se gire o no la ruleta).
     dealLabel: 'Con tu 40% de descuento:',
     countdownLabel: 'La oferta termina en',
     // El botón abre el mini carrito (textos en `cart`).

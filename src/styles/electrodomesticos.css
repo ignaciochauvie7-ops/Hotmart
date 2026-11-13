@@ -841,3 +841,46 @@ body {
   .rp-faq__item svg,
   .rp-btn { transition: none; }
 }
+
+/* Antes y después: texto en negro fuerte y cruz roja / tick verde bien visibles. */
+.rp-root .m-ba__ic {
+  width: 30px;
+  height: 30px;
+  color: #fff;
+}
+
+.rp-root .m-ba__ic svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 3.2;
+}
+
+.rp-root .m-ba__half--before .m-ba__ic {
+  background: var(--red);
+  color: #fff;
+}
+
+.rp-root .m-ba__half--after .m-ba__ic {
+  background: var(--green);
+  color: #fff;
+}
+
+.rp-root .m-ba__half--before .m-ba__label {
+  color: var(--red);
+  font-weight: 800;
+}
+
+.rp-root .m-ba__half--after .m-ba__label {
+  color: var(--green);
+  font-weight: 800;
+}
+
+.rp-root .m-ba__half--before .m-ba__text {
+  color: #111827;
+  font-weight: 600;
+}
+
+.rp-root .m-ba__half--after .m-ba__text {
+  color: #000;
+  font-weight: 800;
+}

@@ -23,8 +23,8 @@ function at(deg: number, r: number): string {
 }
 
 interface Props {
-  /** Se llama al pulsar "Reclamar" (el descuento queda aplicado en la página). */
-  onClaim: () => void;
+  /** Se llama al pulsar "Reclamar". */
+  onClaim?: () => void;
 }
 
 /**
@@ -32,7 +32,7 @@ interface Props {
  * `wheel.segments` es el premio: el giro pasa ya muy lento por el sector
  * vecino (un descuento pequeño) y se detiene justo al entrar en el premio.
  */
-export function Wheel({ onClaim }: Props) {
+export function Wheel({ onClaim }: Props = {}) {
   const w = t.wheel;
   const [open, setOpen] = useState(false);
   const [phase, setPhase] = useState<"idle" | "spinning" | "won">("idle");
@@ -95,7 +95,7 @@ export function Wheel({ onClaim }: Props) {
       /* sin storage: la ruleta volverá a salir en la próxima visita */
     }
     setOpen(false);
-    onClaim();
+    onClaim?.();
   }
 
   const won = phase === "won";
