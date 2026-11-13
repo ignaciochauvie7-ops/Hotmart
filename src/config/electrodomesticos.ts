@@ -143,7 +143,7 @@ export const texts = {
   product: {
     name: PRODUCT_NAME,
     imageAlt: PRODUCT_NAME,
-    courseValue: 79.9,
+    courseValue: 29.9,
     // Fila del producto principal en el cuadro (con el precio).
     rowName: 'Curso completo (10 módulos)',
     freeTag: 'Gratis',
