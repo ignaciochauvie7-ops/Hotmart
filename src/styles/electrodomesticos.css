@@ -1,0 +1,843 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   Reparador PRO — estilos de /electrodomesticos. Todo bajo .rp-root para no
+   chocar con el resto del sitio. Mobile-first. Azul oscuro + naranja de acento.
+   Solo se carga en estas páginas (vía ElectroLayout).
+   ─────────────────────────────────────────────────────────────────────────── */
+html {
+  font-size: 17px;
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  min-height: 100svh;
+  overflow-x: hidden;
+  background: #f4f6fa;
+}
+
+.rp-root {
+  --navy: #0b1f3a;
+  --navy-2: #12305a;
+  --orange: #ff8a1f;
+  --orange-hover: #ff9d42;
+  --on-orange: #1c1000;
+  --bg: #f4f6fa;
+  --surface: #ffffff;
+  --ink: #0b1f3a;
+  --muted: #55657d;
+  --line: #dbe2ec;
+  --red: #d92d20;
+  --red-soft: #fef3f2;
+  --green: #12924a;
+  --green-soft: #eefaf2;
+  --radius: 14px;
+  --radius-lg: 20px;
+  --shadow: 0 10px 30px rgba(11, 31, 58, 0.1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100svh;
+}
+
+.rp-root *,
+.rp-root *::before,
+.rp-root *::after {
+  box-sizing: border-box;
+}
+
+.rp-root h1,
+.rp-root h2,
+.rp-root h3,
+.rp-root p,
+.rp-root ul,
+.rp-root ol,
+.rp-root figure,
+.rp-root blockquote {
+  margin: 0;
+  padding: 0;
+}
+
+.rp-root ul,
+.rp-root ol {
+  list-style: none;
+}
+
+.rp-root h1,
+.rp-root h2,
+.rp-root h3 {
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.rp-root h2 {
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  margin-bottom: 1.25rem;
+}
+
+.rp-root img {
+  max-width: 100%;
+  display: block;
+}
+
+.rp-root button {
+  font-family: inherit;
+  touch-action: manipulation;
+}
+
+.rp-root a {
+  color: inherit;
+}
+
+.rp-wrap {
+  width: min(100% - 36px, 620px);
+  margin-inline: auto;
+}
+
+.rp-section {
+  padding: 3rem 0;
+}
+
+.rp-section--alt {
+  background: #e9eef6;
+}
+
+.rp-muted {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.rp-devnote {
+  font-style: normal;
+  font-size: 0.8rem;
+  color: var(--red);
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.rp-error {
+  color: var(--red);
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 0.6rem;
+}
+
+.rp-ok {
+  color: var(--green);
+  font-weight: 600;
+}
+
+/* Imágenes + placeholders ---------------------------------------------------- */
+.rp-img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
+.rp-ph {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  background: #e3e6eb;
+  border: 2px dashed #8e99a8;
+  border-radius: var(--radius);
+  color: #55606e;
+  font-size: 0.72rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  line-height: 1.3;
+  text-align: center;
+  overflow: hidden;
+}
+
+.rp-ph span {
+  overflow-wrap: anywhere;
+}
+
+/* Botones -------------------------------------------------------------------- */
+.rp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 60px;
+  padding: 0.9rem 1.25rem;
+  border: 0;
+  border-radius: 14px;
+  background: var(--orange);
+  color: var(--on-orange);
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(255, 138, 31, 0.38), inset 0 -3px 0 rgba(0, 0, 0, 0.14);
+  transition: transform 0.15s var(--ease-out), background-color 0.15s;
+}
+
+.rp-btn:active {
+  transform: scale(0.98);
+}
+
+.rp-btn:focus-visible,
+.rp-root a:focus-visible,
+.rp-root button:focus-visible,
+.rp-bump input:focus-visible {
+  outline: 3px solid #5aa9ff;
+  outline-offset: 3px;
+}
+
+.rp-btn:disabled {
+  background: #c9d1dc;
+  color: #5b6675;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.rp-btn--buy {
+  min-height: 66px;
+  font-size: 1.18rem;
+}
+
+.rp-btn--ghost {
+  background: transparent;
+  color: var(--navy);
+  border: 2px solid var(--navy);
+  box-shadow: none;
+  min-height: 52px;
+}
+
+@media (hover: hover) {
+  .rp-btn:not(:disabled):hover {
+    background: var(--orange-hover);
+  }
+  .rp-btn--ghost:not(:disabled):hover {
+    background: #e9eef6;
+  }
+}
+
+.rp-spin {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(28, 16, 0, 0.25);
+  border-top-color: var(--on-orange);
+  border-radius: 50%;
+  animation: rp-spin 0.7s linear infinite;
+}
+
+@keyframes rp-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 1 · Hero: título + imagen ---------------------------------------------------- */
+.rp-hero {
+  background: radial-gradient(120% 80% at 50% 0%, var(--navy-2) 0%, var(--navy) 60%);
+  color: #fff;
+  padding: 2.25rem 0 2.5rem;
+  text-align: center;
+}
+
+.rp-hero h1 {
+  font-size: clamp(2.1rem, 9.4vw, 3.1rem);
+}
+
+.rp-hero__img {
+  margin-top: 1.75rem;
+}
+
+.rp-center {
+  text-align: center;
+}
+
+.rp-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* 2 · Dolores ------------------------------------------------------------------ */
+.rp-list {
+  display: grid;
+  gap: 12px;
+}
+
+.rp-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 0.95rem 1rem;
+  border-radius: var(--radius);
+  border: 2px solid;
+  font-weight: 500;
+  text-align: left;
+}
+
+.rp-list svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+.rp-list--pain li {
+  border-color: var(--red);
+  background: var(--red-soft);
+}
+
+.rp-list--pain svg {
+  color: var(--red);
+}
+
+.rp-list--benefit {
+  gap: 16px;
+}
+
+.rp-list--benefit li {
+  border-color: var(--green);
+  background: var(--green-soft);
+}
+
+.rp-list--benefit svg {
+  color: var(--green);
+}
+
+/* 3 · Antes y después ---------------------------------------------------------- */
+.rp-ba {
+  display: grid;
+  gap: 14px;
+}
+
+/* Móvil: cada fila apila su "antes" y su "después"; la cabecera de columnas se oculta. */
+.rp-ba__head {
+  display: none;
+}
+
+.rp-ba__row {
+  display: grid;
+  gap: 6px;
+}
+
+.rp-ba__cell {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0.85rem 0.95rem;
+  border: 2px solid;
+  border-radius: var(--radius);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.rp-ba__cell svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+.rp-ba__cell--before {
+  border-color: var(--red);
+  background: var(--red-soft);
+}
+
+.rp-ba__cell--before svg,
+.rp-ba__cell--before .rp-ba__tag,
+.rp-ba__label--before {
+  color: var(--red);
+}
+
+.rp-ba__cell--after {
+  border-color: var(--green);
+  background: var(--green-soft);
+}
+
+.rp-ba__cell--after svg,
+.rp-ba__cell--after .rp-ba__tag,
+.rp-ba__label--after {
+  color: var(--green);
+}
+
+.rp-ba__tag,
+.rp-ba__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.rp-ba__tag {
+  display: block;
+  margin-bottom: 2px;
+}
+
+@media (min-width: 560px) {
+  .rp-ba {
+    gap: 10px;
+  }
+  .rp-ba__head,
+  .rp-ba__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .rp-ba__label {
+    text-align: center;
+    font-size: 0.85rem;
+  }
+  .rp-ba__tag {
+    display: none;
+  }
+}
+
+/* 4 · Producto: módulos y bonus ------------------------------------------------ */
+.rp-root .rp-product__name {
+  margin: 1.1rem 0 0;
+  text-align: center;
+  font-size: clamp(1.9rem, 8vw, 2.5rem);
+}
+
+.rp-root .rp-group {
+  margin: 2rem 0 0.9rem;
+  font-size: 1.2rem;
+}
+
+.rp-modules {
+  display: grid;
+  gap: 10px;
+}
+
+.rp-modules li {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 8px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.rp-modules__img {
+  border-radius: 10px;
+  object-fit: cover;
+  aspect-ratio: 4 / 3;
+}
+
+.rp-bonus {
+  display: grid;
+  gap: 12px;
+}
+
+.rp-bonus li {
+  display: grid;
+  grid-template-columns: 42% 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.rp-bonus__name {
+  display: block;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.rp-bonus__value {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #b45309;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 5-6 · Oferta y botón --------------------------------------------------------- */
+.rp-offer {
+  background: radial-gradient(120% 60% at 50% 0%, var(--navy-2) 0%, var(--navy) 70%);
+  scroll-margin-top: 8px;
+}
+
+.rp-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 1.1rem;
+  box-shadow: var(--shadow);
+}
+
+.rp-total {
+  text-align: center;
+  font-weight: 600;
+}
+
+.rp-total s {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.rp-launch {
+  text-align: center;
+  margin: 0.35rem 0 1.1rem;
+}
+
+.rp-launch span {
+  display: block;
+  font-weight: 600;
+}
+
+.rp-launch strong {
+  display: block;
+  font-size: clamp(2.9rem, 15vw, 3.8rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.rp-countdown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 1.1rem;
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  background: var(--navy);
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.rp-countdown__time {
+  display: flex;
+  gap: 10px;
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.rp-countdown__time small {
+  margin-left: 2px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #b9c7dd;
+}
+
+.rp-bump {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 1rem;
+  padding: 0.95rem;
+  border: 2px dashed var(--orange);
+  border-radius: var(--radius);
+  background: #fff7ec;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.rp-bump.is-on {
+  background: #ffe9cc;
+  border-style: solid;
+}
+
+.rp-bump input {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  margin: 0;
+  accent-color: #d9480f;
+  cursor: pointer;
+}
+
+.rp-under {
+  margin-top: 0.8rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+/* 7 · Compra 100% segura ------------------------------------------------------- */
+.rp-pay {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.rp-pay li {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 60px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(11, 31, 58, 0.06);
+}
+
+.rp-pay img {
+  max-height: 34px;
+  max-width: 66px;
+  width: auto;
+}
+
+/* 8 · Garantía ----------------------------------------------------------------- */
+.rp-guarantee__seal {
+  width: 132px;
+  margin: 0 auto 1.1rem;
+  border-radius: 50%;
+}
+
+.rp-guarantee__text {
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+/* 9 · Cómo lo vas a recibir ---------------------------------------------------- */
+.rp-steps {
+  display: grid;
+  gap: 10px;
+}
+
+.rp-steps li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0.8rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-weight: 600;
+}
+
+.rp-steps__n {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 10 · Reseñas --------------------------------------------------------------- */
+.rp-reviews {
+  display: flex;
+  gap: 14px;
+  padding: 4px 18px 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.rp-reviews::-webkit-scrollbar {
+  display: none;
+}
+
+.rp-review {
+  flex: 0 0 min(84vw, 340px);
+  scroll-snap-align: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.rp-review .rp-img,
+.rp-review .rp-ph {
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.rp-review blockquote {
+  padding: 1rem 1rem 0.5rem;
+}
+
+.rp-review figcaption {
+  padding: 0 1rem 1rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.rp-review figcaption strong {
+  color: var(--ink);
+}
+
+.rp-reviews__nav {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 0.5rem;
+}
+
+.rp-reviews__nav button {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--navy);
+  background: transparent;
+  color: var(--navy);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* 11 · FAQ ------------------------------------------------------------------- */
+.rp-faq {
+  display: grid;
+  gap: 10px;
+}
+
+.rp-faq__item {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.rp-faq__item button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 58px;
+  padding: 0.85rem 1rem;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.rp-faq__item svg {
+  flex: none;
+  transition: transform 0.25s var(--ease-out);
+}
+
+.rp-faq__item.is-open svg {
+  transform: rotate(180deg);
+}
+
+.rp-faq__wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows 0.28s var(--ease-out), visibility 0.28s;
+}
+
+.rp-faq__item.is-open .rp-faq__wrap {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}
+
+.rp-faq__a {
+  overflow: hidden;
+}
+
+.rp-faq__a p {
+  padding: 0 1rem 1rem;
+  color: var(--muted);
+}
+
+/* Footer ----------------------------------------------------------------------- */
+.rp-footer {
+  background: #071528;
+  color: #a9b8cf;
+  text-align: center;
+  font-size: 0.85rem;
+  padding: 1.75rem 0 calc(1.75rem + env(safe-area-inset-bottom));
+}
+
+.rp-footer nav {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.rp-footer p {
+  margin-top: 0.35rem;
+}
+
+/* Páginas simples: upsell, gracias, legales ---------------------------------- */
+.rp-simple {
+  width: min(100% - 36px, 560px);
+  margin-inline: auto;
+  padding: 2.5rem 0 3rem;
+  display: grid;
+  gap: 1rem;
+  text-align: center;
+}
+
+.rp-simple h1 {
+  font-size: clamp(1.6rem, 7vw, 2.2rem);
+}
+
+.rp-upsell .rp-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.rp-root .rp-upsell h2 {
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.rp-upsell .rp-under {
+  margin: 0;
+}
+
+.rp-no {
+  justify-self: center;
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.rp-badge {
+  width: 76px;
+  height: 76px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+}
+
+.rp-legal {
+  text-align: left;
+}
+
+.rp-legal p {
+  color: var(--muted);
+}
+
+/* Movimiento reducido -------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .rp-faq__wrap,
+  .rp-faq__item svg,
+  .rp-btn { transition: none; }
+}

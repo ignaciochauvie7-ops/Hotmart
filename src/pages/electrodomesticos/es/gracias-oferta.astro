@@ -1,0 +1,34 @@
+---
+export const prerender = false;
+
+import ElectroLayout from '../../../layouts/ElectroLayout.astro';
+import { Upsell } from '../../../components/electrodomesticos/Upsell';
+import { PRICE_MAIN, PRICE_WITH_BUMP, texts } from '../../../config/electrodomesticos';
+import { getDodoClient, retrievePayment, paymentIsPaid } from '../../../lib/menopausia/dodo';
+import { listImages } from '../../../lib/electrodomesticos/images';
+
+// Dodo vuelve aquí con ?payment_id=…&status=… tras el pago principal.
+const params = Astro.url.searchParams;
+const paymentId = params.get('payment_id') ?? '';
+const statusParam = (params.get('status') ?? '').toLowerCase();
+
+let paid = false;
+let value = PRICE_MAIN;
+let email: string | undefined;
+
+const client = getDodoClient();
+if (client && paymentId) {
+  const p: any = await retrievePayment(client, paymentId);
+  // Solo pagos de este embudo y del producto principal.
+  paid = paymentIsPaid(p) && p?.metadata?.funnel === 'electrodomesticos' && p?.metadata?.kind !== 'upsell';
+  if (p?.metadata?.bump === 'true') value = PRICE_WITH_BUMP;
+  if (typeof p?.total_amount === 'number') value = p.total_amount / 100;
+  if (p?.customer?.email) email = p.customer.email;
+} else if (!client && import.meta.env.DEV && statusParam === 'succeeded') {
+  paid = true; // Solo en local, sin Dodo configurado, para ver la página.
+}
+---
+
+<ElectroLayout title={texts.meta.upsellTitle} noindex>
+  <Upsell paid={paid} value={value} paymentId={paymentId} email={email} images={listImages()} client:load />
+</ElectroLayout>

@@ -1,0 +1,32 @@
+/**
+ * Reparador PRO — entrega por email (SOLO SERVIDOR: no importar desde componentes
+ * React, para que estos enlaces no acaben en el JavaScript público).
+ *
+ * Tras el pago confirmado (webhook de Dodo) se envía un email con los enlaces de
+ * acceso de cada producto comprado. Rellena `url` con el sitio donde alojes los
+ * vídeos y los PDF. Si un producto no tiene enlaces, no se envía nada por él.
+ */
+export interface AccessLink {
+  label: string;
+  url: string;
+}
+
+export const delivery: Record<'main' | 'bump' | 'upsell', AccessLink[]> = {
+  main: [
+    // { label: 'Curso Reparador PRO (10 módulos)', url: 'https://…' },
+    // { label: 'Bonus 1: Fichas de diagnóstico de averías (PDF)', url: 'https://…' },
+  ],
+  bump: [
+    // { label: 'Códigos de error de las 25 marcas', url: 'https://…' },
+  ],
+  upsell: [
+    // { label: 'Pack Placas Electrónicas', url: 'https://…' },
+  ],
+};
+
+export const emailTexts = {
+  subject: 'Tu acceso a Reparador PRO',
+  heading: '¡Ya tienes tu acceso!',
+  intro: 'Gracias por tu compra. Aquí tienes todo lo que has adquirido:',
+  note: 'Guarda este email para volver a entrar cuando quieras. Si tienes cualquier problema, responde a este mensaje.',
+};
