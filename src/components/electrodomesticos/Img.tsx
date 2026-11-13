@@ -13,6 +13,8 @@ interface Props {
   eager?: boolean;
   /** Texto corto del placeholder (por defecto: archivo · medida). */
   label?: string;
+  /** Si el archivo no existe no se pinta nada (sin placeholder). */
+  optional?: boolean;
 }
 
 /**
@@ -20,7 +22,7 @@ interface Props {
  * del archivo y la medida recomendada. En cuanto el archivo existe en
  * /public/electrodomesticos/ se muestra la imagen real.
  */
-export function Img({ file, w, h, alt, available, className = '', eager = false, label }: Props) {
+export function Img({ file, w, h, alt, available, className = '', eager = false, label, optional = false }: Props) {
   const known = available ? available.includes(file) : null;
   const [failed, setFailed] = useState(false);
   const ref = useRef<HTMLImageElement>(null);
@@ -30,6 +32,8 @@ export function Img({ file, w, h, alt, available, className = '', eager = false,
     const el = ref.current;
     if (el && el.complete && el.naturalWidth === 0) setFailed(true);
   }, []);
+
+  if (optional && (known === false || failed)) return null;
 
   if (known === false || failed) {
     return (

@@ -72,8 +72,9 @@ export function Upsell({ paid, value, paymentId, email, images }: Props) {
       <p className="rp-ok">{t.upsell.confirmed}</p>
       <h1>{t.upsell.title}</h1>
       <div className="rp-card">
-        <Img file="upsell-placas.webp" w={1000} h={800} alt={t.upsell.imageAlt} available={images} eager />
+        <Img file="upsell.webp" w={1000} h={800} alt={t.upsell.imageAlt} available={images} eager optional />
         <h2>{t.upsell.product}</h2>
+        <p className="rp-muted">{t.upsell.subtitle}</p>
         <ul className="rp-list rp-list--benefit">
           {t.upsell.bullets.map((b) => (
             <li key={b}>

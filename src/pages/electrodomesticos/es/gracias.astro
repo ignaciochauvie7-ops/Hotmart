@@ -14,13 +14,17 @@ const paymentId = params.get('payment_id') ?? '';
 const statusParam = (params.get('status') ?? '').toLowerCase();
 
 let upsellPaid = false;
+let upsellPending = false;
 let value = PRICE_UPSELL;
 
 if (fromUpsell) {
   const client = getDodoClient();
   if (client && paymentId) {
     const p: any = await retrievePayment(client, paymentId);
-    upsellPaid = paymentIsPaid(p) && p?.metadata?.funnel === 'electrodomesticos' && p?.metadata?.kind === 'upsell';
+    const isUpsell = p?.metadata?.funnel === 'electrodomesticos' && p?.metadata?.kind === 'upsell';
+    upsellPaid = isUpsell && paymentIsPaid(p);
+    // Cobro en un clic aún en curso: ni confirmado ni fallido.
+    upsellPending = isUpsell && String(p?.status ?? '').toLowerCase() === 'processing';
     if (typeof p?.total_amount === 'number') value = p.total_amount / 100;
   } else if (!client && import.meta.env.DEV && statusParam === 'succeeded') {
     upsellPaid = true; // Solo en local, sin Dodo configurado.
@@ -29,5 +33,5 @@ if (fromUpsell) {
 ---
 
 <ElectroLayout title={texts.meta.thanksTitle} noindex>
-  <Gracias fromUpsell={fromUpsell} upsellPaid={upsellPaid} value={value} paymentId={paymentId} client:load />
+  <Gracias fromUpsell={fromUpsell} upsellPaid={upsellPaid} upsellPending={upsellPending} value={value} paymentId={paymentId} client:load />
 </ElectroLayout>

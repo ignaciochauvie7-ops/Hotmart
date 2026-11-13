@@ -7,11 +7,13 @@ interface Props {
   fromUpsell: boolean;
   /** Pago del upsell verificado en el servidor con Dodo. */
   upsellPaid: boolean;
+  /** Cobro del upsell todavía en curso. */
+  upsellPending?: boolean;
   value: number;
   paymentId: string;
 }
 
-export function Gracias({ fromUpsell, upsellPaid, value, paymentId }: Props) {
+export function Gracias({ fromUpsell, upsellPaid, upsellPending = false, value, paymentId }: Props) {
   // Purchase del upsell: solo con pago confirmado y una vez por pago.
   useEffect(() => {
     if (upsellPaid) trackPurchaseOnce(paymentId, value, 'reparador_pro_upsell');
@@ -27,7 +29,8 @@ export function Gracias({ fromUpsell, upsellPaid, value, paymentId }: Props) {
       <h1>{t.thanks.title}</h1>
       <p>{t.thanks.body}</p>
       {upsellPaid && <p className="rp-ok">{t.thanks.upsellPaid}</p>}
-      {fromUpsell && !upsellPaid && <p className="rp-muted">{t.thanks.upsellFailed}</p>}
+      {upsellPending && <p className="rp-muted">{t.thanks.upsellPending}</p>}
+      {fromUpsell && !upsellPaid && !upsellPending && <p className="rp-muted">{t.thanks.upsellFailed}</p>}
     </main>
   );
 }

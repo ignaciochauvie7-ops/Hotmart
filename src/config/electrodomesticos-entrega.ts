@@ -17,10 +17,10 @@ export const delivery: Record<'main' | 'bump' | 'upsell', AccessLink[]> = {
     // { label: 'Bonus 1: Fichas de diagnóstico de averías (PDF)', url: 'https://…' },
   ],
   bump: [
-    // { label: 'Códigos de error de las 25 marcas', url: 'https://…' },
+    // { label: 'Guía de repuestos: dónde comprar cada pieza más barata en España', url: 'https://…' },
   ],
   upsell: [
-    // { label: 'Pack Placas Electrónicas', url: 'https://…' },
+    // { label: 'Electrodomésticos como nuevos', url: 'https://…' },
   ],
 };
 

@@ -10,7 +10,7 @@ archivo no exista, la landing muestra un placeholder gris con su nombre y medida
 | testimonio-1.webp … testimonio-6.webp (fotos de reseñas) | 96x96 |
 | oferta-pack.webp | 1000x800 |
 | bonus-1.webp … bonus-5.webp (portadas) | 480x720 |
-| upsell-placas.webp | 1000x800 |
+| upsell.webp (opcional: si no existe, el upsell sale sin imagen) | 1000x800 |
 
 Fotos de reseñas: nombre libre, indicado en `testimonials[].photo`
 (src/config/electrodomesticos.ts). Medida recomendada 800x800.

@@ -19,8 +19,9 @@ export const PRICE_UPSELL = 14.9;
 // ── IDs de producto de Dodo Payments (no son secretos) ─────────────────────
 // Vacío = el botón de compra aparece deshabilitado (con aviso en dev).
 export const DODO_PRODUCT_MAIN = 'pdt_0NrsQO9wpJHCUTud1DV7k';
-export const DODO_PRODUCT_BUMP = '';
-export const DODO_PRODUCT_UPSELL = '';
+// Bump: «Guía de repuestos» · Upsell: «Electrodomésticos como nuevos».
+export const DODO_PRODUCT_BUMP = 'pdt_0NrsZExNafX66jPGWBAK5';
+export const DODO_PRODUCT_UPSELL = 'pdt_0NrsZsSPP53ENnL1o4IKb';
 
 // ── Fecha límite REAL de la oferta (ISO 8601) ──────────────────────────────
 // Ej.: '2026-12-01T23:59:59+01:00'. Vacía = el contador no se muestra.
@@ -161,6 +162,9 @@ export const texts = {
     valueTotalLabel: 'Valor total:',
     launchLabel: 'Precio de lanzamiento:',
     countdownLabel: 'La oferta termina en',
+    // Order bump: casilla justo encima del botón de compra (sin pasos extra).
+    bumpName: 'Sí, añade la Guía de repuestos por solo {bumpPrice}',
+    bumpBenefit: 'Dónde comprar cada pieza más barata en España',
     cta: 'Quiero el Curso',
     secure: 'Compra 100% segura',
     error: 'No hemos podido abrir el pago. Inténtalo de nuevo en unos segundos.',
@@ -211,14 +215,16 @@ export const texts = {
   upsell: {
     title: '¡Espera! Tu pedido está casi completo',
     confirmed: 'Pago confirmado. Antes de terminar, mira esto:',
-    product: 'Pack Placas Electrónicas: diagnóstico y reparación de placas',
-    imageAlt: 'Pack Placas Electrónicas',
+    product: 'Electrodomésticos como nuevos',
+    subtitle: 'Quita malos olores, cal y grasa de tu lavadora, lavavajillas, horno y frigorífico',
+    // Imagen opcional: upsell.webp (1000x800). Si no existe, no se muestra nada.
+    imageAlt: 'Electrodomésticos como nuevos',
     bullets: [
-      'Las averías que más se cobran',
-      'Cómo saber si la placa tiene arreglo',
-      'Paso a paso con el multímetro',
+      'Lavadora sin malos olores',
+      'Lavavajillas sin cal',
+      'Horno y frigorífico sin grasa',
     ],
-    yes: 'Sí, lo quiero por {upsellPrice}',
+    yes: 'Sí, añadirlo por {upsellPrice}',
     no: 'No, gracias',
     under: 'Pago único de {upsellPrice}. Se abre un pago seguro aparte.',
     notPaidTitle: 'No hemos podido confirmar tu pago',
@@ -230,8 +236,9 @@ export const texts = {
   thanks: {
     title: '¡Gracias! Tu pedido está confirmado',
     body: 'Revisa tu email (y la carpeta de spam). Te llega todo normalmente en menos de 5 minutos.',
-    upsellPaid: 'También hemos añadido el Pack Placas Electrónicas a tu pedido.',
-    upsellFailed: 'El pago del Pack Placas Electrónicas no se ha completado. Tu pedido principal sigue confirmado.',
+    upsellPaid: 'También hemos añadido «Electrodomésticos como nuevos» a tu pedido.',
+    upsellPending: 'Estamos confirmando el pago de «Electrodomésticos como nuevos». Si se aprueba, te llega por email.',
+    upsellFailed: 'El pago de «Electrodomésticos como nuevos» no se ha completado. Tu pedido principal sigue confirmado.',
   },
 
   // Páginas legales
