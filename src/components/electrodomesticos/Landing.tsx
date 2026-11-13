@@ -195,21 +195,11 @@ export function Landing({ images }: Props) {
 
           <ul className="m-valuelist">
             <li className="m-valuerow">
-              <span className="m-valuerow__name">{t.product.modulesTitle}</span>
+              <span className="m-valuerow__name">{t.product.rowName}</span>
               <span className="m-valuerow__value m-valuerow__value--main">
                 <s className="m-valuerow__was">{eur(t.product.courseValue)}</s>
                 <strong className="m-valuerow__now">{eur(PRICE_MAIN)}</strong>
               </span>
-            </li>
-            <li className="rp-modules">
-              <ul className="m-compare2__list">
-                {t.product.modules.map((title) => (
-                  <li key={title}>
-                    <CheckIcon className="m-compare2__check" />
-                    <span>{title}</span>
-                  </li>
-                ))}
-              </ul>
             </li>
             {t.product.bonus.map((b, i) => (
               <li key={b.title} className="m-valuerow">

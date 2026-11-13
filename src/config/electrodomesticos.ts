@@ -144,19 +144,8 @@ export const texts = {
     name: PRODUCT_NAME,
     imageAlt: PRODUCT_NAME,
     courseValue: 79.9,
-    modulesTitle: 'Los 10 módulos',
-    modules: [
-      'Seguridad y herramientas básicas',
-      'Lavadoras',
-      'Lavavajillas',
-      'Secadoras',
-      'Hornos',
-      'Placas de inducción y vitrocerámica',
-      'Microondas',
-      'Frigoríficos',
-      'Pequeños electrodomésticos',
-      'Multímetro desde cero',
-    ],
+    // Fila del producto principal en el cuadro (con el precio).
+    rowName: 'Curso completo (10 módulos)',
     freeTag: 'Gratis',
     bonus: [
       { title: 'Fichas de diagnóstico de averías', value: 14.9 },

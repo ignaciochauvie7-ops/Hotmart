@@ -89,11 +89,6 @@ html:root body {
   margin: 0 auto 0.6rem;
 }
 
-.rp-theme .rp-modules {
-  padding: 0.7rem 0;
-  border-bottom: 1px solid var(--line);
-}
-
 /* Medios de pago pequeños y pegados al botón. */
 .rp-theme .m-valuebox .m-securepay {
   margin-top: 0.55rem;
