@@ -35,12 +35,45 @@ export const SUPPORT_EMAIL = '';
 // Vacío = la sección de reseñas no se renderiza. Solo reseñas reales.
 // `photo` es un archivo dentro de /public/electrodomesticos/ (ej. 'resena-1.webp').
 export interface Testimonial {
-  name: string;
+  /** Nombre visible (ej. 'Carmen, 52'). Vacío = la tarjeta sale sin nombre. */
+  name?: string;
   text: string;
   photo?: string;
   location?: string;
 }
-export const testimonials: Testimonial[] = [];
+// Fotos: testimonio-1.webp … testimonio-6.webp (96x96) en /public/electrodomesticos/.
+export const testimonials: Testimonial[] = [
+  {
+    name: 'José Manuel',
+    photo: 'testimonio-1.webp',
+    text: 'No tenía ni idea de reparar electrodomésticos. Empecé desde cero y me sorprendió lo fácil que es entender las explicaciones. Ya he conseguido solucionar un par de averías en casa sin llamar al técnico.',
+  },
+  {
+    name: 'María',
+    photo: 'testimonio-2.webp',
+    text: 'Me ahorré bastante dinero al poder solucionar yo misma un problema con la lavadora. Antes habría llamado directamente a un técnico. Ahora tengo muchos más conocimientos y confianza.',
+  },
+  {
+    name: 'Francisco',
+    photo: 'testimonio-3.webp',
+    text: 'Lo compré por curiosidad y terminé ayudando a familiares y vecinos con pequeñas averías. Nunca imaginé que podría aprender algo así sin tener experiencia previa.',
+  },
+  {
+    name: 'Antonio',
+    photo: 'testimonio-4.webp',
+    text: 'Lo mejor es que está explicado paso a paso y no necesitas saber nada de electricidad ni reparaciones para empezar. Es muchísimo más práctico de lo que esperaba.',
+  },
+  {
+    name: 'Laura',
+    photo: 'testimonio-5.webp',
+    text: 'Estaba cansada de pagar reparaciones por cosas que ni siquiera entendía. Ahora sé identificar muchos problemas y tengo más independencia en casa. Una inversión que merece la pena.',
+  },
+  {
+    name: 'David',
+    photo: 'testimonio-6.webp',
+    text: 'Mi intención era aprender un oficio que pudiera darme ingresos extra. Ya estoy empezando a hacer pequeñas reparaciones para conocidos y veo que tiene mucho potencial.',
+  },
+];
 
 // ── Medios de pago mostrados bajo el botón de compra ──────────────────────
 // Deja solo los que estén activos en tu cuenta de Dodo para EUR.
@@ -74,6 +107,12 @@ export const texts = {
     // El titular visible va dentro de hero-mockup.webp; este texto es el h1 oculto y el alt.
     h1: 'De 0 a experto en electrodomésticos en 30 días',
     imageAlt: 'De 0 a experto en electrodomésticos en 30 días',
+    // Franja de prueba social sobre la imagen. Usa solo cifras reales.
+    // Fotos: perfil-1.webp … perfil-4.webp (96x96) en /public/electrodomesticos/.
+    trust: '+3.000 personas ya han empezado el curso',
+    rating: '4,9',
+    ratingAria: 'Valoración 4,9 de 5',
+    avatars: 4,
   },
 
   // 2 · Esto es para ti si… (3 dolores)

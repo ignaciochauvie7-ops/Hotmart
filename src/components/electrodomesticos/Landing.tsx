@@ -63,6 +63,11 @@ export function Landing({ images }: Props) {
   const total = withBump ? PRICE_WITH_BUMP : PRICE_MAIN;
   const canBuy = !!DODO_PRODUCT_MAIN;
 
+  // Fotos de personas: solo se pintan si el archivo existe (sin placeholder).
+  const exists = (file: string) => !images || images.includes(file);
+  const heroAvatars = Array.from({ length: t.hero.avatars }, (_, i) => `perfil-${i + 1}.webp`).filter(exists);
+  const reviewAvatars = testimonials.flatMap((r) => (r.photo && exists(r.photo) ? [r.photo] : [])).slice(0, 5);
+
   useEffect(() => {
     track('ViewContent', { value: PRICE_MAIN, currency: CURRENCY, content_name: 'reparador_pro_main' });
   }, []);
@@ -116,6 +121,24 @@ export function Landing({ images }: Props) {
     <div className="m-shell m-shell--offer m-offer-es" ref={shellRef}>
       <header className="m-hero m-hero--es">
         {/* 1 · Promesa: imagen principal */}
+        {/* Prueba social arriba del todo: fotos + conteo + valoración */}
+        <div className="m-herocred m-hero-in">
+          <p className="m-herocred__trust">
+            {heroAvatars.length > 0 && (
+              <span className="m-herocred__avatars" aria-hidden="true">
+                {heroAvatars.map((file) => (
+                  <Img key={file} file={file} w={96} h={96} alt="" available={images} className="m-herocred__avatar" label="" eager />
+                ))}
+              </span>
+            )}
+            <span className="m-herocred__trust-text">{t.hero.trust}</span>
+            <span className="m-herocred__rating">
+              <Stars label={t.hero.ratingAria} />
+              <strong>{t.hero.rating}</strong>
+            </span>
+          </p>
+        </div>
+
         {/* El titular va dentro de la imagen; el h1 queda solo para lectores de pantalla. */}
         <h1 className="m-sr">{t.hero.h1}</h1>
         <Img
@@ -294,18 +317,37 @@ export function Landing({ images }: Props) {
       {testimonials.length > 0 && (
         <section className="m-section m-reveal">
           <h2>{t.reviews.title}</h2>
+          <div className="m-testi-rating">
+            {reviewAvatars.length > 0 && (
+              <div className="m-avatars" aria-hidden="true">
+                {reviewAvatars.map((file) => (
+                  <Img key={file} file={file} w={96} h={96} alt="" available={images} className="m-avatars__img" label="" />
+                ))}
+              </div>
+            )}
+            <div className="m-testi-rating__meta">
+              <div className="m-testi-rating__stars">
+                <Stars size={16} label={t.hero.ratingAria} />
+                <strong>{t.hero.rating}</strong>
+              </div>
+              <p className="m-testi-rating__count">{t.hero.trust}</p>
+            </div>
+          </div>
           <ul className="m-testi-grid">
             {testimonials.map((r, i) => (
-              <li key={`${r.name}-${i}`} className="m-testi">
+              <li key={i} className="m-testi">
                 <div className="m-testi__head">
-                  {r.photo && (
-                    <img className="m-testi__photo" src={`${IMG_PATH}/${r.photo}`} alt={r.name} width={48} height={48} loading="lazy" decoding="async" />
+                  {r.photo && exists(r.photo) && (
+                    <Img file={r.photo} w={96} h={96} alt={r.name ?? ''} available={images} className="m-testi__photo" label="" />
                   )}
                   <div className="m-testi__who">
-                    <p className="m-testi__author">
-                      {r.name}
-                      {r.location && ` · ${r.location}`}
-                    </p>
+                    <Stars size={14} />
+                    {r.name && (
+                      <p className="m-testi__author">
+                        {r.name}
+                        {r.location && ` · ${r.location}`}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <p className="m-testi__quote">{r.text}</p>
@@ -389,6 +431,18 @@ function GuaranteeSeal() {
       <text x="40" y="47" textAnchor="middle" fontSize="25" fontWeight="800" fill="#fff">{g.days}</text>
       <text x="40" y="60" textAnchor="middle" fontSize="10" fontWeight="700" letterSpacing="1.5" fill="#fff">{g.sealUnit}</text>
     </svg>
+  );
+}
+
+function Stars({ size = 13, label }: { size?: number; label?: string }) {
+  return (
+    <span className="m-stars" role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : true}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <svg key={i} width={size} height={size} viewBox="0 0 24 24" fill="#FFB43A" stroke="#FFB43A" strokeWidth="1.5" strokeLinejoin="round">
+          <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
+        </svg>
+      ))}
+    </span>
   );
 }
 

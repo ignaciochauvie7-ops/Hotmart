@@ -6,6 +6,8 @@ archivo no exista, la landing muestra un placeholder gris con su nombre y medida
 | Archivo | Medida |
 | --- | --- |
 | hero-mockup.webp (imagen principal, con el titular dentro) | 952x1256 |
+| perfil-1.webp … perfil-4.webp (fotos de la franja superior) | 96x96 |
+| testimonio-1.webp … testimonio-6.webp (fotos de reseñas) | 96x96 |
 | oferta-pack.webp | 1000x800 |
 | bonus-1.webp … bonus-5.webp (portadas) | 480x720 |
 | upsell-placas.webp | 1000x800 |

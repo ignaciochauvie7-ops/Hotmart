@@ -33,7 +33,7 @@ export function Img({ file, w, h, alt, available, className = '', eager = false,
 
   if (known === false || failed) {
     return (
-      <div
+      <span
         className={`rp-ph m-placeholder ${className}`}
         style={{ aspectRatio: `${w} / ${h}` }}
         role="img"
@@ -41,7 +41,7 @@ export function Img({ file, w, h, alt, available, className = '', eager = false,
         title={`${file} · ${w}x${h}`}
       >
         <span>{label ?? `${file} · ${w}x${h}`}</span>
-      </div>
+      </span>
     );
   }
 
