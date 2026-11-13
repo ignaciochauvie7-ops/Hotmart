@@ -6,14 +6,19 @@
  *
  * En los textos se pueden usar estas marcas, que se sustituyen solas:
  *   {price} → precio principal · {bumpPrice} → order bump · {upsellPrice} → upsell
- *   {total} → principal + bump · {valueTotal} → suma del valor de la oferta
+ *   {total} → principal + bump · {valueTotal} → valor total de la oferta (VALUE_TOTAL)
  */
 
 // ── Precios ────────────────────────────────────────────────────────────────
 export const CURRENCY = 'EUR';
-// Valores del pixel (salen de aquí): Purchase 17,00 · 24,90 con el bump · 14,90 el upsell.
+// Valores del pixel (salen de aquí): Purchase 17,00 · 21,90 con el bump · 14,90 el upsell.
+// OJO: el importe que se cobra lo fija el producto en Dodo; debe coincidir con estos precios.
 export const PRICE_MAIN = 17;
-export const PRICE_BUMP = 7.9;
+export const PRICE_BUMP = 4.9;
+// Precio anterior de la guía (sale tachado en el mini carrito).
+export const PRICE_BUMP_WAS = 7.9;
+// "Valor total" que se muestra en el cuadro de producto (sin tachar).
+export const VALUE_TOTAL = 59;
 export const PRICE_UPSELL = 14.9;
 
 // ── IDs de producto de Dodo Payments (no son secretos) ─────────────────────
@@ -140,35 +145,60 @@ export const texts = {
 
   // 4 · Producto principal con sus bonus (un solo bloque).
   // Mockups: oferta-pack.webp · bonus-1.webp … bonus-5.webp
-  // "Valor total" = courseValue + suma de `value` de cada bonus.
   product: {
     name: PRODUCT_NAME,
     imageAlt: PRODUCT_NAME,
+    // Precio anterior del curso (sale tachado junto al precio real).
     courseValue: 29.9,
     // Fila del producto principal en el cuadro (con el precio).
     rowName: 'Curso completo (10 módulos)',
-    freeTag: 'Gratis',
+    // Título sobre la lista de bonus. Portadas en el mismo orden: bonus-1.webp … bonus-5.webp
+    // `value` = precio que sale tachado en cada bonus.
+    bonusTitle: '¡Bonus extra de regalo!',
     bonus: [
-      { title: 'Fichas de diagnóstico de averías', value: 14.9 },
-      { title: 'Lista de precios para cobrar cada reparación', value: 9.9 },
-      { title: 'Plantilla de presupuesto para WhatsApp', value: 7.9 },
-      { title: 'Guía de herramientas por menos de 50 €', value: 9.9 },
-      { title: 'Cómo conseguir tus primeros clientes', value: 12.9 },
+      { title: 'Guía rápida: qué le pasa a tu aparato', value: 14.9 },
+      { title: 'Las 10 averías que se arreglan en menos de 10 minutos', value: 9.9 },
+      { title: 'Cuándo arreglar y cuándo comprar uno nuevo', value: 7.9 },
+      { title: 'Herramientas que necesitas por menos de 50 €', value: 9.9 },
+      { title: 'Seguridad: qué revisar antes de abrir cualquier aparato', value: 12.9 },
     ],
   },
 
   // 5-6 · Oferta, botón de compra y medios de pago (logos: `paymentMethods`)
   offer: {
     valueTotalLabel: 'Valor total:',
-    launchLabel: 'Precio de lanzamiento:',
+    // Mini texto sobre el botón, visible tras reclamar el descuento de la ruleta.
+    dealLabel: 'Con tu 40% de descuento:',
     countdownLabel: 'La oferta termina en',
-    // Order bump: casilla justo encima del botón de compra (sin pasos extra).
-    bumpName: 'Sí, añade la Guía de repuestos por solo {bumpPrice}',
-    bumpBenefit: 'Dónde comprar cada pieza más barata en España',
-    cta: 'Quiero el Curso',
+    // El botón abre el mini carrito (textos en `cart`).
+    cta: 'Quiero mi curso',
     secure: 'Compra 100% segura',
     error: 'No hemos podido abrir el pago. Inténtalo de nuevo en unos segundos.',
     unavailable: 'Disponible muy pronto.',
+  },
+
+  // Ruleta de descuentos que se abre al entrar (solo la primera visita).
+  // El PRIMER sector es el premio: la ruleta siempre termina ahí, después de
+  // pasar muy despacio por el segundo. El precio que se cobra no cambia
+  // (PRICE_MAIN): si cambias el 40%, revisa también `offer.dealLabel`.
+  wheel: {
+    title: 'Gira la ruleta y llévate tu descuento',
+    segments: ['40%', '5%', '20%', '10%', '25%', '15%'],
+    spin: 'Girar',
+    wonTitle: '¡Ganaste un 40% de descuento!',
+    claim: 'Reclamar',
+    close: 'Cerrar',
+  },
+
+  // Mini carrito: se abre al pulsar el botón de compra. La guía (order bump) se
+  // añade o se quita desde aquí; "Ir al checkout" lleva al pago de Dodo.
+  cart: {
+    label: 'Tu pedido',
+    close: 'Cerrar',
+    mainName: 'Curso de Reparación de Electrodomésticos',
+    bumpName: 'Guía de repuestos: dónde comprar cada pieza más barata en España',
+    totalLabel: 'Total',
+    cta: 'Ir al checkout',
   },
 
   // 7 · Garantía de 30 días (sello en SVG, sin imagen)
@@ -264,7 +294,7 @@ export const texts = {
 
 // ── Helpers (no hace falta tocarlos) ───────────────────────────────────────
 export function eur(n: number): string {
-  // Importes redondos sin decimales: 17 € · 7,90 €
+  // Importes redondos sin decimales: 17 € · 4,90 €
   return new Intl.NumberFormat('es-ES', {
     style: 'currency',
     currency: CURRENCY,
@@ -272,8 +302,6 @@ export function eur(n: number): string {
   }).format(n);
 }
 
-export const VALUE_TOTAL =
-  Math.round((texts.product.courseValue + texts.product.bonus.reduce((s, b) => s + b.value, 0)) * 100) / 100;
 export const PRICE_WITH_BUMP = Math.round((PRICE_MAIN + PRICE_BUMP) * 100) / 100;
 
 /** Sustituye {price}, {bumpPrice}, {upsellPrice}, {total} y {valueTotal}. */

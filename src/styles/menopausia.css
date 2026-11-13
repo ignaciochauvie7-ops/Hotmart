@@ -2524,6 +2524,287 @@ body {
   color: var(--sage-dark);
 }
 
+/* Mini carrito (electrodomésticos): cabecera solo con la "x", curso ya añadido
+   con check y oferta con casilla para añadirla. */
+.m-cart__head--bare {
+  justify-content: flex-end;
+  padding: 0.4rem 0.6rem 0;
+  border-bottom: none;
+}
+
+.m-cart__head--bare .m-cart__close {
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.m-cart__head--bare + .m-cart__body {
+  padding-top: 0.2rem;
+}
+
+.m-cart__check {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--sage-soft);
+  color: var(--sage-dark);
+}
+
+.m-cart__check svg {
+  width: 16px;
+  height: 16px;
+}
+
+.m-cart__extra--pick {
+  transition: background-color 160ms var(--ease-out);
+}
+
+.m-cart__extra--pick.is-on {
+  border-style: solid;
+  background: color-mix(in srgb, var(--terra) 12%, var(--surface));
+}
+
+.m-cart__extra--pick .m-cart__add {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.m-cart__extra--pick input {
+  width: 28px;
+  height: 28px;
+}
+
+.m-cart__extra--pick input:focus-visible,
+.m-cart__close:focus-visible {
+  outline: 2px solid var(--sage-dark);
+  outline-offset: 2px;
+}
+
+/* Precio con tachado delante (línea del curso en el mini carrito). */
+.m-cart__price .m-cart__struck {
+  margin-right: 0.25rem;
+}
+
+/* Título sobre la lista de bonus dentro del cuadro de producto. */
+.m-valuebox .m-valuelist__title {
+  margin: 1rem 0 0.1rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--terra-hover);
+}
+
+/* Mini texto con el precio rebajado, justo encima del botón de compra. */
+.m-valuebox .m-valuebox__deal {
+  margin: 0.9rem 0 0;
+  text-align: center;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.m-valuebox__deal s {
+  margin-left: 0.2rem;
+  font-weight: 600;
+  color: var(--muted-text);
+}
+
+.m-valuebox__deal strong {
+  margin-left: 0.15rem;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--terra-hover);
+  font-variant-numeric: tabular-nums;
+}
+
+.m-valuebox__deal + .m-valuebox__cta {
+  margin-top: 0.5rem;
+}
+
+/* Ruleta de descuentos (modal centrado al entrar). ---------------------------- */
+.m-wheel {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.m-wheel__backdrop {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--ink) 72%, transparent);
+  animation: m-wheel-fade 200ms var(--ease-out);
+}
+
+.m-wheel__card {
+  position: relative;
+  width: min(100%, 380px);
+  padding: 1.5rem 1.2rem 1.3rem;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  animation: m-wheel-in 260ms var(--ease-out);
+}
+
+@keyframes m-wheel-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes m-wheel-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+}
+
+.m-wheel__close {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  color: var(--muted-text);
+  cursor: pointer;
+}
+
+.m-wheel__close:focus-visible {
+  outline: 2px solid var(--sage-dark);
+  outline-offset: -4px;
+}
+
+.m-wheel .m-wheel__title {
+  margin: 0 2rem 1.9rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.m-wheel__stage {
+  position: relative;
+  width: min(100%, 290px);
+  margin: 0 auto 1.2rem;
+  aspect-ratio: 1;
+}
+
+.m-wheel__disc {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.m-wheel__pointer {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  z-index: 1;
+  width: 0;
+  height: 0;
+  margin-left: -13px;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-top: 24px solid var(--terra-hover);
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
+}
+
+.m-wheel__rim {
+  fill: var(--sage-dark);
+}
+
+.m-wheel__seg path {
+  stroke: var(--sage-dark);
+  stroke-width: 1.5;
+}
+
+.m-wheel__seg text {
+  font-size: 25px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.m-wheel__seg--dark path {
+  fill: var(--sage);
+}
+
+.m-wheel__seg--dark text {
+  fill: #fff;
+}
+
+.m-wheel__seg--light path {
+  fill: var(--sage-soft);
+}
+
+.m-wheel__seg--light text {
+  fill: var(--sage-dark);
+}
+
+.m-wheel__seg--prize path {
+  fill: var(--terra);
+}
+
+.m-wheel__seg--prize text {
+  fill: var(--on-terra, #fff);
+}
+
+.m-wheel__hub {
+  fill: var(--surface);
+  stroke: var(--sage-dark);
+  stroke-width: 5;
+}
+
+.m-wheel .m-wheel__won {
+  margin: 0 0 0.8rem;
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: var(--terra-hover);
+  animation: m-wheel-won 320ms var(--ease-out);
+}
+
+@keyframes m-wheel-won {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+.m-wheel__cta {
+  width: 100%;
+  margin-top: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m-wheel__backdrop,
+  .m-wheel__card,
+  .m-wheel__won {
+    animation: none;
+  }
+}
+
 /* En móvil el carrito entra desde abajo, ocupando casi toda la altura. */
 @media (max-width: 599px) {
   .m-cart__panel {

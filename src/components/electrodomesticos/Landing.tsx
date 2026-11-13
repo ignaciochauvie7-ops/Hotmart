@@ -6,18 +6,20 @@ import {
   DODO_PRODUCT_MAIN,
   IMG_PATH,
   OFFER_DEADLINE,
+  PRICE_BUMP,
+  PRICE_BUMP_WAS,
   PRICE_MAIN,
   PRICE_WITH_BUMP,
   SUPPORT_EMAIL,
   VALUE_TOTAL,
   eur,
-  fill,
   paymentMethods,
   testimonials,
   texts as t,
 } from '../../config/electrodomesticos';
 import { getCookie, track } from '../../lib/menopausia/pixel';
 import { Img } from './Img';
+import { Wheel, wheelClaimed } from './Wheel';
 
 interface Props {
   /** Archivos presentes en /public/electrodomesticos (null = desconocido). */
@@ -53,12 +55,18 @@ function useCountdown(iso: string): number | null {
 
 export function Landing({ images }: Props) {
   const [bump, setBump] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  // Descuento de la ruleta ya reclamado (ahora o en una visita anterior).
+  const [claimed, setClaimed] = useState(false);
+  useEffect(() => {
+    if (wheelClaimed()) setClaimed(true);
+  }, []);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const left = useCountdown(OFFER_DEADLINE);
 
-  // Order bump: casilla opcional sobre el botón; sin marcar se va directo al checkout.
+  // Order bump: se añade (o se quita) dentro del mini carrito que abre el botón.
   const bumpAvailable = !!DODO_PRODUCT_BUMP;
   const withBump = bump && bumpAvailable;
   const total = withBump ? PRICE_WITH_BUMP : PRICE_MAIN;
@@ -94,6 +102,29 @@ export function Landing({ images }: Props) {
     els.forEach((e) => io.observe(e));
     return () => io.disconnect();
   }, []);
+
+  // Mini carrito abierto: sin scroll de fondo, Esc cierra y el foco entra al panel.
+  const closeRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!cartOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setCartOpen(false);
+    };
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', onKey);
+    closeRef.current?.focus({ preventScroll: true });
+    return () => {
+      document.body.style.overflow = prev;
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [cartOpen]);
+
+  function openCart() {
+    if (!canBuy) return;
+    setError('');
+    setCartOpen(true);
+  }
 
   async function buy() {
     if (!canBuy || loading) return;
@@ -202,12 +233,16 @@ export function Landing({ images }: Props) {
                 <strong className="m-valuerow__now">{eur(PRICE_MAIN)}</strong>
               </span>
             </li>
+          </ul>
+
+          <p className="m-valuelist__title">{t.product.bonusTitle}</p>
+          <ul className="m-valuelist">
             {t.product.bonus.map((b, i) => (
               <li key={b.title} className="m-valuerow">
                 <Img
                   file={`bonus-${i + 1}.webp`}
                   w={480}
-                  h={720}
+                  h={600}
                   alt=""
                   available={images}
                   className="m-valuerow__cover"
@@ -215,7 +250,7 @@ export function Landing({ images }: Props) {
                 />
                 <span className="m-valuerow__name">{b.title}</span>
                 <span className="m-valuerow__value">
-                  <s>{eur(b.value)}</s> <span className="m-valuerow__free">{t.product.freeTag}</span>
+                  <s>{eur(b.value)}</s>
                 </span>
               </li>
             ))}
@@ -223,10 +258,7 @@ export function Landing({ images }: Props) {
 
           <div className="m-valuebox__totals">
             <p className="m-valuebox__struck">
-              {t.offer.valueTotalLabel} <s>{eur(VALUE_TOTAL)}</s>
-            </p>
-            <p className="m-valuebox__today">
-              {t.offer.launchLabel} <strong>{eur(PRICE_MAIN)}</strong>
+              {t.offer.valueTotalLabel} {eur(VALUE_TOTAL)}
             </p>
           </div>
 
@@ -238,27 +270,23 @@ export function Landing({ images }: Props) {
             </div>
           )}
 
-          {bumpAvailable && (
-            <label className="m-bump">
-              <input type="checkbox" checked={withBump} onChange={(e) => setBump(e.target.checked)} />
-              <span className="m-bump__text">
-                <span className="m-bump__name">{fill(t.offer.bumpName)}</span>
-                <span className="m-bump__benefit">{t.offer.bumpBenefit}</span>
-              </span>
-            </label>
+          {claimed && (
+            <p className="m-valuebox__deal">
+              {t.offer.dealLabel} <s>{eur(t.product.courseValue)}</s> <strong>{eur(PRICE_MAIN)}</strong>
+            </p>
           )}
 
-          <button className="m-btn m-btn--glow m-valuebox__cta" onClick={buy} disabled={!canBuy || loading}>
-            {loading ? <span className="m-spin" aria-label="Cargando" /> : fill(t.offer.cta, total)}
+          <button
+            className="m-btn m-btn--glow m-valuebox__cta"
+            onClick={openCart}
+            disabled={!canBuy}
+            aria-haspopup="dialog"
+          >
+            {t.offer.cta}
           </button>
           {!canBuy && (
             <p className="m-field-error" role="status" style={{ margin: '0.6rem 0 0' }}>
               {DEV ? 'dev: falta DODO_PRODUCT_MAIN en src/config/electrodomesticos.ts' : t.offer.unavailable}
-            </p>
-          )}
-          {error && (
-            <p className="m-field-error" role="alert" style={{ margin: '0.6rem 0 0' }}>
-              {error}
             </p>
           )}
 
@@ -385,6 +413,67 @@ export function Landing({ images }: Props) {
         )}
         {!SUPPORT_EMAIL && DEV && <span className="m-footer__disclaimer">dev: falta SUPPORT_EMAIL en la config</span>}
       </footer>
+
+      <Wheel onClaim={() => setClaimed(true)} />
+
+      {/* Mini carrito: curso ya añadido + guía opcional + total + checkout de Dodo */}
+      <div
+        className={`m-cart${cartOpen ? ' is-open' : ''}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label={t.cart.label}
+        aria-hidden={!cartOpen}
+      >
+        <div className="m-cart__backdrop" onClick={() => setCartOpen(false)} />
+        <div className="m-cart__panel">
+          <div className="m-cart__head m-cart__head--bare">
+            <button ref={closeRef} className="m-cart__close" aria-label={t.cart.close} onClick={() => setCartOpen(false)}>
+              <XIcon />
+            </button>
+          </div>
+
+          <div className="m-cart__body">
+            <div className="m-cart__line">
+              <span className="m-cart__check">
+                <CheckIcon />
+              </span>
+              <div className="m-cart__text">
+                <p className="m-cart__name">{t.cart.mainName}</p>
+              </div>
+              <span className="m-cart__price">
+                <s className="m-cart__struck">{eur(t.product.courseValue)}</s> {eur(PRICE_MAIN)}
+              </span>
+            </div>
+
+            {bumpAvailable && (
+              <label className={`m-cart__extra m-cart__extra--pick${withBump ? ' is-on' : ''}`}>
+                <div className="m-cart__text">
+                  <p className="m-cart__name">{t.cart.bumpName}</p>
+                  <span className="m-cart__add">
+                    <s className="m-cart__struck">{eur(PRICE_BUMP_WAS)}</s> {eur(PRICE_BUMP)}
+                  </span>
+                </div>
+                <input type="checkbox" checked={withBump} onChange={(e) => setBump(e.target.checked)} />
+              </label>
+            )}
+          </div>
+
+          <div className="m-cart__foot">
+            <div className="m-cart__total" aria-live="polite">
+              <span>{t.cart.totalLabel}</span>
+              <strong>{eur(total)}</strong>
+            </div>
+            <button className="m-btn m-btn--glow m-cart__cta" onClick={buy} disabled={!canBuy || loading}>
+              {loading ? <span className="m-spin" aria-label="Cargando" /> : t.cart.cta}
+            </button>
+            {error && (
+              <p className="m-field-error" role="alert" style={{ margin: '0.6rem 0 0' }}>
+                {error}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -446,6 +535,9 @@ const CheckIcon = ({ className }: { className?: string }) => (
 );
 const ChevronIcon = ({ className }: { className?: string }) => (
   <Icon className={className} size={20}><path d="m6 9 6 6 6-6" /></Icon>
+);
+const XIcon = () => (
+  <Icon size={24}><path d="M18 6 6 18M6 6l12 12" /></Icon>
 );
 const LockIcon = () => (
   <Icon size={15}><rect x="4" y="11" width="16" height="9" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></Icon>

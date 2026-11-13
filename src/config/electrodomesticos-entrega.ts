@@ -14,7 +14,7 @@ export interface AccessLink {
 export const delivery: Record<'main' | 'bump' | 'upsell', AccessLink[]> = {
   main: [
     // { label: 'Curso completo (10 módulos)', url: 'https://…' },
-    // { label: 'Bonus 1: Fichas de diagnóstico de averías (PDF)', url: 'https://…' },
+    // { label: 'Bonus 1: Guía rápida: qué le pasa a tu aparato (PDF)', url: 'https://…' },
   ],
   bump: [
     // { label: 'Guía de repuestos: dónde comprar cada pieza más barata en España', url: 'https://…' },
