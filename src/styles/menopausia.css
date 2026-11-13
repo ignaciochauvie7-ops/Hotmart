@@ -2752,11 +2752,11 @@ body {
 }
 
 .m-wheel__seg--light path {
-  fill: var(--sage-soft);
+  fill: var(--terra);
 }
 
 .m-wheel__seg--light text {
-  fill: var(--sage-dark);
+  fill: var(--on-terra, #fff);
 }
 
 .m-wheel__seg--prize path {
