@@ -121,13 +121,15 @@ export const texts = {
     avatars: 4,
   },
 
-  // 2 · Esto es para ti si… (3 dolores)
+  // 2 · Esto es para ti si… (5 dolores)
   pains: {
     title: 'Esto es para ti si…',
     items: [
       'Pagas 60 € solo para que el técnico venga a mirar',
       'Tiras electrodomésticos que se arreglaban en minutos',
       'Cada avería te cuesta dinero porque no sabes ni por dónde empezar',
+      'Tienes un aparato roto en casa y no te atreves a abrirlo',
+      'No sabes si te compensa arreglarlo o comprar uno nuevo',
     ],
   },
 
@@ -213,7 +215,17 @@ export const texts = {
   // 8 · Cómo lo vas a recibir
   delivery: {
     title: 'Cómo lo vas a recibir',
-    steps: ['Pagas', 'Te llega el email en minutos', 'Accedes al curso'],
+    steps: [
+      'Pagas de forma segura',
+      'Recibes el email al instante',
+      'Descargas el contenido y es tuyo para siempre',
+    ],
+    // Sellos de confianza bajo los pasos (orden = SEAL_ICONS en Landing.tsx).
+    seals: [
+      'Acceso inmediato',
+      'Tuyo de por vida',
+      'Garantía de 30 días: si no te convence, te devolvemos tu dinero',
+    ],
   },
 
   // 9 · Prueba social (solo se muestra si `testimonials` tiene elementos)

@@ -200,20 +200,26 @@ export function Landing({ images }: Props) {
       {/* 3 · Antes y después */}
       <section className="m-section m-reveal">
         <h2>{t.beforeAfter.title}</h2>
-        <ul className="m-dolores__list">
+        <ul className="m-ba">
           {t.beforeAfter.rows.map((r) => (
-            <li key={r.before} className="m-dolores__card">
-              <span className="m-howto__icon">
-                <CheckIcon />
-              </span>
-              <span className="m-bump__text">
-                <span className="m-bump__benefit">
-                  {t.beforeAfter.beforeLabel}: {r.before}
+            <li key={r.before} className="m-ba__card">
+              <div className="m-ba__half m-ba__half--before">
+                <span className="m-ba__ic"><Icon size={16} sw={2.6}><path d="M18 6 6 18M6 6l12 12" /></Icon></span>
+                <span className="m-ba__body">
+                  <span className="m-ba__label">{t.beforeAfter.beforeLabel}</span>
+                  <span className="m-ba__text">{r.before}</span>
                 </span>
-                <span className="m-dolores__text">
-                  {t.beforeAfter.afterLabel}: {r.after}
+                <span className="m-ba__arrow" aria-hidden="true">
+                  <Icon size={14} sw={2.6}><path d="M12 5v14M6 13l6 6 6-6" /></Icon>
                 </span>
-              </span>
+              </div>
+              <div className="m-ba__half m-ba__half--after">
+                <span className="m-ba__ic"><Icon size={16} sw={2.8}><path d="M20 6 9 17l-5-5" /></Icon></span>
+                <span className="m-ba__body">
+                  <span className="m-ba__label">{t.beforeAfter.afterLabel}</span>
+                  <span className="m-ba__text">{r.after}</span>
+                </span>
+              </div>
             </li>
           ))}
         </ul>
@@ -325,6 +331,14 @@ export function Landing({ images }: Props) {
             </li>
           ))}
         </ol>
+        <ul className="m-seals">
+          {t.delivery.seals.map((s, i) => (
+            <li key={s} className="m-seals__item">
+              <span className="m-seals__ic">{SEAL_ICONS[i] ?? <CheckIcon />}</span>
+              <span className="m-seals__text">{s}</span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* 9 · Prueba social (solo si hay reseñas en la config) */}
@@ -548,9 +562,16 @@ const ClockIcon = () => (
 
 /** Iconos de los 3 pasos de "Cómo lo vas a recibir" (orden = delivery.steps). */
 const HOW_ICONS = [
-  <Icon><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><path d="M3 6h18M16 10a4 4 0 0 1-8 0" /></Icon>,
+  <Icon><rect x="4" y="11" width="16" height="9" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></Icon>,
   <Icon><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-10 6L2 7" /></Icon>,
-  <Icon><path d="M13 2 3 14h7l-1 8 10-12h-7z" /></Icon>,
+  <Icon><path d="M12 3v12M7 10l5 5 5-5M4 20h16" /></Icon>,
+];
+
+/** Iconos de los sellos (orden = delivery.seals): rayo, infinito, escudo. */
+const SEAL_ICONS = [
+  <Icon size={18}><path d="M13 2 3 14h7l-1 8 10-12h-7z" /></Icon>,
+  <Icon size={18}><path d="M12 12c-2-2.7-4-4-6-4a4 4 0 0 0 0 8c2 0 4-1.300 6-4zm0 0c2 2.700 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.300-6 4z" /></Icon>,
+  <Icon size={18}><path d="M12 3 4 6v6c0 4.500 3.400 8 8 9 4.600-1 8-4.500 8-9V6z" /><path d="m9 12 2 2 4-4" /></Icon>,
 ];
 
 /** Iconos de los 3 dolores (orden = pains.items): euro, papelera, duda. */
@@ -558,4 +579,6 @@ const PAIN_ICONS = [
   <Icon size={24} sw={1.9}><circle cx="12" cy="12" r="9" /><path d="M15 8.5a4 4 0 1 0 0 7M7.5 11h5M7.5 13.5h5" /></Icon>,
   <Icon size={24} sw={1.9}><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" /></Icon>,
   <Icon size={24} sw={1.9}><circle cx="12" cy="12" r="9" /><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01" /></Icon>,
+  <Icon size={24} sw={1.9}><path d="M14.7 6.3a4 4 0 0 0-5.2 5.2L4 17v3h3l5.5-5.5a4 4 0 0 0 5.2-5.2l-2.6 2.6-2.2-.6-.6-2.2z" /></Icon>,
+  <Icon size={24} sw={1.9}><path d="M12 4v16M8 20h8M5 7h14M5 7l-3 6a3 3 0 0 0 6 0zM19 7l-3 6a3 3 0 0 0 6 0z" /></Icon>,
 ];

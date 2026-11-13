@@ -1431,6 +1431,116 @@ body {
   color: var(--ink);
 }
 
+/* Antes y después: una tarjeta partida en dos mitades (Antes arriba, Ahora abajo). */
+.m-ba {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.m-ba__card {
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.m-ba__half {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  text-align: left;
+}
+
+.m-ba__half--before {
+  background: #f1f2f4;
+  padding-bottom: 1.05rem;
+}
+
+.m-ba__half--after {
+  background: var(--sage-soft);
+  padding-top: 1.05rem;
+}
+
+.m-ba__ic {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface);
+}
+
+.m-ba__half--before .m-ba__ic {
+  color: #d92d20;
+}
+
+.m-ba__half--after .m-ba__ic {
+  color: var(--sage);
+}
+
+.m-ba__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.m-ba__label {
+  font-size: 0.72rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.m-ba__half--before .m-ba__label,
+.m-ba__half--before .m-ba__text {
+  color: #6b7280;
+}
+
+.m-ba__half--before .m-ba__text {
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.m-ba__half--after .m-ba__label {
+  color: var(--sage);
+}
+
+.m-ba__half--after .m-ba__text {
+  font-size: 1.12rem;
+  line-height: 1.3;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Flecha pequeña sobre la unión de las dos mitades. */
+.m-ba__arrow {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--sage);
+  transform: translate(-50%, -50%);
+}
+
 .m-stars-top {
   display: inline-flex;
   align-items: center;
@@ -2900,6 +3010,46 @@ body {
   content: counter(howto) ". ";
   font-weight: 800;
   color: var(--terra-hover);
+}
+
+/* Sellos de confianza bajo los pasos: fila de 3, ícono arriba y texto debajo. */
+.m-seals {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.m-seals__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 0.4rem;
+  border-radius: var(--radius);
+  background: var(--sage-soft);
+  text-align: center;
+}
+
+.m-seals__ic {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--sage-dark);
+}
+
+.m-seals__text {
+  font-size: 0.78rem;
+  line-height: 1.3;
+  font-weight: 600;
+  color: var(--ink);
+  text-wrap: balance;
 }
 
 /* Carrito · precios tachados y banner de ahorro. ---------------------------- */
