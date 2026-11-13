@@ -161,7 +161,6 @@ export const texts = {
     valueTotalLabel: 'Valor total:',
     launchLabel: 'Precio de lanzamiento:',
     countdownLabel: 'La oferta termina en',
-    bump: 'Añade los Códigos de error de las 25 marcas por solo {bumpPrice}',
     cta: 'Quiero el Curso',
     secure: 'Compra 100% segura',
     error: 'No hemos podido abrir el pago. Inténtalo de nuevo en unos segundos.',

@@ -2,12 +2,10 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import {
   BASE_PATH,
   CURRENCY,
-  DODO_PRODUCT_BUMP,
   DODO_PRODUCT_MAIN,
   IMG_PATH,
   OFFER_DEADLINE,
   PRICE_MAIN,
-  PRICE_WITH_BUMP,
   SUPPORT_EMAIL,
   VALUE_TOTAL,
   eur,
@@ -52,15 +50,13 @@ function useCountdown(iso: string): number | null {
 }
 
 export function Landing({ images }: Props) {
-  const [bump, setBump] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const left = useCountdown(OFFER_DEADLINE);
 
-  const bumpAvailable = !!DODO_PRODUCT_BUMP;
-  const withBump = bump && bumpAvailable;
-  const total = withBump ? PRICE_WITH_BUMP : PRICE_MAIN;
+  // Sin order bump en la landing: siempre se cobra solo el producto principal.
+  const total = PRICE_MAIN;
   const canBuy = !!DODO_PRODUCT_MAIN;
 
   // Fotos de personas: solo se pintan si el archivo existe (sin placeholder).
@@ -103,7 +99,7 @@ export function Landing({ images }: Props) {
       const res = await fetch('/api/electrodomesticos/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ kind: 'main', bump: withBump, fbp: getCookie('_fbp'), fbc: getCookie('_fbc') }),
+        body: JSON.stringify({ kind: 'main', bump: false, fbp: getCookie('_fbp'), fbc: getCookie('_fbc') }),
       });
       const data = await res.json();
       if (res.ok && data.checkout_url) {
@@ -235,21 +231,6 @@ export function Landing({ images }: Props) {
               <span className="m-countbar__label">{t.offer.countdownLabel}</span>
               <strong className="m-countbar__time">{fmtClock(left)}</strong>
             </div>
-          )}
-
-          {(bumpAvailable || DEV) && (
-            <label className="m-bump">
-              <input
-                type="checkbox"
-                checked={withBump}
-                disabled={!bumpAvailable}
-                onChange={(e) => setBump(e.target.checked)}
-              />
-              <span className="m-bump__text">
-                <span className="m-bump__name">{fill(t.offer.bump)}</span>
-                {!bumpAvailable && <span className="m-bump__benefit">dev: falta DODO_PRODUCT_BUMP</span>}
-              </span>
-            </label>
           )}
 
           <button className="m-btn m-btn--glow m-valuebox__cta" onClick={buy} disabled={!canBuy || loading}>
