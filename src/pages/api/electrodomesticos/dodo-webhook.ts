@@ -12,7 +12,7 @@ function env(name: string): string {
   return meta[name] ?? process.env[name] ?? '';
 }
 
-// Webhook propio de Reparador PRO: verifica la firma de Dodo y envía el email
+// Webhook propio del curso de electrodomésticos: verifica la firma de Dodo y envía el email
 // de acceso. Solo actúa sobre pagos con metadata.funnel = 'electrodomesticos'.
 //
 // El Purchase server-side (Meta CAPI) NO se envía aquí: el webhook de

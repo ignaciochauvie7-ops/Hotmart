@@ -1,0 +1,124 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   /electrodomesticos/es/oferta — capa de PALETA sobre menopausia.css.
+   La landing usa las clases .m-* de menopausia sin tocar; aquí solo se cambian
+   los colores (azul oscuro + naranja) y los pocos tonos rosas que allí están
+   escritos a mano. No añadir estilos de componentes nuevos en este archivo.
+   ─────────────────────────────────────────────────────────────────────────── */
+html:root,
+html:root body {
+  background: #f4f6fa;
+}
+
+.m-root.rp-theme {
+  --sage: #12305a;
+  --sage-dark: #0b1f3a;
+  --sage-soft: #e8eef7;
+  --terra: #ff8a1f;
+  --terra-hover: #c2500a; /* naranja oscuro: precios y acentos de texto */
+  --on-terra: #1c1000; /* texto sobre naranja */
+  --cream: #f4f6fa;
+  --ink: #0b1f3a;
+  --muted-text: #55657d;
+  --line: #dbe2ec;
+  --ok: #12305a;
+  --track: #dbe2ec;
+  --shadow-sm: 0 1px 3px rgba(11, 31, 58, 0.07);
+  --shadow-md: 0 10px 30px rgba(11, 31, 58, 0.1);
+  --shadow-lg: 0 18px 50px rgba(11, 31, 58, 0.14);
+}
+
+/* Texto oscuro sobre naranja (en menopausia es blanco sobre frambuesa). */
+.rp-theme .m-btn,
+.rp-theme .m-dolores__title,
+.rp-theme .m-valuebox .m-countbar__time {
+  color: var(--on-terra);
+}
+
+.rp-theme .m-btn {
+  box-shadow: 0 6px 16px rgba(255, 138, 31, 0.28);
+}
+
+.rp-theme .m-btn--glow {
+  box-shadow: 0 10px 26px rgba(255, 138, 31, 0.34);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .rp-theme .m-btn:hover {
+    background: #ff9d42;
+  }
+  .rp-theme .m-btn--glow:hover {
+    box-shadow: 0 12px 30px rgba(255, 138, 31, 0.44);
+  }
+}
+
+.rp-theme .m-btn:disabled {
+  background: #cfd6e0;
+  color: #55657d;
+  box-shadow: none;
+}
+
+.rp-theme .m-spin {
+  border-color: rgba(28, 16, 0, 0.3);
+  border-top-color: var(--on-terra);
+}
+
+.rp-theme .m-dolores__title {
+  box-shadow: 0 8px 20px rgba(255, 138, 31, 0.28);
+}
+
+.rp-theme .m-dolores__ic {
+  background: #fff1e0;
+  color: var(--terra-hover);
+}
+
+.rp-theme .m-guarantee__seal--stamp text {
+  fill: var(--on-terra);
+}
+
+.rp-theme .m-guarantee__seal--stamp .rp-seal-ring {
+  stroke: var(--on-terra);
+}
+
+/* Sin barra de compra fija: no hace falta reservar su hueco. */
+.rp-theme .m-shell--offer {
+  padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+}
+
+/* Ajustes mínimos de encaje dentro del cuadro de producto. */
+.rp-theme .m-valuebox .m-hero__promise-img {
+  margin: 0 auto 0.6rem;
+}
+
+.rp-theme .rp-modules {
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+/* Medios de pago pequeños y pegados al botón. */
+.rp-theme .m-valuebox .m-securepay {
+  margin-top: 0.55rem;
+  gap: 5px;
+}
+
+.rp-theme .m-valuebox .m-paylogo {
+  height: 15px;
+}
+
+.rp-theme .m-valuebox .m-securepay__line {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--muted-text);
+}
+
+.rp-theme .m-valuebox .m-securepay__line svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Placeholder de imagen (solo mientras falta el archivo). */
+.rp-theme .m-placeholder {
+  border: 1.5px dashed #8e99a8;
+  font-size: 0.72rem;
+  text-align: center;
+  overflow: hidden;
+}

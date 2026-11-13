@@ -1,5 +1,5 @@
 /**
- * Reparador PRO — configuración central de la landing /electrodomesticos/es/*.
+ * Curso Completo de Reparación de Electrodomésticos — configuración central de la landing /electrodomesticos/es/*.
  * Todo lo editable vive aquí: precios, IDs de Dodo, fecha límite, reseñas y textos.
  * (Los enlaces de acceso que se envían por email están en
  *  `electrodomesticos-entrega.ts`, que solo se usa en el servidor.)
@@ -11,13 +11,14 @@
 
 // ── Precios ────────────────────────────────────────────────────────────────
 export const CURRENCY = 'EUR';
-export const PRICE_MAIN = 19.9;
+// Valores del pixel (salen de aquí): Purchase 17,00 · 24,90 con el bump · 14,90 el upsell.
+export const PRICE_MAIN = 17;
 export const PRICE_BUMP = 7.9;
 export const PRICE_UPSELL = 14.9;
 
 // ── IDs de producto de Dodo Payments (no son secretos) ─────────────────────
 // Vacío = el botón de compra aparece deshabilitado (con aviso en dev).
-export const DODO_PRODUCT_MAIN = '';
+export const DODO_PRODUCT_MAIN = 'pdt_0NrsQO9wpJHCUTud1DV7k';
 export const DODO_PRODUCT_BUMP = '';
 export const DODO_PRODUCT_UPSELL = '';
 
@@ -41,7 +42,7 @@ export interface Testimonial {
 }
 export const testimonials: Testimonial[] = [];
 
-// ── Medios de pago mostrados en "Compra 100% segura" ──────────────────────
+// ── Medios de pago mostrados bajo el botón de compra ──────────────────────
 // Deja solo los que estén activos en tu cuenta de Dodo para EUR.
 // Los logos están en /public/electrodomesticos/pay/.
 export const paymentMethods: { file: string; alt: string }[] = [
@@ -57,51 +58,52 @@ export const BASE_PATH = '/electrodomesticos/es';
 export const IMG_PATH = '/electrodomesticos';
 
 // ── Textos ─────────────────────────────────────────────────────────────────
+export const PRODUCT_NAME = 'Curso Completo de Reparación de Electrodomésticos';
+
 export const texts = {
   meta: {
-    title: 'Reparador PRO — Aprende a reparar electrodomésticos desde cero',
-    description:
-      'Curso en vídeo paso a paso para reparar los electrodomésticos de casa desde cero: diagnostica la avería, cambia la pieza y cobra el trabajo.',
-    upsellTitle: 'Tu pedido está casi completo — Reparador PRO',
-    thanksTitle: '¡Gracias! — Reparador PRO',
+    title: 'Curso Completo de Reparación de Electrodomésticos',
+    description: 'Aprende a reparar tus electrodomésticos desde cero en 30 días. Curso en vídeo, paso a paso.',
+    upsellTitle: 'Tu pedido está casi completo — Curso de Reparación de Electrodomésticos',
+    thanksTitle: '¡Gracias! — Curso de Reparación de Electrodomésticos',
+    legalSuffix: 'Curso de Reparación de Electrodomésticos',
   },
 
-  // 1 · Imagen con la promesa (hero-mockup.webp)
+  // 1 · Promesa + imagen principal (hero-mockup.webp)
   hero: {
-    h1: 'Repara electrodomésticos y cobra por cada arreglo',
-    imageAlt: 'Curso Reparador PRO',
+    // El titular visible va dentro de hero-mockup.webp; este texto es el h1 oculto y el alt.
+    h1: 'De 0 a experto en electrodomésticos en 30 días',
+    imageAlt: 'De 0 a experto en electrodomésticos en 30 días',
   },
 
-  // 2 · Esto es para ti si… (máximo 4 dolores)
+  // 2 · Esto es para ti si… (3 dolores)
   pains: {
     title: 'Esto es para ti si…',
     items: [
-      'El técnico te cobra 60 € solo por venir a mirar la lavadora',
-      'Tiras electrodomésticos que se arreglaban con una pieza de 10 €',
-      'Quieres un ingreso extra pero no sabes por dónde empezar',
-      'Los vídeos de YouTube van a medias y nunca explican tu avería',
+      'Pagas 60 € solo para que el técnico venga a mirar',
+      'Tiras electrodomésticos que se arreglaban en minutos',
+      'Cada avería te cuesta dinero porque no sabes ni por dónde empezar',
     ],
   },
 
-  // 3 · Antes y después (4 filas)
+  // 3 · Antes y después (3 filas "Antes → Ahora")
   beforeAfter: {
     title: 'Antes y después',
     beforeLabel: 'Antes',
-    afterLabel: 'Con Reparador PRO',
+    afterLabel: 'Ahora',
     rows: [
-      { before: 'Pagas 60 € al técnico solo por venir', after: 'Arreglas tú la avería' },
-      { before: 'Tiras el aparato por una pieza de 10 €', after: 'Le das una segunda vida con piezas baratas' },
-      { before: 'No sabes cómo ganar un ingreso extra', after: 'Cobras por cada arreglo en tu barrio' },
-      { before: 'Vídeos a medias que no explican tu avería', after: 'Paso a paso exacto, avería por avería' },
+      { before: 'Pagas 60 € al técnico solo por mirar', after: 'Lo arreglas tú en minutos' },
+      { before: 'Tiras el aparato sin saber qué le pasa', after: 'Sabes qué falla y lo arreglas' },
+      { before: 'Cada avería te cuesta dinero', after: 'Ahorras cada vez que algo falla' },
     ],
   },
 
-  // 4 · Producto principal con sus bonos.
-  // Miniaturas: modulo-1.webp … modulo-10.webp · Mockups: bonus-1.webp … bonus-5.webp
+  // 4 · Producto principal con sus bonus (un solo bloque).
+  // Mockups: oferta-pack.webp · bonus-1.webp … bonus-5.webp
   // "Valor total" = courseValue + suma de `value` de cada bonus.
   product: {
-    name: 'Reparador PRO',
-    imageAlt: 'Pack Reparador PRO',
+    name: PRODUCT_NAME,
+    imageAlt: PRODUCT_NAME,
     courseValue: 79.9,
     modulesTitle: 'Los 10 módulos',
     modules: [
@@ -116,8 +118,7 @@ export const texts = {
       'Pequeños electrodomésticos',
       'Multímetro desde cero',
     ],
-    bonusTitle: 'Los 5 bonus',
-    bonusValueLabel: 'Valor:',
+    freeTag: 'Gratis',
     bonus: [
       { title: 'Fichas de diagnóstico de averías', value: 14.9 },
       { title: 'Lista de precios para cobrar cada reparación', value: 9.9 },
@@ -127,51 +128,48 @@ export const texts = {
     ],
   },
 
-  // 5-6 · Oferta y botón de compra
+  // 5-6 · Oferta, botón de compra y medios de pago (logos: `paymentMethods`)
   offer: {
     valueTotalLabel: 'Valor total:',
     launchLabel: 'Precio de lanzamiento:',
     countdownLabel: 'La oferta termina en',
     bump: 'Añade los Códigos de error de las 25 marcas por solo {bumpPrice}',
-    // {total} = 19,90 € y sube solo si se marca el order bump.
-    cta: 'Quiero mi Reparador PRO · {total}',
+    cta: 'Quiero el Curso',
+    secure: 'Compra 100% segura',
     error: 'No hemos podido abrir el pago. Inténtalo de nuevo en unos segundos.',
     unavailable: 'Disponible muy pronto.',
   },
 
-  // 7 · Compra 100% segura (logos: `paymentMethods`)
-  secure: {
-    title: 'Compra 100% segura',
-  },
-
-  // 8 · Garantía de 30 días (garantia-30.webp)
+  // 7 · Garantía de 30 días (sello en SVG, sin imagen)
   guarantee: {
+    days: 30,
+    sealTop: 'GARANTÍA',
+    sealUnit: 'DÍAS',
     title: 'Garantía de 30 días',
-    sealAlt: 'Garantía de 30 días',
     text: 'Si no estás conforme, te devolvemos el dinero.',
   },
 
-  // 9 · Cómo lo vas a recibir
+  // 8 · Cómo lo vas a recibir
   delivery: {
     title: 'Cómo lo vas a recibir',
     steps: ['Pagas', 'Te llega el email en minutos', 'Accedes al curso'],
   },
 
-  // 10 · Prueba social (solo se muestra si `testimonials` tiene elementos)
+  // 9 · Prueba social (solo se muestra si `testimonials` tiene elementos)
   reviews: {
     title: 'Lo que dicen quienes ya lo han hecho',
   },
 
-  // 11 · Preguntas frecuentes
+  // 10 · Preguntas frecuentes
   faq: {
     title: 'Preguntas frecuentes',
     items: [
-      { q: '¿Necesito experiencia?', a: 'No. Empiezas desde cero, con seguridad y herramientas básicas.' },
-      { q: '¿Qué herramientas necesito?', a: 'Destornilladores, un multímetro y poco más. Te dejamos una guía de lo que necesitas por menos de 50 €.' },
+      { q: '¿Necesito experiencia?', a: 'No. Empiezas desde cero.' },
+      { q: '¿Qué herramientas necesito?', a: 'Destornilladores, un multímetro y poco más.' },
       // Ajusta este texto según dónde alojes los vídeos:
-      { q: '¿En qué formato llega?', a: 'Vídeos y PDF que puedes ver en el móvil, la tablet o el ordenador.' },
-      { q: '¿Cuándo lo recibo?', a: 'Al instante. Cuando se confirma el pago, te llega todo por email, normalmente en menos de 5 minutos.' },
-      { q: '¿Tiene garantía?', a: 'Sí. Tienes 30 días: si no estás conforme, te devolvemos el dinero.' },
+      { q: '¿En qué formato llega?', a: 'Vídeos y PDF para ver en el móvil, la tablet o el ordenador.' },
+      { q: '¿Cuándo lo recibo?', a: 'Al instante, por email.' },
+      { q: '¿Tiene garantía?', a: 'Sí, 30 días. Si no estás conforme, te devolvemos el dinero.' },
     ],
   },
 
@@ -232,7 +230,12 @@ export const texts = {
 
 // ── Helpers (no hace falta tocarlos) ───────────────────────────────────────
 export function eur(n: number): string {
-  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: CURRENCY }).format(n);
+  // Importes redondos sin decimales: 17 € · 7,90 €
+  return new Intl.NumberFormat('es-ES', {
+    style: 'currency',
+    currency: CURRENCY,
+    minimumFractionDigits: Number.isInteger(n) ? 0 : 2,
+  }).format(n);
 }
 
 export const VALUE_TOTAL =

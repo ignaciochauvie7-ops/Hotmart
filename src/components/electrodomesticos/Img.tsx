@@ -11,6 +11,8 @@ interface Props {
   available: string[] | null;
   className?: string;
   eager?: boolean;
+  /** Texto corto del placeholder (por defecto: archivo · medida). */
+  label?: string;
 }
 
 /**
@@ -18,7 +20,7 @@ interface Props {
  * del archivo y la medida recomendada. En cuanto el archivo existe en
  * /public/electrodomesticos/ se muestra la imagen real.
  */
-export function Img({ file, w, h, alt, available, className = '', eager = false }: Props) {
+export function Img({ file, w, h, alt, available, className = '', eager = false, label }: Props) {
   const known = available ? available.includes(file) : null;
   const [failed, setFailed] = useState(false);
   const ref = useRef<HTMLImageElement>(null);
@@ -31,10 +33,14 @@ export function Img({ file, w, h, alt, available, className = '', eager = false 
 
   if (known === false || failed) {
     return (
-      <div className={`rp-ph ${className}`} style={{ aspectRatio: `${w} / ${h}` }} role="img" aria-label={alt}>
-        <span>
-          {file} · {w}x{h}
-        </span>
+      <div
+        className={`rp-ph m-placeholder ${className}`}
+        style={{ aspectRatio: `${w} / ${h}` }}
+        role="img"
+        aria-label={alt}
+        title={`${file} · ${w}x${h}`}
+      >
+        <span>{label ?? `${file} · ${w}x${h}`}</span>
       </div>
     );
   }

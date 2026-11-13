@@ -1,0 +1,35 @@
+---
+// Landing /electrodomesticos/es/oferta: reutiliza tal cual el sistema de diseño
+// de menopausia (clases .m-*) y solo cambia la paleta (electrodomesticos-oferta.css).
+import '../styles/menopausia.css';
+import '../styles/electrodomesticos-oferta.css';
+import MetaPixel from '../components/menopausia/MetaPixel.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = '' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es-ES">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    {description && <meta name="description" content={description} />}
+    <meta name="theme-color" content="#F4F6FA" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" as="font" type="font/woff2" href="/menopausia/fonts/lora-600-latin.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/menopausia/fonts/inter-400-latin.woff2" crossorigin />
+    <link rel="stylesheet" href="/menopausia/fonts/fonts.css" />
+    <title>{title}</title>
+    <MetaPixel />
+  </head>
+  <body>
+    <div class="m-root rp-theme">
+      <slot />
+    </div>
+  </body>
+</html>

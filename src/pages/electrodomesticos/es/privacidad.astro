@@ -5,7 +5,7 @@ import { BASE_PATH, SUPPORT_EMAIL, texts } from '../../../config/electrodomestic
 const l = texts.legal;
 ---
 
-<ElectroLayout title={`${l.privacyTitle} — Reparador PRO`}>
+<ElectroLayout title={`${l.privacyTitle} — ${texts.meta.legalSuffix}`}>
   <main class="rp-simple rp-legal">
     <h1>{l.privacyTitle}</h1>
     {l.privacyBody.map((p) => <p>{p}</p>)}

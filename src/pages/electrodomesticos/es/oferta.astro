@@ -1,5 +1,5 @@
 ---
-import ElectroLayout from '../../../layouts/ElectroLayout.astro';
+import ElectroOfferLayout from '../../../layouts/ElectroOfferLayout.astro';
 import { Landing } from '../../../components/electrodomesticos/Landing';
 import { texts } from '../../../config/electrodomesticos';
 import { listImages } from '../../../lib/electrodomesticos/images';
@@ -8,6 +8,6 @@ import { listImages } from '../../../lib/electrodomesticos/images';
 const images = listImages();
 ---
 
-<ElectroLayout title={texts.meta.title} description={texts.meta.description}>
+<ElectroOfferLayout title={texts.meta.title} description={texts.meta.description}>
   <Landing images={images} client:load />
-</ElectroLayout>
+</ElectroOfferLayout>

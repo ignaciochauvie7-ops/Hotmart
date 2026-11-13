@@ -1,5 +1,5 @@
 /**
- * Reparador PRO — entrega por email (SOLO SERVIDOR: no importar desde componentes
+ * Curso de Reparación de Electrodomésticos — entrega por email (SOLO SERVIDOR: no importar desde componentes
  * React, para que estos enlaces no acaben en el JavaScript público).
  *
  * Tras el pago confirmado (webhook de Dodo) se envía un email con los enlaces de
@@ -13,7 +13,7 @@ export interface AccessLink {
 
 export const delivery: Record<'main' | 'bump' | 'upsell', AccessLink[]> = {
   main: [
-    // { label: 'Curso Reparador PRO (10 módulos)', url: 'https://…' },
+    // { label: 'Curso completo (10 módulos)', url: 'https://…' },
     // { label: 'Bonus 1: Fichas de diagnóstico de averías (PDF)', url: 'https://…' },
   ],
   bump: [
@@ -25,7 +25,7 @@ export const delivery: Record<'main' | 'bump' | 'upsell', AccessLink[]> = {
 };
 
 export const emailTexts = {
-  subject: 'Tu acceso a Reparador PRO',
+  subject: 'Tu acceso al Curso de Reparación de Electrodomésticos',
   heading: '¡Ya tienes tu acceso!',
   intro: 'Gracias por tu compra. Aquí tienes todo lo que has adquirido:',
   note: 'Guarda este email para volver a entrar cuando quieras. Si tienes cualquier problema, responde a este mensaje.',
