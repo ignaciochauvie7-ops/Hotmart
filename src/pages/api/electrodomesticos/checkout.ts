@@ -7,6 +7,7 @@ import {
   DODO_PRODUCT_UPSELL,
 } from '../../../config/electrodomesticos';
 import { getDodoClient, siteUrl } from '../../../lib/menopausia/dodo';
+import { isPaymentId } from '../../../lib/electrodomesticos/entrega';
 
 export const prerender = false;
 
@@ -15,9 +16,10 @@ const json = (data: unknown, status = 200) =>
 
 // Crea la sesión de checkout de Dodo (misma cuenta y cliente que menopausia).
 //   kind 'main'   → DODO_PRODUCT_MAIN (+ DODO_PRODUCT_BUMP si bump) → /gracias-oferta
-//   kind 'upsell' → DODO_PRODUCT_UPSELL → /gracias?upsell=1
+//   kind 'upsell' → DODO_PRODUCT_UPSELL → /gracias?upsell=1&main=<pago principal>
+// (Dodo añade ?payment_id=…&status=… al volver.)
 export const POST: APIRoute = async ({ request }) => {
-  let body: { kind?: string; bump?: boolean; email?: string; fbp?: string; fbc?: string };
+  let body: { kind?: string; bump?: boolean; email?: string; fbp?: string; fbc?: string; mainPaymentId?: string };
   try {
     body = await request.json();
   } catch {
@@ -49,10 +51,14 @@ export const POST: APIRoute = async ({ request }) => {
   if (body.fbc) metadata.fbc = body.fbc;
 
   const base = `${siteUrl(request.url)}${BASE_PATH}`;
+  // El upsell vuelve a /gracias con el id del pago principal, para que la página
+  // muestre la compra principal aunque el pago del upsell falle.
+  const mainId = typeof body.mainPaymentId === 'string' && isPaymentId(body.mainPaymentId) ? body.mainPaymentId : '';
+  const upsellReturn = `${base}/gracias?upsell=1${mainId ? `&main=${mainId}` : ''}`;
   const payload: Record<string, unknown> = {
     product_cart: cart,
     billing_currency: CURRENCY,
-    return_url: kind === 'main' ? `${base}/gracias-oferta` : `${base}/gracias?upsell=1`,
+    return_url: kind === 'main' ? `${base}/gracias-oferta` : upsellReturn,
     metadata,
     force_language: 'es',
   };

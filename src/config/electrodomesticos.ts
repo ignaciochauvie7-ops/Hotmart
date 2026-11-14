@@ -1,7 +1,7 @@
 /**
  * Curso Completo de Reparación de Electrodomésticos — configuración central de la landing /electrodomesticos/es/*.
  * Todo lo editable vive aquí: precios, IDs de Dodo, fecha límite, reseñas y textos.
- * (Los enlaces de acceso que se envían por email están en
+ * (Los PDF que se entregan tras el pago están en
  *  `electrodomesticos-entrega.ts`, que solo se usa en el servidor.)
  *
  * En los textos se pueden usar estas marcas, que se sustituyen solas:
@@ -274,13 +274,13 @@ export const texts = {
     notPaidBack: 'Volver a la oferta',
   },
 
-  // Gracias final (/gracias)
+  // Gracias final (/gracias): un botón de descarga por cada PDF comprado.
+  // (Los PDF y el texto de cada botón están en `electrodomesticos-entrega.ts`.)
   thanks: {
-    title: '¡Gracias! Tu pedido está confirmado',
-    body: 'Revisa tu email (y la carpeta de spam). Te llega todo normalmente en menos de 5 minutos.',
-    upsellPaid: 'También hemos añadido «Electrodomésticos como nuevos» a tu pedido.',
-    upsellPending: 'Estamos confirmando el pago de «Electrodomésticos como nuevos». Si se aprueba, te llega por email.',
-    upsellFailed: 'El pago de «Electrodomésticos como nuevos» no se ha completado. Tu pedido principal sigue confirmado.',
+    title: '¡Gracias! Descarga aquí tu compra',
+    pendingTitle: 'Estamos confirmando tu pago…',
+    notPaidTitle: 'No hemos podido confirmar tu pago',
+    notPaidBack: 'Volver a la oferta',
   },
 
   // Páginas legales

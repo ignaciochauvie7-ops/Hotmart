@@ -20,7 +20,8 @@ export function Upsell({ paid, value, paymentId, email, images }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const available = !!DODO_PRODUCT_UPSELL;
-  const thanksUrl = `${BASE_PATH}/gracias`;
+  // /gracias necesita el id del pago para mostrar las descargas.
+  const thanksUrl = `${BASE_PATH}/gracias${paymentId ? `?payment_id=${encodeURIComponent(paymentId)}` : ''}`;
 
   // Purchase del producto principal: solo con pago confirmado y una vez por pago.
   useEffect(() => {
@@ -53,7 +54,7 @@ export function Upsell({ paid, value, paymentId, email, images }: Props) {
       const res = await fetch('/api/electrodomesticos/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ kind: 'upsell', email, fbp: getCookie('_fbp'), fbc: getCookie('_fbc') }),
+        body: JSON.stringify({ kind: 'upsell', email, mainPaymentId: paymentId, fbp: getCookie('_fbp'), fbc: getCookie('_fbc') }),
       });
       const data = await res.json();
       if (res.ok && data.checkout_url) {

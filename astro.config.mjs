@@ -13,7 +13,12 @@ export default defineConfig({
   adapter: vercel({
     // Bundle the delivered PDFs (outside /public) into the serverless function
     // so the signed download route can read them at runtime.
-    includeFiles: ['./private/menopausia/es', './private/menopausia/pt', './private/menopausia/pl'],
+    includeFiles: [
+      './private/menopausia/es',
+      './private/menopausia/pt',
+      './private/menopausia/pl',
+      './private/electrodomesticos',
+    ],
   }),
   integrations: [react()],
   vite: {

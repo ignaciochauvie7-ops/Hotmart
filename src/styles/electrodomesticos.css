@@ -826,6 +826,37 @@ body {
   color: #fff;
 }
 
+/* Gracias: un botón de descarga por PDF comprado. */
+.rp-thanks .rp-badge {
+  background: var(--navy);
+  color: var(--orange);
+}
+
+.rp-downloads {
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.rp-download {
+  justify-content: space-between;
+  gap: 0.9rem;
+  min-height: 64px;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.rp-download svg {
+  flex: none;
+}
+
+.rp-thanks__spin {
+  justify-self: center;
+  border-color: rgba(11, 31, 58, 0.2);
+  border-top-color: var(--navy);
+}
+
 .rp-legal {
   text-align: left;
 }
