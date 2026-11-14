@@ -91,15 +91,34 @@ export async function loadPurchases(client: DodoPayments, paymentIds: string[]):
     }
   }
 
+  // Otras fichas de cliente con el mismo email (por si Dodo creó más de una).
+  for (const email of new Set(customers.values())) {
+    if (!email) continue;
+    try {
+      let n = 0;
+      for await (const c of (client as any).customers.list({ email, page_size: 20 })) {
+        if (++n > 20) break;
+        const id = c?.customer_id;
+        if (typeof id === 'string' && id && String(c?.email ?? '').toLowerCase() === email) customers.set(id, email);
+      }
+    } catch (err) {
+      console.error('[electrodomesticos] no se pudieron buscar los clientes por email', err);
+    }
+  }
+
   for (const [customerId, email] of customers) {
     try {
       let n = 0;
-      for await (const p of (client as any).payments.list({ customer_id: customerId, status: 'succeeded', page_size: 100 })) {
+      for await (const item of (client as any).payments.list({ customer_id: customerId, status: 'succeeded', page_size: 100 })) {
         if (++n > 300) break;
-        const sameEmail = String(p?.customer?.email ?? '').toLowerCase() === email;
-        if (sameEmail && grantsAccess({ status: 'succeeded', ...p }) && !paid.has(p.payment_id)) {
-          paid.set(p.payment_id, p);
-        }
+        const id = item?.payment_id;
+        if (typeof id !== 'string' || paid.has(id)) continue;
+        if (item?.metadata?.funnel !== FUNNEL) continue;
+        if (String(item?.customer?.email ?? '').toLowerCase() !== email) continue;
+        // El listado puede venir sin carrito: se consulta el pago completo para
+        // que nunca falte el botón de un producto pagado.
+        const full = Array.isArray(item?.product_cart) && item.status ? item : await retrievePayment(client, id);
+        if (grantsAccess(full)) paid.set(id, full);
       }
     } catch (err) {
       // Si el listado falla se muestran al menos los pagos verificados de la URL.

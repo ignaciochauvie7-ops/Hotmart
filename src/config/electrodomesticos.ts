@@ -102,7 +102,7 @@ export const PRODUCT_NAME = 'Curso Completo de Reparación de Electrodomésticos
 export const texts = {
   meta: {
     title: 'Curso Completo de Reparación de Electrodomésticos',
-    description: 'Aprende a reparar tus electrodomésticos desde cero en 30 días. Curso en vídeo, paso a paso.',
+    description: 'Aprende a reparar tus electrodomésticos desde cero en 30 días. Curso en PDF, paso a paso.',
     upsellTitle: 'Tu pedido está casi completo — Curso de Reparación de Electrodomésticos',
     thanksTitle: '¡Gracias! — Curso de Reparación de Electrodomésticos',
     legalSuffix: 'Curso de Reparación de Electrodomésticos',
@@ -239,8 +239,7 @@ export const texts = {
     items: [
       { q: '¿Necesito experiencia?', a: 'No. Empiezas desde cero.' },
       { q: '¿Qué herramientas necesito?', a: 'Destornilladores, un multímetro y poco más.' },
-      // Ajusta este texto según dónde alojes los vídeos:
-      { q: '¿En qué formato llega?', a: 'Vídeos y PDF para ver en el móvil, la tablet o el ordenador.' },
+      { q: '¿En qué formato llega?', a: 'En PDF, para leer en el móvil, la tablet o el ordenador.' },
       { q: '¿Cuándo lo recibo?', a: 'Al instante. Lo descargas en la página nada más pagar.' },
       { q: '¿Tiene garantía?', a: 'Sí, 30 días. Si no estás conforme, te devolvemos el dinero.' },
     ],
@@ -294,7 +293,7 @@ export const texts = {
     ],
     termsTitle: 'Términos y condiciones',
     termsBody: [
-      'Al comprar aceptas que recibirás un producto digital (curso en vídeo y material en PDF) que descargas en la página nada más pagar.',
+      'Al comprar aceptas que recibirás un producto digital (curso y material en PDF) que descargas en la página nada más pagar.',
       'El curso es formativo. Trabaja siempre con el aparato desconectado de la corriente y sigue las indicaciones de seguridad. Las intervenciones en el circuito de gas refrigerante solo puede hacerlas un técnico certificado. Cada persona es responsable de las reparaciones que realiza.',
       'Los ingresos que consigas dependen de tu dedicación y de tu zona; no garantizamos resultados económicos concretos.',
       'Ofrecemos una garantía de devolución de 30 días: si el curso no te sirve, te devolvemos el importe pagado.',

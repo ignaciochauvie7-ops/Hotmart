@@ -29,14 +29,14 @@ export const PRODUCT_BY_BUCKET: Record<Bucket, string> = {
 
 // El orden de esta lista es el orden de los botones en /gracias.
 export const deliveryFiles: DeliveryFile[] = [
-  { key: 'curso', bucket: 'main', file: 'Curso-de-Reparacion-de-Electrodomesticos.pdf', label: 'Curso de Reparación de Electrodomésticos' },
-  { key: 'bonus-1', bucket: 'main', file: 'Bonus-1-Guia-rapida-que-le-pasa-a-tu-aparato.pdf', label: 'Bonus 1 · Guía rápida: qué le pasa a tu aparato' },
-  { key: 'bonus-2', bucket: 'main', file: 'Bonus-2-Las-10-averias-que-se-arreglan-en-menos-de-10-minutos.pdf', label: 'Bonus 2 · Las 10 averías que se arreglan en menos de 10 minutos' },
-  { key: 'bonus-3', bucket: 'main', file: 'Bonus-3-Cuando-arreglar-y-cuando-comprar-uno-nuevo.pdf', label: 'Bonus 3 · Cuándo arreglar y cuándo comprar uno nuevo' },
-  { key: 'bonus-4', bucket: 'main', file: 'Bonus-4-Herramientas-que-necesitas-por-menos-de-50-euros.pdf', label: 'Bonus 4 · Herramientas que necesitas por menos de 50 €' },
-  { key: 'bonus-5', bucket: 'main', file: 'Bonus-5-Seguridad-que-revisar-antes-de-abrir-cualquier-aparato.pdf', label: 'Bonus 5 · Seguridad: qué revisar antes de abrir cualquier aparato' },
-  { key: 'repuestos', bucket: 'bump', file: 'Guia-de-repuestos-donde-comprar-cada-pieza-mas-barata-en-Espana.pdf', label: 'Guía de repuestos: dónde comprar cada pieza más barata en España' },
-  { key: 'como-nuevos', bucket: 'upsell', file: 'Electrodomesticos-como-nuevos.pdf', label: 'Electrodomésticos como nuevos' },
+  { key: 'curso', bucket: 'main', file: 'Curso-de-Reparacion-de-Electrodomesticos.pdf', label: 'Descargar el curso' },
+  { key: 'bonus-1', bucket: 'main', file: 'Bonus-1-Guia-rapida-que-le-pasa-a-tu-aparato.pdf', label: 'Descargar Bonus 1' },
+  { key: 'bonus-2', bucket: 'main', file: 'Bonus-2-Las-10-averias-que-se-arreglan-en-menos-de-10-minutos.pdf', label: 'Descargar Bonus 2' },
+  { key: 'bonus-3', bucket: 'main', file: 'Bonus-3-Cuando-arreglar-y-cuando-comprar-uno-nuevo.pdf', label: 'Descargar Bonus 3' },
+  { key: 'bonus-4', bucket: 'main', file: 'Bonus-4-Herramientas-que-necesitas-por-menos-de-50-euros.pdf', label: 'Descargar Bonus 4' },
+  { key: 'bonus-5', bucket: 'main', file: 'Bonus-5-Seguridad-que-revisar-antes-de-abrir-cualquier-aparato.pdf', label: 'Descargar Bonus 5' },
+  { key: 'repuestos', bucket: 'bump', file: 'Guia-de-repuestos-donde-comprar-cada-pieza-mas-barata-en-Espana.pdf', label: 'Descargar la Guía de repuestos' },
+  { key: 'como-nuevos', bucket: 'upsell', file: 'Electrodomesticos-como-nuevos.pdf', label: 'Descargar Electrodomésticos como nuevos' },
 ];
 
 // ── Email de acceso (opcional) ─────────────────────────────────────────────
