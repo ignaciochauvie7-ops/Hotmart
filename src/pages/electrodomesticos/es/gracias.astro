@@ -9,7 +9,7 @@ import { getDodoClient } from '../../../lib/menopausia/dodo';
 import { downloadUrl, grantsAccess, loadPurchases, type DownloadButton } from '../../../lib/electrodomesticos/entrega';
 
 // Llega con el id de pago en la URL:
-//   · desde el upsell rechazado o desde el email → ?payment_id=<pago principal>
+//   · desde el upsell rechazado → ?payment_id=<pago principal>
 //   · desde el checkout del upsell → ?upsell=1&main=<pago principal>&payment_id=<pago del upsell>&status=…
 // El acceso sale siempre de Dodo: se consultan esos pagos y, con uno confirmado,
 // se muestran todas las compras pagadas del mismo comprador (por su email).

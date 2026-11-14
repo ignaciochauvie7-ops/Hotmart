@@ -11,7 +11,7 @@
 
 // ── Precios ────────────────────────────────────────────────────────────────
 export const CURRENCY = 'EUR';
-// Valores del pixel (salen de aquí): Purchase 17,00 · 21,90 con el bump · 14,90 el upsell.
+// Valores del pixel (salen de aquí): Purchase 17,00 · 21,90 con el bump · 8,90 el upsell.
 // OJO: el importe que se cobra lo fija el producto en Dodo; debe coincidir con estos precios.
 export const PRICE_MAIN = 17;
 export const PRICE_BUMP = 4.9;
@@ -19,7 +19,7 @@ export const PRICE_BUMP = 4.9;
 export const PRICE_BUMP_WAS = 7.9;
 // "Valor total" que se muestra en el cuadro de producto (sin tachar).
 export const VALUE_TOTAL = 59;
-export const PRICE_UPSELL = 14.9;
+export const PRICE_UPSELL = 8.9;
 
 // ── IDs de producto de Dodo Payments (no son secretos) ─────────────────────
 // Vacío = el botón de compra aparece deshabilitado (con aviso en dev).
@@ -217,7 +217,7 @@ export const texts = {
     title: 'Cómo lo vas a recibir',
     steps: [
       'Pagas de forma segura',
-      'Recibes el email al instante',
+      'Descargas tus PDFs al instante',
       'Descargas el contenido y es tuyo para siempre',
     ],
     // Sellos de confianza bajo los pasos (orden = SEAL_ICONS en Landing.tsx).
@@ -241,7 +241,7 @@ export const texts = {
       { q: '¿Qué herramientas necesito?', a: 'Destornilladores, un multímetro y poco más.' },
       // Ajusta este texto según dónde alojes los vídeos:
       { q: '¿En qué formato llega?', a: 'Vídeos y PDF para ver en el móvil, la tablet o el ordenador.' },
-      { q: '¿Cuándo lo recibo?', a: 'Al instante, por email.' },
+      { q: '¿Cuándo lo recibo?', a: 'Al instante. Lo descargas en la página nada más pagar.' },
       { q: '¿Tiene garantía?', a: 'Sí, 30 días. Si no estás conforme, te devolvemos el dinero.' },
     ],
   },
@@ -270,7 +270,7 @@ export const texts = {
     no: 'No, gracias',
     under: 'Pago único de {upsellPrice}. Se abre un pago seguro aparte.',
     notPaidTitle: 'No hemos podido confirmar tu pago',
-    notPaidBody: 'Si ya has pagado, revisa tu email en unos minutos. Si no, puedes volver a intentarlo.',
+    notPaidBody: 'Si ya has pagado, recarga esta página en unos segundos. Si no, puedes volver a intentarlo.',
     notPaidBack: 'Volver a la oferta',
   },
 
@@ -287,14 +287,14 @@ export const texts = {
   legal: {
     privacyTitle: 'Política de privacidad',
     privacyBody: [
-      'Tratamos tus datos (nombre, email y datos de pago) con el único fin de procesar tu compra y enviarte el acceso al curso que has adquirido.',
+      'Tratamos tus datos (nombre, email y datos de pago) con el único fin de procesar tu compra y darte acceso al curso que has adquirido.',
       'El pago se procesa de forma segura a través de Dodo Payments; no almacenamos los datos de tu tarjeta.',
       'Usamos cookies y píxeles de medición (incluido Meta) para entender el rendimiento de nuestros anuncios. Puedes bloquearlos desde tu navegador.',
       'Puedes solicitar el acceso, la corrección o la eliminación de tus datos escribiéndonos por email.',
     ],
     termsTitle: 'Términos y condiciones',
     termsBody: [
-      'Al comprar aceptas que recibirás un producto digital (curso en vídeo y material en PDF) de acceso inmediato por email.',
+      'Al comprar aceptas que recibirás un producto digital (curso en vídeo y material en PDF) que descargas en la página nada más pagar.',
       'El curso es formativo. Trabaja siempre con el aparato desconectado de la corriente y sigue las indicaciones de seguridad. Las intervenciones en el circuito de gas refrigerante solo puede hacerlas un técnico certificado. Cada persona es responsable de las reparaciones que realiza.',
       'Los ingresos que consigas dependen de tu dedicación y de tu zona; no garantizamos resultados económicos concretos.',
       'Ofrecemos una garantía de devolución de 30 días: si el curso no te sirve, te devolvemos el importe pagado.',
