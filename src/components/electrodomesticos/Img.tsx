@@ -15,6 +15,12 @@ interface Props {
   label?: string;
   /** Si el archivo no existe no se pinta nada (sin placeholder). */
   optional?: boolean;
+  /** Imagen principal (LCP): se pide con prioridad alta. Implica eager. */
+  priority?: boolean;
+  /** Variante AVIF en opt/ (mismo tamaño); solo se usa si existe. */
+  avif?: boolean;
+  /** Ancho CSS al que se pinta, p. ej. "40px": activa la miniatura opt/…-160.webp si existe. */
+  thumbSizes?: string;
 }
 
 /**
@@ -22,7 +28,7 @@ interface Props {
  * del archivo y la medida recomendada. En cuanto el archivo existe en
  * /public/electrodomesticos/ se muestra la imagen real.
  */
-export function Img({ file, w, h, alt, available, className = '', eager = false, label, optional = false }: Props) {
+export function Img({ file, w, h, alt, available, className = '', eager = false, label, optional = false, priority = false, avif = false, thumbSizes }: Props) {
   const known = available ? available.includes(file) : null;
   const [failed, setFailed] = useState(false);
   const ref = useRef<HTMLImageElement>(null);
@@ -49,17 +55,36 @@ export function Img({ file, w, h, alt, available, className = '', eager = false,
     );
   }
 
-  return (
+  const base = file.replace(/\.webp$/, '');
+  const avifFile = `opt/${base}.avif`;
+  const thumbFile = `opt/${base}-160.webp`;
+  const hasAvif = avif && !!available?.includes(avifFile);
+  const hasThumb = !!thumbSizes && !!available?.includes(thumbFile);
+
+  const img = (
     <img
       ref={ref}
       className={`rp-img ${className}`}
       src={`${IMG_PATH}/${file}`}
+      srcSet={hasThumb ? `${IMG_PATH}/${thumbFile} 160w, ${IMG_PATH}/${file} ${w}w` : undefined}
+      sizes={hasThumb ? thumbSizes : undefined}
       width={w}
       height={h}
       alt={alt}
-      loading={eager ? 'eager' : 'lazy'}
+      loading={eager || priority ? 'eager' : 'lazy'}
+      fetchPriority={priority ? 'high' : undefined}
       decoding="async"
       onError={() => setFailed(true)}
     />
+  );
+
+  if (!hasAvif) return img;
+
+  // display: contents → el <picture> no genera caja: el layout es el del <img>.
+  return (
+    <picture style={{ display: 'contents' }}>
+      <source type="image/avif" srcSet={`${IMG_PATH}/${avifFile}`} />
+      {img}
+    </picture>
   );
 }

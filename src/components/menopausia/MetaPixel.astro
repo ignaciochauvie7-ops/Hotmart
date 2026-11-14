@@ -3,11 +3,23 @@
 // nothing is rendered and the funnel keeps working untracked.
 const pixelId =
   import.meta.env.PIXEL_ID_MENOPAUSIA ?? process.env.PIXEL_ID_MENOPAUSIA ?? '';
+
+interface Props {
+  /**
+   * Retrasa la descarga de fbevents.js hasta que la página termina de cargar
+   * (o 3,5 s como máximo). La cola de fbq se crea igualmente al instante, así
+   * que PageView y el resto de eventos se envían igual, en el mismo orden.
+   */
+  defer?: boolean;
+}
+
+const { defer = false } = Astro.props;
 ---
 
 {pixelId && (
   <>
-    <script is:inline define:vars={{ pixelId }}>
+    {defer && <link rel="preconnect" href="https://connect.facebook.net" crossorigin />}
+    <script is:inline define:vars={{ pixelId, defer }}>
       !(function (f, b, e, v, n, t, s) {
         if (f.fbq) return;
         n = f.fbq = function () {
@@ -18,11 +30,21 @@ const pixelId =
         n.loaded = !0;
         n.version = '2.0';
         n.queue = [];
-        t = b.createElement(e);
-        t.async = !0;
-        t.src = v;
-        s = b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t, s);
+        var done = !1;
+        var load = function () {
+          if (done) return;
+          done = !0;
+          t = b.createElement(e);
+          t.async = !0;
+          t.src = v;
+          s = b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t, s);
+        };
+        if (!defer || b.readyState === 'complete') load();
+        else {
+          f.addEventListener('load', load, { once: !0 });
+          setTimeout(load, 3500);
+        }
       })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
       window.fbq('init', pixelId);
       window.fbq('track', 'PageView');

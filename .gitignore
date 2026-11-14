@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# variantes de imagen generadas en el build (scripts/electro-images.mjs)
+public/electrodomesticos/opt/

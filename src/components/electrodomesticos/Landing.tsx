@@ -175,7 +175,8 @@ export function Landing({ images }: Props) {
           alt={t.hero.imageAlt}
           available={images}
           className="m-hero__promise-img m-hero-in"
-          eager
+          priority
+          avif
         />
 
         {/* 2 · Esto es para ti si… */}
@@ -224,7 +225,7 @@ export function Landing({ images }: Props) {
       <section className="m-section m-reveal" id="comprar">
         <h2>{t.product.name}</h2>
         <div className="m-valuebox">
-          <Img file="oferta-pack.webp" w={1000} h={800} alt={t.product.imageAlt} available={images} className="m-hero__promise-img" />
+          <Img file="oferta-pack.webp" w={1000} h={800} alt={t.product.imageAlt} available={images} className="m-hero__promise-img" avif />
 
           <ul className="m-valuelist">
             <li className="m-valuerow">
@@ -248,6 +249,7 @@ export function Landing({ images }: Props) {
                   available={images}
                   className="m-valuerow__cover"
                   label={`B${i + 1}`}
+                  thumbSizes="40px"
                 />
                 <span className="m-valuerow__name">{b.title}</span>
                 <span className="m-valuerow__value">
