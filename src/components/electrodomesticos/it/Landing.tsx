@@ -169,7 +169,7 @@ export function Landing({ images }: Props) {
         {/* El titular va dentro de la imagen; el h1 queda solo para lectores de pantalla. */}
         <h1 className="m-sr">{t.hero.h1}</h1>
         <Img
-          file="hero-mockup.webp"
+          file="hero-mockup-it.webp"
           w={952}
           h={1256}
           alt={t.hero.imageAlt}
@@ -225,7 +225,7 @@ export function Landing({ images }: Props) {
       <section className="m-section m-reveal" id="comprar">
         <h2>{t.product.name}</h2>
         <div className="m-valuebox">
-          <Img file="oferta-pack.webp" w={1000} h={800} alt={t.product.imageAlt} available={images} className="m-hero__promise-img" avif />
+          <Img file="oferta-pack-it.webp" w={1000} h={800} alt={t.product.imageAlt} available={images} className="m-hero__promise-img" avif />
 
           <ul className="m-valuelist">
             <li className="m-valuerow">

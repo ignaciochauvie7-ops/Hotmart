@@ -8,16 +8,16 @@ import { listImages } from '../../../lib/electrodomesticos/images';
 const images = listImages();
 
 // Precarga de la imagen principal (LCP): AVIF si se generó en el build; si no, el .webp.
-const heroAvif = !!images?.includes('opt/hero-mockup.avif');
-const heroWebp = !images || images.includes('hero-mockup.webp');
+const heroAvif = !!images?.includes('opt/hero-mockup-it.avif');
+const heroWebp = !images || images.includes('hero-mockup-it.webp');
 ---
 
 <ElectroOfferLayout title={texts.meta.title} description={texts.meta.description}>
   <Fragment slot="head">
     {heroAvif ? (
-      <link rel="preload" as="image" type="image/avif" href={`${IMG_PATH}/opt/hero-mockup.avif`} fetchpriority="high" />
+      <link rel="preload" as="image" type="image/avif" href={`${IMG_PATH}/opt/hero-mockup-it.avif`} fetchpriority="high" />
     ) : heroWebp ? (
-      <link rel="preload" as="image" type="image/webp" href={`${IMG_PATH}/hero-mockup.webp`} fetchpriority="high" />
+      <link rel="preload" as="image" type="image/webp" href={`${IMG_PATH}/hero-mockup-it.webp`} fetchpriority="high" />
     ) : null}
   </Fragment>
   <Landing images={images} client:load />

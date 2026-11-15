@@ -12,7 +12,7 @@ const OUT = path.join(SRC, 'opt');
 
 /** [origen, destino, transformación] */
 const jobs = (files) => [
-  ...['hero-mockup.webp', 'oferta-pack.webp']
+  ...['hero-mockup.webp', 'oferta-pack.webp', 'hero-mockup-it.webp', 'oferta-pack-it.webp']
     .filter((f) => files.includes(f))
     .map((f) => [f, f.replace(/\.webp$/, '.avif'), (img) => img.avif({ quality: 62, effort: 6 })]),
   ...files

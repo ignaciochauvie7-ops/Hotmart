@@ -32,7 +32,7 @@ export function fileByKey(key: string): DeliveryFile | undefined {
 
 /** Ruta absoluta del PDF (fuera de /public). */
 export function filePath(file: DeliveryFile): string {
-  return path.join(process.cwd(), 'private', 'electrodomesticos', path.basename(file.file));
+  return path.join(process.cwd(), 'private', 'electrodomesticos', 'it', path.basename(file.file));
 }
 
 export function downloadUrl(paymentId: string, key: string): string {

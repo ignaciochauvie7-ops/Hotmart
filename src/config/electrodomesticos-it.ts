@@ -112,9 +112,9 @@ export const texts = {
     legalSuffix: 'Corso di Riparazione Elettrodomestici',
   },
 
-  // 1 · Promesa + imagen principal (hero-mockup.webp)
+  // 1 · Promesa + imagen principal (hero-mockup-it.webp)
   hero: {
-    // El titular visible va dentro de hero-mockup.webp; este texto es el h1 oculto y el alt.
+    // El titular visible va dentro de hero-mockup-it.webp; este texto es el h1 oculto y el alt.
     h1: 'Da zero a esperto di elettrodomestici in 30 giorni',
     imageAlt: 'Da zero a esperto di elettrodomestici in 30 giorni',
     // Franja de prueba social sobre la imagen. Usa solo cifras reales.
@@ -150,7 +150,7 @@ export const texts = {
   },
 
   // 4 · Producto principal con sus bonus (un solo bloque).
-  // Mockups: oferta-pack.webp · bonus-1.webp … bonus-5.webp
+  // Mockups: oferta-pack-it.webp · bonus-1.webp … bonus-5.webp
   product: {
     name: PRODUCT_NAME,
     imageAlt: PRODUCT_NAME,
