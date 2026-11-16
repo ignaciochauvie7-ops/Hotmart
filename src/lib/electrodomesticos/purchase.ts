@@ -4,8 +4,9 @@ import { CURRENCY } from '../../config/electrodomesticos';
 /**
  * Dispara Purchase una sola vez por pago: event_id = payment_id (dedup con la
  * Conversions API) y marca en localStorage para no repetirlo al recargar.
+ * `currency` por defecto EUR; /pl y /cs pasan su moneda (PLN, CZK).
  */
-export function trackPurchaseOnce(paymentId: string, value: number, contentName: string): void {
+export function trackPurchaseOnce(paymentId: string, value: number, contentName: string, currency: string = CURRENCY): void {
   if (!paymentId) return;
   const key = `rp_purchase_${paymentId}`;
   try {
@@ -14,5 +15,5 @@ export function trackPurchaseOnce(paymentId: string, value: number, contentName:
   } catch {
     /* sin storage: el event_id sigue deduplicando en Meta */
   }
-  track('Purchase', { value, currency: CURRENCY, content_name: contentName }, paymentId);
+  track('Purchase', { value, currency, content_name: contentName }, paymentId);
 }

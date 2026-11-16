@@ -1,0 +1,15 @@
+---
+import ElectroLayout from '../../../layouts/ElectroLayoutPt.astro';
+import { BASE_PATH, SUPPORT_EMAIL, texts } from '../../../config/electrodomesticos-pt';
+
+const l = texts.legal;
+---
+
+<ElectroLayout title={`${l.privacyTitle} — ${texts.meta.legalSuffix}`}>
+  <main class="rp-simple rp-legal">
+    <h1>{l.privacyTitle}</h1>
+    {l.privacyBody.map((p) => <p>{p}</p>)}
+    {SUPPORT_EMAIL && <p>{texts.footer.contact} <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a></p>}
+    <a class="rp-btn rp-btn--ghost" href={`${BASE_PATH}/oferta`}>{l.back}</a>
+  </main>
+</ElectroLayout>

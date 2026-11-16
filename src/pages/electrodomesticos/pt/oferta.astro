@@ -1,0 +1,24 @@
+---
+import ElectroOfferLayout from '../../../layouts/ElectroOfferLayoutPt.astro';
+import { Landing } from '../../../components/electrodomesticos/pt/Landing';
+import { IMG_PATH, texts } from '../../../config/electrodomesticos-pt';
+import { listImages } from '../../../lib/electrodomesticos/images';
+
+// Página estática: las imágenes presentes se detectan en el build.
+const images = listImages();
+
+// Precarga de la imagen principal (LCP): AVIF si se generó en el build; si no, el .webp.
+const heroAvif = !!images?.includes('opt/hero-mockup-pt.avif');
+const heroWebp = !images || images.includes('hero-mockup-pt.webp');
+---
+
+<ElectroOfferLayout title={texts.meta.title} description={texts.meta.description}>
+  <Fragment slot="head">
+    {heroAvif ? (
+      <link rel="preload" as="image" type="image/avif" href={`${IMG_PATH}/opt/hero-mockup-pt.avif`} fetchpriority="high" />
+    ) : heroWebp ? (
+      <link rel="preload" as="image" type="image/webp" href={`${IMG_PATH}/hero-mockup-pt.webp`} fetchpriority="high" />
+    ) : null}
+  </Fragment>
+  <Landing images={images} client:load />
+</ElectroOfferLayout>
