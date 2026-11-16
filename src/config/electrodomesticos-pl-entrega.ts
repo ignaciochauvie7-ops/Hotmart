@@ -4,7 +4,6 @@
  *
  * Los PDF viven en /private/electrodomesticos/pl (fuera de /public) y solo se sirven
  * desde /api/electrodomesticos/pl/descarga, que comprueba el pago con Dodo.
- * PENDIENTE: subir los PDF traducidos a /private/electrodomesticos/pl con estos nombres.
  * Cada archivo pertenece a un producto de Dodo (`bucket`):
  *   main → DODO_PRODUCT_MAIN · bump → DODO_PRODUCT_BUMP · upsell → DODO_PRODUCT_UPSELL
  */
@@ -30,14 +29,14 @@ export const PRODUCT_BY_BUCKET: Record<Bucket, string> = {
 
 // El orden de esta lista es el orden de los botones en /gracias.
 export const deliveryFiles: DeliveryFile[] = [
-  { key: 'curso', bucket: 'main', file: 'Kurs-Naprawy-Sprzetu-AGD.pdf', label: 'Pobierz kurs' },
-  { key: 'bonus-1', bucket: 'main', file: 'Bonus-1-Szybki-przewodnik-co-dolega-Twojemu-urzadzeniu.pdf', label: 'Pobierz Bonus 1' },
+  { key: 'curso', bucket: 'main', file: 'Kurs-naprawy-sprzetu-AGD.pdf', label: 'Pobierz kurs' },
+  { key: 'bonus-1', bucket: 'main', file: 'Bonus-1-Szybki-przewodnik-co-dolega-twojemu-urzadzeniu.pdf', label: 'Pobierz Bonus 1' },
   { key: 'bonus-2', bucket: 'main', file: 'Bonus-2-10-usterek-ktore-naprawisz-w-mniej-niz-10-minut.pdf', label: 'Pobierz Bonus 2' },
-  { key: 'bonus-3', bucket: 'main', file: 'Bonus-3-Kiedy-naprawiac-a-kiedy-kupic-nowe.pdf', label: 'Pobierz Bonus 3' },
+  { key: 'bonus-3', bucket: 'main', file: 'Bonus-3-Kiedy-naprawiac-a-kiedy-kupic-nowy.pdf', label: 'Pobierz Bonus 3' },
   { key: 'bonus-4', bucket: 'main', file: 'Bonus-4-Narzedzia-ktorych-potrzebujesz-za-mniej-niz-200-zl.pdf', label: 'Pobierz Bonus 4' },
-  { key: 'bonus-5', bucket: 'main', file: 'Bonus-5-Bezpieczenstwo-co-sprawdzic-przed-otwarciem-urzadzenia.pdf', label: 'Pobierz Bonus 5' },
-  { key: 'repuestos', bucket: 'bump', file: 'Przewodnik-po-czesciach-zamiennych-gdzie-kupic-najtaniej-w-Polsce.pdf', label: 'Pobierz Przewodnik po częściach zamiennych' },
-  { key: 'como-nuevos', bucket: 'upsell', file: 'AGD-jak-nowe.pdf', label: 'Pobierz AGD jak nowe' },
+  { key: 'bonus-5', bucket: 'main', file: 'Bonus-5-Bezpieczenstwo-co-sprawdzic-przed-otwarciem-dowolnego-urzadzenia.pdf', label: 'Pobierz Bonus 5' },
+  { key: 'repuestos', bucket: 'bump', file: 'Przewodnik-po-czesciach-gdzie-kupic-kazda-czesc-najtaniej-w-Polsce.pdf', label: 'Pobierz Przewodnik po częściach zamiennych' },
+  { key: 'como-nuevos', bucket: 'upsell', file: 'Sprzet-AGD-jak-nowy.pdf', label: 'Pobierz AGD jak nowe' },
 ];
 
 // ── Email de acceso (opcional) ─────────────────────────────────────────────
