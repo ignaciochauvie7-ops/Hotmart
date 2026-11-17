@@ -56,32 +56,32 @@ export const testimonials: Testimonial[] = [
   {
     name: 'Krzysztof',
     photo: 'testimonio-1.webp',
-    text: 'Nie miałem pojęcia o naprawach. Zacząłem od zera i zaskoczyło mnie, jak jasno wszystko jest wyjaśnione. Naprawiłem już w domu kilka usterek bez wzywania fachowca.',
+    text: "Wcześniej, za każdym razem, gdy pralka się psuła, kończyło się na płaceniu fachowcowi. Ostatnia naprawa kosztowała mnie prawie 400 zł. Na kursie nauczyłem się rozpoznawać usterkę i samodzielnie ją naprawiać. To, co zapłaciłem za kurs, zwróciło mi się już kilka razy.",
   },
   {
     name: 'Anna',
     photo: 'testimonio-2.webp',
-    text: 'Zaoszczędziłam sporo pieniędzy, sama naprawiając usterkę pralki. Wcześniej od razu zadzwoniłabym po fachowca. Teraz wiem dużo więcej i czuję się o wiele pewniej.',
+    text: "Moja zmywarka przestała odprowadzać wodę i myślałam, że będę musiała kupić nową. Zrobiłam wszystko według wyjaśnień z kursu, znalazłam problem i naprawiłam go bez wzywania kogokolwiek. Zaoszczędziłam sporo pieniędzy i teraz czuję się o wiele pewniej.",
   },
   {
     name: 'Tomasz',
     photo: 'testimonio-3.webp',
-    text: 'Kupiłem go z ciekawości, a teraz pomagam rodzinie i sąsiadom przy drobnych usterkach. Nigdy nie myślałem, że nauczę się czegoś takiego bez żadnego doświadczenia.',
+    text: "Moja lodówka chłodziła coraz słabiej, a fachowiec wycenił przegląd i naprawę na ponad 600 zł. Dzięki kursowi nauczyłem się sprawdzać, co może być nie tak. Zaskoczyło mnie, ile można się nauczyć bez wcześniejszego doświadczenia.",
   },
   {
     name: 'Marek',
     photo: 'testimonio-4.webp',
-    text: 'Najlepsze jest to, że wszystko jest wyjaśnione krok po kroku i żeby zacząć, nie trzeba nic wiedzieć o elektryce ani naprawach. Kurs jest o wiele bardziej praktyczny, niż się spodziewałem.',
+    text: "Piekarnik grzał nierówno, a ja od miesięcy odkładałem naprawę, bo bałem się kosztów. Dzięki wyjaśnieniom z kursu udało mi się znaleźć problem i go naprawić. Najlepsze jest to, że teraz wiem, jak poradzić sobie z innymi usterkami.",
   },
   {
     name: 'Katarzyna',
     photo: 'testimonio-5.webp',
-    text: 'Miałam dość płacenia za naprawy rzeczy, których nawet nie rozumiałam. Teraz potrafię rozpoznać wiele usterek i w domu radzę sobie sama. To naprawdę dobrze wydane pieniądze.',
+    text: "Zawsze wyrzucałam małe sprzęty AGD, bo myślałam, że ich naprawa się nie opłaca. Udało mi się już naprawić ekspres do kawy i odkurzacz. Kurs kosztował mnie dużo mniej niż jedna naprawa i jestem zachwycona.",
   },
   {
     name: 'Paweł',
     photo: 'testimonio-6.webp',
-    text: 'Chciałem nauczyć się fachu, który da mi dodatkowy dochód. Zaczynam już robić drobne naprawy dla znajomych i widzę, że to ma duży potencjał.',
+    text: "Zacząłem od drobnych napraw w domu, a skończyło się na pomaganiu rodzinie i sąsiadom. Teraz niektórzy płacą mi za pomoc przy ich sprzęcie AGD i co miesiąc mam dodatkowy dochód. Nigdy nie myślałem, że taki kurs tak bardzo mi się przyda.",
   },
 ];
 

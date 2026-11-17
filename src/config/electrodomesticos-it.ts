@@ -53,32 +53,32 @@ export const testimonials: Testimonial[] = [
   {
     name: 'Giuseppe',
     photo: 'testimonio-1.webp',
-    text: 'Non sapevo niente di riparazioni. Sono partito da zero e mi ha sorpreso quanto siano chiare le spiegazioni. Ho già risolto un paio di guasti in casa senza chiamare il tecnico.',
+    text: "Prima, ogni volta che la lavatrice aveva un problema, finivo per pagare il tecnico. L'ultima riparazione mi era costata quasi 100 €. Con il corso ho imparato a individuare il guasto e a risolverlo da solo. Ho già recuperato più volte quello che ho pagato per il corso.",
   },
   {
     name: 'Maria',
     photo: 'testimonio-2.webp',
-    text: 'Ho risparmiato parecchi soldi sistemando da sola un problema alla lavatrice. Prima avrei chiamato subito un tecnico. Adesso ne so molto di più e ho molta più sicurezza.',
+    text: "La mia lavastoviglie non scaricava più l'acqua e pensavo di doverne comprare una nuova. Ho seguito le spiegazioni del corso, ho trovato il problema e sono riuscita a risolverlo senza chiamare nessuno. Ho risparmiato parecchi soldi e ora ho molta più fiducia in me stessa.",
   },
   {
     name: 'Francesco',
     photo: 'testimonio-3.webp',
-    text: "L'ho comprato per curiosità e ora do una mano a parenti e vicini con i piccoli guasti. Non avrei mai pensato di poter imparare una cosa del genere senza nessuna esperienza.",
+    text: "Il mio frigorifero raffreddava sempre meno e un tecnico mi aveva fatto un preventivo di oltre 150 € per controllarlo e ripararlo. Grazie al corso ho imparato a verificare cosa poteva non funzionare. Mi ha sorpreso quanto si possa imparare senza alcuna esperienza.",
   },
   {
     name: 'Antonio',
     photo: 'testimonio-4.webp',
-    text: "La cosa migliore è che è spiegato passo dopo passo e non serve sapere nulla di elettricità o riparazioni per iniziare. È molto più pratico di quanto mi aspettassi.",
+    text: "Il mio forno scaldava in modo irregolare e da mesi rimandavo la riparazione per quanto poteva costare. Con le spiegazioni del corso sono riuscito a individuare il problema e a sistemarlo. La cosa migliore è che ora so come affrontare altri guasti.",
   },
   {
     name: 'Laura',
     photo: 'testimonio-5.webp',
-    text: "Ero stanca di pagare riparazioni per cose che nemmeno capivo. Ora so riconoscere tanti problemi e in casa me la cavo da sola. Una spesa che vale davvero la pena.",
+    text: "Finivo sempre per buttare i piccoli elettrodomestici perché pensavo che ripararli non ne valesse la pena. Ho già risolto un problema della mia macchina del caffè e uno dell'aspirapolvere. Il corso mi è costato molto meno di una sola riparazione e sono entusiasta.",
   },
   {
     name: 'Davide',
     photo: 'testimonio-6.webp',
-    text: 'Volevo imparare un mestiere che mi desse qualche entrata extra. Sto già iniziando a fare piccole riparazioni per amici e conoscenti e vedo che ha un grande potenziale.',
+    text: "Ho iniziato con piccole riparazioni in casa e ho finito per aiutare parenti e vicini. Ora alcune persone mi pagano per dare una mano con i loro elettrodomestici e ogni mese ho un'entrata extra. Non avrei mai pensato che un corso così potesse essermi tanto utile.",
   },
 ];
 

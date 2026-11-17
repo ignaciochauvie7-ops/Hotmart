@@ -55,32 +55,32 @@ export const testimonials: Testimonial[] = [
   {
     name: 'João',
     photo: 'testimonio-1.webp',
-    text: 'Não sabia nada de reparações. Comecei do zero e surpreendeu-me como as explicações são claras. Já resolvi um par de avarias em casa sem chamar o técnico.',
+    text: "Antes, sempre que a minha máquina de lavar roupa tinha um problema, acabava a pagar ao técnico. A última reparação tinha-me custado quase 100 €. Com o curso aprendi a identificar a avaria e a resolvê-la sozinho. Já recuperei várias vezes o que paguei pelo curso.",
   },
   {
     name: 'Maria',
     photo: 'testimonio-2.webp',
-    text: 'Poupei bastante dinheiro ao resolver sozinha um problema na máquina de lavar roupa. Antes teria chamado logo um técnico. Agora sei muito mais e sinto-me muito mais segura.',
+    text: "A minha máquina de lavar loiça deixou de escoar e pensei que ia ter de comprar uma nova. Segui as explicações do curso, encontrei o problema e consegui resolvê-lo sem chamar ninguém. Poupei bastante dinheiro e agora tenho muito mais confiança.",
   },
   {
     name: 'Francisco',
     photo: 'testimonio-3.webp',
-    text: 'Comprei-o por curiosidade e agora ajudo familiares e vizinhos com pequenas avarias. Nunca pensei que conseguisse aprender algo assim sem qualquer experiência.',
+    text: "O meu frigorífico começou a arrefecer cada vez menos e um técnico tinha-me orçamentado mais de 150 € para o verificar e reparar. Graças ao curso aprendi a verificar o que podia estar a falhar. Surpreendeu-me o quanto se pode aprender sem experiência prévia.",
   },
   {
     name: 'António',
     photo: 'testimonio-4.webp',
-    text: 'O melhor é que está tudo explicado passo a passo e não é preciso saber nada de eletricidade nem de reparações para começar. É muito mais prático do que esperava.',
+    text: "O meu forno aquecia de forma irregular e andava há meses a adiar a reparação pelo que podia custar. Com as explicações do curso consegui identificar o problema e arranjá-lo. O melhor é que agora sei como enfrentar outras avarias.",
   },
   {
     name: 'Ana',
     photo: 'testimonio-5.webp',
-    text: 'Estava farta de pagar reparações de coisas que nem percebia. Agora sei identificar muitos problemas e em casa desenrasco-me sozinha. Um investimento que vale mesmo a pena.',
+    text: "Acabava sempre por deitar fora pequenos eletrodomésticos porque achava que não valia a pena repará-los. Já consegui resolver um problema da minha máquina de café e outro do meu aspirador. O curso custou-me muito menos do que uma única reparação e estou encantada.",
   },
   {
     name: 'Rui',
     photo: 'testimonio-6.webp',
-    text: 'Queria aprender um ofício que me desse um rendimento extra. Já estou a começar a fazer pequenas reparações para amigos e conhecidos e vejo que tem um grande potencial.',
+    text: "Comecei por fazer pequenas reparações em casa e acabei a ajudar familiares e vizinhos. Agora há pessoas que me pagam para lhes dar uma mão com os eletrodomésticos e consigo um rendimento extra todos os meses. Nunca pensei que um curso assim me pudesse ser tão útil.",
   },
 ];
 
