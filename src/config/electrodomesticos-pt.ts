@@ -95,6 +95,7 @@ export const paymentMethods: { file: string; alt: string }[] = [
   { file: 'amex.svg', alt: 'American Express' },
   { file: 'apple-pay.svg', alt: 'Apple Pay' },
   { file: 'google-pay.svg', alt: 'Google Pay' },
+  { file: 'multibanco.svg', alt: 'Multibanco' },
 ];
 
 // ── Rutas ──────────────────────────────────────────────────────────────────

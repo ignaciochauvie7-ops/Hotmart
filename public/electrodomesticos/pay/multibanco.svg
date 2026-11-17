@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="60px" viewBox="0 0 100 60" version="1.1" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid">
+    <title>Multibanco</title>
+    <g fill="#0067B1">
+        <polygon points="0,0 14,0 24,22 34,0 48,0 48,44 36,44 36,18 27,38 21,38 12,18 12,44 0,44"/>
+        <path fill-rule="evenodd" d="M56,0 H84 A11,11 0 0 1 92,19 A12.5,12.5 0 0 1 86,44 H56 Z M68,9 H82 A4,4 0 0 1 82,17 H68 Z M68,26 H84 A4.5,4.5 0 0 1 84,35 H68 Z"/>
+    </g>
+    <rect x="0" y="52" width="98" height="8" fill="#1A1A1A"/>
+</svg>
