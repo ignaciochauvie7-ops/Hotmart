@@ -12,6 +12,7 @@ import {
   PRICE_WITH_BUMP,
   SUPPORT_EMAIL,
   VALUE_TOTAL,
+  SAVINGS,
   eur,
   paymentMethods,
   testimonials,
@@ -253,7 +254,7 @@ export function Landing({ images }: Props) {
                 />
                 <span className="m-valuerow__name">{b.title}</span>
                 <span className="m-valuerow__value">
-                  <s>{eur(b.value)}</s>
+                  <s>{eur(b.value)}</s> <span className="m-valuerow__free">{t.offer.freeTag}</span>
                 </span>
               </li>
             ))}
@@ -273,10 +274,14 @@ export function Landing({ images }: Props) {
             </div>
           )}
 
-          {/* Siempre visible: el 40% se muestra aunque no se gire la ruleta. */}
+          {/* Siempre visible: ahorro de hoy y precio final. */}
           <p className="m-valuebox__deal">
-            {t.offer.dealLabel} <s>{eur(t.product.courseValue)}</s> <strong>{eur(PRICE_MAIN)}</strong>
+            {t.offer.savingsLabel} {eur(SAVINGS)}
+            <br />
+            <strong>{eur(PRICE_MAIN)}</strong>
           </p>
+
+          <p className="m-valuebox__trust">{t.offer.trustLine}</p>
 
           <button
             className="m-btn m-btn--glow m-valuebox__cta"

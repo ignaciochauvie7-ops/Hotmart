@@ -2739,6 +2739,19 @@ body {
   margin-top: 0.5rem;
 }
 
+/* Línea corta de confianza justo encima del botón (landings de electrodomésticos). */
+.m-valuebox .m-valuebox__trust {
+  margin: 0.5rem 0 0;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted-text);
+}
+
+.m-valuebox__trust + .m-valuebox__cta {
+  margin-top: 0.5rem;
+}
+
 /* Ruleta de descuentos (modal centrado al entrar). ---------------------------- */
 .m-wheel {
   position: fixed;

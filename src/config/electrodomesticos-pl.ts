@@ -21,8 +21,6 @@ export const PRICE_MAIN = 72;
 export const PRICE_BUMP = 21;
 // Precio anterior de la guía (sale tachado en el mini carrito).
 export const PRICE_BUMP_WAS = 35;
-// "Valor total" que se muestra en el cuadro de producto (sin tachar).
-export const VALUE_TOTAL = 240;
 export const PRICE_UPSELL = 39;
 
 // ── IDs de producto de Dodo Payments (no son secretos) ─────────────────────
@@ -177,7 +175,12 @@ export const texts = {
   offer: {
     valueTotalLabel: 'Łączna wartość:',
     // Mini texto sobre el botón, siempre visible (se gire o no la ruleta).
-    dealLabel: 'Z Twoim rabatem 40%:',
+    // Línea sobre el botón: «Tylko dziś oszczędzasz X» (X = SAVINGS).
+    savingsLabel: 'Tylko dziś oszczędzasz',
+    // Etiqueta junto al precio tachado de cada bonus.
+    freeTag: 'DZIŚ W PREZENCIE',
+    // Línea corta justo encima del botón de compra.
+    trustLine: 'Natychmiastowy dostęp · jednorazowa płatność · gwarancja 30 dni',
     countdownLabel: 'Oferta kończy się za',
     // El botón abre el mini carrito (textos en `cart`).
     cta: 'Chcę mój kurs',
@@ -190,7 +193,7 @@ export const texts = {
   // Ruleta de descuentos que se abre al entrar (solo la primera visita).
   // El PRIMER sector es el premio: la ruleta siempre termina ahí, después de
   // pasar muy despacio por el segundo. El precio que se cobra no cambia
-  // (PRICE_MAIN): si cambias el 40%, revisa también `offer.dealLabel`.
+  // (PRICE_MAIN).
   wheel: {
     title: 'Zakręć kołem i odbierz swój rabat',
     segments: ['40%', '5%', '20%', '10%', '25%', '15%'],
@@ -320,6 +323,12 @@ export function eur(n: number): string {
     minimumFractionDigits: Number.isInteger(n) ? 0 : 2,
   }).format(n);
 }
+
+// "Valor total": precio tachado del curso + precios tachados de los bonus.
+export const VALUE_TOTAL =
+  Math.round((texts.product.courseValue + texts.product.bonus.reduce((a, b) => a + b.value, 0)) * 100) / 100;
+// Ahorro que se muestra sobre el botón: valor total − precio final.
+export const SAVINGS = Math.round((VALUE_TOTAL - PRICE_MAIN) * 100) / 100;
 
 export const PRICE_WITH_BUMP = Math.round((PRICE_MAIN + PRICE_BUMP) * 100) / 100;
 
