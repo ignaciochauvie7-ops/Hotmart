@@ -31,6 +31,36 @@ export const DODO_PRODUCT_MAIN = 'pdt_0Ns5J4AdZXfvqFGfFiCyW';
 export const DODO_PRODUCT_BUMP = 'pdt_0Ns5J4Vk3aqFHspAdVfbL';
 export const DODO_PRODUCT_UPSELL = 'pdt_0Ns5J4s9M5Y8eVpBMh1pW';
 
+// ── Post compra (raspa y gana + 3 extras con cobro en 1 clic) ─────────────
+// Recorrido tras el pago: raspa y gana (upsell) → 3 extras → /gracias.
+// Se cobra a la tarjeta guardada (sin checkout): ver src/lib/electrodomesticos/oneclick.ts
+// Precio «normal» tachado del upsell en el raspa y gana (se cobra PRICE_UPSELL).
+export const PRICE_UPSELL_WAS = 78;
+// 3 extras de la segunda pantalla (mismo orden que los PDF de entrega).
+// IDs de Dodo: vacío = ese extra no se muestra ni se puede cobrar.
+export const DODO_PRODUCT_EXTRA_1 = 'pdt_0NsFPbEl1B9rCOR02i4MI';
+export const DODO_PRODUCT_EXTRA_2 = 'pdt_0NsFPbNeVSHaaojq3q8El';
+export const DODO_PRODUCT_EXTRA_3 = 'pdt_0NsFPbeqTHZQ93UnAPv16';
+// `was` = precio tachado · `price` = precio que se cobra (debe coincidir con Dodo).
+// `cover` = portada en /public/electrodomesticos/.
+export const EXTRAS: { name: string; cover: string; was: number; price: number }[] = [
+  { name: 'Kalendarz konserwacji na 12 miesięcy', cover: 'extra-1-pl.webp', was: 33.99, price: 12.99 },
+  { name: 'Oszczędzaj na rachunku za prąd', cover: 'extra-2-pl.webp', was: 37.99, price: 14.99 },
+  { name: 'Multimetr w 15 minut', cover: 'extra-3-pl.webp', was: 41.99, price: 16.99 },
+];
+// Textos de las dos pantallas post compra.
+export const postTexts = {
+  scratchTitle: 'Zdrap i odkryj swoją zniżkę',
+  scratchHint: 'ZDRAP TUTAJ',
+  off: '50% ZNIŻKI',
+  giftsTitle: 'Wybierz prezent',
+  giftAria: 'Otwórz prezent',
+  yes: 'CHCĘ TO!',
+  no: 'Nie, dziękuję',
+  error: 'Nie udało się zrealizować płatności.',
+  loading: 'Ładowanie',
+};
+
 // ── Fecha límite REAL de la oferta (ISO 8601) ──────────────────────────────
 // Ej.: '2026-12-01T23:59:59+01:00'. Vacía = el contador no se muestra.
 // Al llegar a cero el contador se oculta; no se reinicia.

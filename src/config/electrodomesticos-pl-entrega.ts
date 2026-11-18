@@ -7,9 +7,16 @@
  * Cada archivo pertenece a un producto de Dodo (`bucket`):
  *   main → DODO_PRODUCT_MAIN · bump → DODO_PRODUCT_BUMP · upsell → DODO_PRODUCT_UPSELL
  */
-import { DODO_PRODUCT_BUMP, DODO_PRODUCT_MAIN, DODO_PRODUCT_UPSELL } from './electrodomesticos-pl';
+import {
+  DODO_PRODUCT_BUMP,
+  DODO_PRODUCT_EXTRA_1,
+  DODO_PRODUCT_EXTRA_2,
+  DODO_PRODUCT_EXTRA_3,
+  DODO_PRODUCT_MAIN,
+  DODO_PRODUCT_UPSELL,
+} from './electrodomesticos-pl';
 
-export type Bucket = 'main' | 'bump' | 'upsell';
+export type Bucket = 'main' | 'bump' | 'upsell' | 'extra1' | 'extra2' | 'extra3';
 
 export interface DeliveryFile {
   /** Identificador corto que viaja en la URL de descarga. */
@@ -25,6 +32,9 @@ export const PRODUCT_BY_BUCKET: Record<Bucket, string> = {
   main: DODO_PRODUCT_MAIN,
   bump: DODO_PRODUCT_BUMP,
   upsell: DODO_PRODUCT_UPSELL,
+  extra1: DODO_PRODUCT_EXTRA_1,
+  extra2: DODO_PRODUCT_EXTRA_2,
+  extra3: DODO_PRODUCT_EXTRA_3,
 };
 
 // El orden de esta lista es el orden de los botones en /gracias.
@@ -37,6 +47,9 @@ export const deliveryFiles: DeliveryFile[] = [
   { key: 'bonus-5', bucket: 'main', file: 'Bonus-5-Bezpieczenstwo-co-sprawdzic-przed-otwarciem-dowolnego-urzadzenia.pdf', label: 'Pobierz Bonus 5' },
   { key: 'repuestos', bucket: 'bump', file: 'Przewodnik-po-czesciach-gdzie-kupic-kazda-czesc-najtaniej-w-Polsce.pdf', label: 'Pobierz Przewodnik po częściach zamiennych' },
   { key: 'como-nuevos', bucket: 'upsell', file: 'Sprzet-AGD-jak-nowy.pdf', label: 'Pobierz AGD jak nowe' },
+  { key: 'extra-1', bucket: 'extra1', file: 'Kalendarz-konserwacji-na-12-miesiecy.pdf', label: 'Pobierz Kalendarz konserwacji' },
+  { key: 'extra-2', bucket: 'extra2', file: 'Oszczedzaj-na-rachunku-za-prad.pdf', label: 'Pobierz Oszczędzaj na rachunku za prąd' },
+  { key: 'extra-3', bucket: 'extra3', file: 'Multimetr-w-15-minut.pdf', label: 'Pobierz Multimetr w 15 minut' },
 ];
 
 // ── Email de acceso (opcional) ─────────────────────────────────────────────
@@ -51,6 +64,9 @@ export const delivery: Record<Bucket, AccessLink[]> = {
   main: [],
   bump: [],
   upsell: [],
+  extra1: [],
+  extra2: [],
+  extra3: [],
 };
 
 export const emailTexts = {

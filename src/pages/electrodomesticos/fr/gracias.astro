@@ -11,11 +11,14 @@ import { downloadUrl, grantsAccess, loadPurchases, type DownloadButton } from '.
 // Llega con el id de pago en la URL:
 //   · desde el upsell rechazado → ?payment_id=<pago principal>
 //   · desde el checkout del upsell → ?upsell=1&main=<pago principal>&payment_id=<pago del upsell>&status=…
+//   · desde el post compra (cobro en un clic) → ?payment_id=<pago principal>&x=<cobros aún en curso>
 // El acceso sale siempre de Dodo: se consultan esos pagos y, con uno confirmado,
 // se muestran todas las compras pagadas del mismo comprador (por su email).
 const params = Astro.url.searchParams;
 const paymentId = params.get('payment_id') ?? '';
 const mainId = params.get('main') ?? '';
+// Cobros en un clic que seguían en curso al salir del post compra (máx. 2).
+const extraIds = (params.get('x') ?? '').split(',').slice(0, 2);
 const statusParam = (params.get('status') ?? '').toLowerCase();
 
 let verified = false;
@@ -26,7 +29,7 @@ let upsellValue = PRICE_UPSELL;
 
 const client = getDodoClient();
 if (client) {
-  const r = await loadPurchases(client, [paymentId, mainId]);
+  const r = await loadPurchases(client, [paymentId, mainId, ...extraIds]);
   verified = r.verified;
   pending = r.pending;
   downloads = r.downloads;

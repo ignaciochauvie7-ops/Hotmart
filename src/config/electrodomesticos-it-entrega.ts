@@ -7,9 +7,16 @@
  * Cada archivo pertenece a un producto de Dodo (`bucket`):
  *   main → DODO_PRODUCT_MAIN · bump → DODO_PRODUCT_BUMP · upsell → DODO_PRODUCT_UPSELL
  */
-import { DODO_PRODUCT_BUMP, DODO_PRODUCT_MAIN, DODO_PRODUCT_UPSELL } from './electrodomesticos-it';
+import {
+  DODO_PRODUCT_BUMP,
+  DODO_PRODUCT_EXTRA_1,
+  DODO_PRODUCT_EXTRA_2,
+  DODO_PRODUCT_EXTRA_3,
+  DODO_PRODUCT_MAIN,
+  DODO_PRODUCT_UPSELL,
+} from './electrodomesticos-it';
 
-export type Bucket = 'main' | 'bump' | 'upsell';
+export type Bucket = 'main' | 'bump' | 'upsell' | 'extra1' | 'extra2' | 'extra3';
 
 export interface DeliveryFile {
   /** Identificador corto que viaja en la URL de descarga. */
@@ -25,6 +32,9 @@ export const PRODUCT_BY_BUCKET: Record<Bucket, string> = {
   main: DODO_PRODUCT_MAIN,
   bump: DODO_PRODUCT_BUMP,
   upsell: DODO_PRODUCT_UPSELL,
+  extra1: DODO_PRODUCT_EXTRA_1,
+  extra2: DODO_PRODUCT_EXTRA_2,
+  extra3: DODO_PRODUCT_EXTRA_3,
 };
 
 // El orden de esta lista es el orden de los botones en /gracias.
@@ -37,6 +47,9 @@ export const deliveryFiles: DeliveryFile[] = [
   { key: 'bonus-5', bucket: 'main', file: 'Bonus-5-Sicurezza-cosa-controllare-prima-di-aprire-qualsiasi-apparecchio.pdf', label: 'Scarica il Bonus 5' },
   { key: 'repuestos', bucket: 'bump', file: 'Guida-ai-ricambi-dove-comprare-ogni-pezzo-al-prezzo-piu-basso-in-Italia.pdf', label: 'Scarica la Guida ai pezzi di ricambio' },
   { key: 'como-nuevos', bucket: 'upsell', file: 'Elettrodomestici-come-nuovi.pdf', label: 'Scarica Elettrodomestici come nuovi' },
+  { key: 'extra-1', bucket: 'extra1', file: 'Calendario-di-manutenzione-in-12-mesi.pdf', label: 'Scarica il Calendario di manutenzione' },
+  { key: 'extra-2', bucket: 'extra2', file: 'Risparmia-sulla-bolletta-della-luce.pdf', label: 'Scarica Risparmia sulla bolletta' },
+  { key: 'extra-3', bucket: 'extra3', file: 'Il-multimetro-in-15-minuti.pdf', label: 'Scarica Il multimetro in 15 minuti' },
 ];
 
 // ── Email de acceso (opcional) ─────────────────────────────────────────────
@@ -51,6 +64,9 @@ export const delivery: Record<Bucket, AccessLink[]> = {
   main: [],
   bump: [],
   upsell: [],
+  extra1: [],
+  extra2: [],
+  extra3: [],
 };
 
 export const emailTexts = {

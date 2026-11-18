@@ -2,33 +2,77 @@
 export const prerender = false;
 
 import ElectroLayout from '../../../layouts/ElectroLayoutFr.astro';
-import { Upsell } from '../../../components/electrodomesticos/fr/Upsell';
-import { PRICE_MAIN, PRICE_WITH_BUMP, texts } from '../../../config/electrodomesticos-fr';
+import { PostCompra, type Offer } from '../../../components/electrodomesticos/PostCompra';
+import {
+  BASE_PATH,
+  CURRENCY,
+  DODO_PRODUCT_EXTRA_1,
+  DODO_PRODUCT_EXTRA_2,
+  DODO_PRODUCT_EXTRA_3,
+  DODO_PRODUCT_UPSELL,
+  EXTRAS,
+  IMG_PATH,
+  PRICE_MAIN,
+  PRICE_UPSELL,
+  PRICE_UPSELL_WAS,
+  PRICE_WITH_BUMP,
+  eur,
+  postTexts,
+  texts,
+} from '../../../config/electrodomesticos-fr';
 import { getDodoClient, retrievePayment, paymentIsPaid } from '../../../lib/menopausia/dodo';
-import { listImages } from '../../../lib/electrodomesticos/images';
 
 // Dodo vuelve aquí con ?payment_id=…&status=… tras el pago principal.
+// Recorrido: raspa y gana (upsell) → 3 extras → /gracias, con cobro en un clic.
 const params = Astro.url.searchParams;
 const paymentId = params.get('payment_id') ?? '';
 const statusParam = (params.get('status') ?? '').toLowerCase();
 
 let paid = false;
 let value = PRICE_MAIN;
-let email: string | undefined;
 
 const client = getDodoClient();
 if (client && paymentId) {
   const p: any = await retrievePayment(client, paymentId);
   // Solo pagos de este embudo y del producto principal.
-  paid = paymentIsPaid(p) && p?.metadata?.funnel === 'electrodomesticos-fr' && p?.metadata?.kind !== 'upsell';
+  paid = paymentIsPaid(p) && p?.metadata?.funnel === 'electrodomesticos-fr' && p?.metadata?.kind === 'main';
   if (p?.metadata?.bump === 'true') value = PRICE_WITH_BUMP;
   if (typeof p?.total_amount === 'number') value = p.total_amount / 100;
-  if (p?.customer?.email) email = p.customer.email;
 } else if (!client && import.meta.env.DEV && statusParam === 'succeeded') {
   paid = true; // Solo en local, sin Dodo configurado, para ver la página.
 }
+
+const upsell: Offer | null = DODO_PRODUCT_UPSELL
+  ? { item: 'upsell', name: texts.upsell.product, price: PRICE_UPSELL, priceLabel: eur(PRICE_UPSELL), wasLabel: eur(PRICE_UPSELL_WAS) }
+  : null;
+const extraIds = [DODO_PRODUCT_EXTRA_1, DODO_PRODUCT_EXTRA_2, DODO_PRODUCT_EXTRA_3];
+const items = ['extra1', 'extra2', 'extra3'] as const;
+const extras: Offer[] = EXTRAS.flatMap((e, i) =>
+  extraIds[i]
+    ? [{ item: items[i], name: e.name, cover: e.cover, price: e.price, priceLabel: eur(e.price), wasLabel: eur(e.was) }]
+    : [],
+);
+
+Astro.response.headers.set('Cache-Control', 'private, no-store');
 ---
 
 <ElectroLayout title={texts.meta.upsellTitle} noindex>
-  <Upsell paid={paid} value={value} paymentId={paymentId} email={email} images={listImages()} client:load />
+  <PostCompra
+    paid={paid}
+    value={value}
+    paymentId={paymentId}
+    currency={CURRENCY}
+    basePath={BASE_PATH}
+    apiPath="/api/electrodomesticos/fr/cobro"
+    imgPath={IMG_PATH}
+    texts={{
+      ...postTexts,
+      notPaidTitle: texts.upsell.notPaidTitle,
+      notPaidBody: texts.upsell.notPaidBody,
+      notPaidBack: texts.upsell.notPaidBack,
+    }}
+    upsell={upsell}
+    extras={extras}
+    client:load
+  />
 </ElectroLayout>
