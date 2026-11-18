@@ -1,0 +1,35 @@
+---
+import '../styles/electrodomesticos.css';
+// Mismo pixel de Meta que menopausia (PIXEL_ID_MENOPAUSIA): carga + PageView.
+import MetaPixel from '../components/menopausia/MetaPixel.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  noindex?: boolean;
+}
+
+const { title, description = '', noindex = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    {description && <meta name="description" content={description} />}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content="#0B1F3A" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" as="font" type="font/woff2" href="/menopausia/fonts/inter-700-latin.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/menopausia/fonts/inter-400-latin.woff2" crossorigin />
+    <link rel="stylesheet" href="/menopausia/fonts/fonts.css" />
+    <title>{title}</title>
+    <MetaPixel />
+  </head>
+  <body>
+    <div class="rp-root">
+      <slot />
+    </div>
+  </body>
+</html>

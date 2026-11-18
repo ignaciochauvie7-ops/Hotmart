@@ -13,7 +13,8 @@ const OUT = path.join(SRC, 'opt');
 /** [origen, destino, transformación] */
 const jobs = (files) => [
   ...['hero-mockup.webp', 'oferta-pack.webp', 'hero-mockup-it.webp', 'oferta-pack-it.webp',
-      'hero-mockup-pt.webp', 'oferta-pack-pt.webp', 'hero-mockup-pl.webp', 'oferta-pack-pl.webp', 'hero-mockup-cs.webp', 'oferta-pack-cs.webp']
+      'hero-mockup-pt.webp', 'oferta-pack-pt.webp', 'hero-mockup-pl.webp', 'oferta-pack-pl.webp', 'hero-mockup-cs.webp', 'oferta-pack-cs.webp',
+      'hero-mockup-fr.webp', 'oferta-pack-fr.webp', 'hero-mockup-de.webp', 'oferta-pack-de.webp']
     .filter((f) => files.includes(f))
     .map((f) => [f, f.replace(/\.webp$/, '.avif'), (img) => img.avif({ quality: 62, effort: 6 })]),
   ...files
