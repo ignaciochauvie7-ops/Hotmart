@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { previewKey } from '../../../../lib/electrodomesticos/preview';
 import { readFile } from 'node:fs/promises';
 import { PRODUCT_BY_BUCKET } from '../../../../config/electrodomesticos-it-entrega';
 import { getDodoClient, paymentProductIds, retrievePayment } from '../../../../lib/menopausia/dodo';
@@ -17,8 +18,12 @@ export const GET: APIRoute = async ({ url }) => {
   const file = fileByKey(url.searchParams.get('f') ?? '');
   if (!file) return deny('File non trovato.', 404);
 
-  const client = getDodoClient();
-  if (client) {
+  // Vista previa privada: con la clave correcta se sirve el PDF sin consultar a Dodo.
+  const preview = previewKey(url.searchParams.get('preview'));
+  const client = preview ? null : getDodoClient();
+  if (preview) {
+    /* acceso de vista previa */
+  } else if (client) {
     if (!isPaymentId(paymentId)) return deny('Pagamento non verificato.');
     const payment = await retrievePayment(client, paymentId);
     if (!grantsAccess(payment)) return deny('Pagamento non verificato.');

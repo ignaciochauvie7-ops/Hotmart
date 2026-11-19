@@ -52,7 +52,11 @@
   touch-action: none;
   cursor: grab;
   transition: opacity 0.45s var(--ease-out);
+  /* Tapa el premio desde el primer pintado, antes de que cargue el JS. */
+  background: linear-gradient(135deg, #b9c2cf, #e6eaf0 50%, #a9b3c1);
 }
+
+.rp-pc-scratch__cover.is-ready { background: none; }
 
 .rp-pc-scratch.is-done .rp-pc-scratch__cover {
   opacity: 0;

@@ -7,6 +7,7 @@ import { PRICE_UPSELL, texts } from '../../../config/electrodomesticos-it';
 import { deliveryFiles } from '../../../config/electrodomesticos-it-entrega';
 import { getDodoClient } from '../../../lib/menopausia/dodo';
 import { downloadUrl, grantsAccess, loadPurchases, type DownloadButton } from '../../../lib/electrodomesticos/it/entrega';
+import { previewItems, previewKey } from '../../../lib/electrodomesticos/preview';
 
 // Llega con el id de pago en la URL:
 //   · desde el upsell rechazado → ?payment_id=<pago principal>
@@ -27,8 +28,18 @@ let downloads: DownloadButton[] = [];
 let upsellPaymentId = '';
 let upsellValue = PRICE_UPSELL;
 
-const client = getDodoClient();
-if (client) {
+// Vista previa privada (?preview=<clave>&items=upsell,extra1…): muestra el curso
+// y los productos elegidos en el post compra, sin consultar a Dodo.
+const preview = previewKey(params.get('preview'));
+
+const client = preview ? null : getDodoClient();
+if (preview) {
+  const buckets = ['main', ...previewItems(params.get('items'))];
+  verified = true;
+  downloads = deliveryFiles
+    .filter((f) => buckets.includes(f.bucket))
+    .map((f) => ({ key: f.key, label: f.label, url: `${downloadUrl('preview', f.key)}&preview=${encodeURIComponent(preview)}` }));
+} else if (client) {
   const r = await loadPurchases(client, [paymentId, mainId, ...extraIds]);
   verified = r.verified;
   pending = r.pending;

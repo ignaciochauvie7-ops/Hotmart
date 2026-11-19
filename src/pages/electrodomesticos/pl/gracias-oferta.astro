@@ -21,6 +21,7 @@ import {
   texts,
 } from '../../../config/electrodomesticos-pl';
 import { getDodoClient, retrievePayment, paymentIsPaid } from '../../../lib/menopausia/dodo';
+import { previewKey } from '../../../lib/electrodomesticos/preview';
 
 // Dodo vuelve aquí con ?payment_id=…&status=… tras el pago principal.
 // Recorrido: raspa y gana (upsell) → 3 extras → /gracias, con cobro en un clic.
@@ -31,8 +32,13 @@ const statusParam = (params.get('status') ?? '').toLowerCase();
 let paid = false;
 let value = PRICE_MAIN;
 
-const client = getDodoClient();
-if (client && paymentId) {
+// Vista previa privada (?preview=<clave>): recorrido completo sin pago ni Dodo.
+const preview = previewKey(params.get('preview'));
+
+const client = preview ? null : getDodoClient();
+if (preview) {
+  paid = true;
+} else if (client && paymentId) {
   const p: any = await retrievePayment(client, paymentId);
   // Solo pagos de este embudo y del producto principal.
   paid = paymentIsPaid(p) && p?.metadata?.funnel === 'electrodomesticos-pl' && p?.metadata?.kind === 'main';
@@ -73,6 +79,7 @@ Astro.response.headers.set('Cache-Control', 'private, no-store');
     }}
     upsell={upsell}
     extras={extras}
+    preview={preview}
     client:load
   />
 </ElectroLayout>

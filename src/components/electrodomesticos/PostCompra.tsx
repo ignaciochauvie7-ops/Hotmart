@@ -51,6 +51,8 @@ interface Props {
   /** null = upsell no disponible (se salta la pantalla 1). */
   upsell: Offer | null;
   extras: Offer[];
+  /** Clave de vista previa (validada en el servidor): simula los cobros, sin Dodo ni pixel. */
+  preview?: string;
 }
 
 type Charge = { status: string; paymentId?: string; charged?: Item[]; error?: string };
@@ -143,6 +145,7 @@ function ScratchCard({ hint, children, onReveal }: { hint: string; children: Rea
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(hint, rect.width / 2, rect.height / 2);
+    c.classList.add('is-ready');
 
     let drawing = false;
     let last: { x: number; y: number } | null = null;
@@ -235,7 +238,7 @@ function Gift({ opened, faded, label, aria, onOpen }: { opened: boolean; faded: 
   );
 }
 
-export function PostCompra({ paid, value, paymentId, currency, basePath, apiPath, imgPath, texts: t, upsell, extras }: Props) {
+export function PostCompra({ paid, value, paymentId, currency, basePath, apiPath, imgPath, texts: t, upsell, extras, preview = '' }: Props) {
   const [step, setStep] = useState<'scratch' | 'gifts'>(upsell ? 'scratch' : 'gifts');
   const [revealed, setRevealed] = useState(false);
   const [opened, setOpened] = useState<number | null>(null);
@@ -245,13 +248,20 @@ export function PostCompra({ paid, value, paymentId, currency, basePath, apiPath
   const [error, setError] = useState('');
   // Cobros aún en curso: /gracias los vuelve a consultar.
   const pendingRef = useRef<string[]>([]);
+  // Vista previa: productos "comprados" (simulados) para mostrarlos en /gracias.
+  const previewRef = useRef<Item[]>([]);
 
   // Purchase del producto principal: solo con pago confirmado y una vez por pago.
   useEffect(() => {
-    if (paid) trackPurchaseOnce(paymentId, value, 'reparador_pro_main', currency);
-  }, [paid, paymentId, value, currency]);
+    if (paid && !preview) trackPurchaseOnce(paymentId, value, 'reparador_pro_main', currency);
+  }, [paid, paymentId, value, currency, preview]);
 
   const finishFlow = () => {
+    if (preview) {
+      const items = previewRef.current.length ? `&items=${previewRef.current.join(',')}` : '';
+      window.location.replace(`${basePath}/gracias?preview=${encodeURIComponent(preview)}${items}`);
+      return;
+    }
     const x = pendingRef.current.length ? `&x=${pendingRef.current.join(',')}` : '';
     window.location.replace(`${basePath}/gracias?payment_id=${encodeURIComponent(paymentId)}${x}`);
   };
@@ -263,6 +273,16 @@ export function PostCompra({ paid, value, paymentId, currency, basePath, apiPath
       window.scrollTo(0, 0);
     } else finishFlow();
   };
+
+  // Portadas de los extras: se precargan en segundo plano al llegar a las cajas,
+  // así aparecen al instante al abrir el regalo sin competir con la carga inicial.
+  useEffect(() => {
+    if (!paid || step !== 'gifts') return;
+    const load = () => extras.forEach((o) => o.cover && (new Image().src = `${imgPath}/${o.cover}`));
+    const w = window as Window & { requestIdleCallback?: (cb: () => void) => number };
+    if (w.requestIdleCallback) w.requestIdleCallback(load);
+    else window.setTimeout(load, 300);
+  }, [paid, step, extras, imgPath]);
 
   // Sin nada que ofrecer: directo a las descargas.
   useEffect(() => {
@@ -285,6 +305,12 @@ export function PostCompra({ paid, value, paymentId, currency, basePath, apiPath
   async function charge(items: Item[], contentName: string, offers: Offer[]): Promise<boolean> {
     setError('');
     setLoading(true);
+    if (preview) {
+      // Cobro simulado (como una tarjeta de prueba aprobada): nunca llama al servidor ni a Dodo.
+      await new Promise((ok) => window.setTimeout(ok, 700));
+      for (const i of items) if (!previewRef.current.includes(i)) previewRef.current.push(i);
+      return true;
+    }
     try {
       const res = await fetch(apiPath, {
         method: 'POST',
