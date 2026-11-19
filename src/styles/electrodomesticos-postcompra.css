@@ -79,6 +79,15 @@
   margin: 0;
 }
 
+.rp-root .rp-pc-benefit {
+  display: block;
+  margin: 0;
+  color: #3d4a5c;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
 .rp-pc-prices {
   display: flex;
   align-items: baseline;

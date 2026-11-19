@@ -42,10 +42,10 @@ export const DODO_PRODUCT_EXTRA_2 = 'pdt_0NsFPb4n28SzJ7ttXNRNP';
 export const DODO_PRODUCT_EXTRA_3 = 'pdt_0NsFPb97yhnodoYEBkPvO';
 // `was` = precio tachado · `price` = precio que se cobra (debe coincidir con Dodo).
 // `cover` = portada en /public/electrodomesticos/.
-export const EXTRAS: { name: string; cover: string; was: number; price: number }[] = [
-  { name: 'Wartungskalender für 12 Monate', cover: 'extra-1-de.webp', was: 7.9, price: 2.9 },
-  { name: 'Spar bei deiner Stromrechnung', cover: 'extra-2-de.webp', was: 8.9, price: 3.4 },
-  { name: 'Das Multimeter in 15 Minuten', cover: 'extra-3-de.webp', was: 9.9, price: 3.9 },
+export const EXTRAS: { name: string; benefit: string; cover: string; was: number; price: number }[] = [
+  { name: 'Wartungskalender für 12 Monate', benefit: '10 Minuten im Monat und du sparst dir den Techniker.', cover: 'extra-1-de.webp', was: 7.9, price: 2.9 },
+  { name: 'Spar bei deiner Stromrechnung', benefit: 'Zahl jeden Monat weniger Strom, ohne etwas zu kaufen.', cover: 'extra-2-de.webp', was: 8.9, price: 3.4 },
+  { name: 'Das Multimeter in 15 Minuten', benefit: 'Finde das kaputte Teil, bevor du Geld für ein neues ausgibst.', cover: 'extra-3-de.webp', was: 9.9, price: 3.9 },
 ];
 // Textos de las dos pantallas post compra.
 export const postTexts = {
@@ -297,6 +297,7 @@ export const texts = {
     title: 'Warte! Deine Bestellung ist fast fertig',
     confirmed: 'Zahlung bestätigt. Bevor du fertig bist, schau dir das an:',
     product: 'Haushaltsgeräte wie neu',
+    benefit: 'Deine Geräte halten Jahre länger – ohne Defekte durch Schmutz.',
     subtitle: 'Entferne schlechte Gerüche, Kalk und Fett aus Waschmaschine, Spülmaschine, Backofen und Kühlschrank',
     // Imagen opcional: upsell.webp (1000x800). Si no existe, no se muestra nada.
     imageAlt: 'Haushaltsgeräte wie neu',

@@ -40,10 +40,10 @@ export const DODO_PRODUCT_EXTRA_2 = 'pdt_0NsFPackiOylLtuK0tYOV';
 export const DODO_PRODUCT_EXTRA_3 = 'pdt_0NsFPahvlp4BavDUh0bTX';
 // `was` = precio tachado · `price` = precio que se cobra (debe coincidir con Dodo).
 // `cover` = portada en /public/electrodomesticos/.
-export const EXTRAS: { name: string; cover: string; was: number; price: number }[] = [
-  { name: 'Calendario di manutenzione in 12 mesi', cover: 'extra-1-it.webp', was: 7.9, price: 2.9 },
-  { name: 'Risparmia sulla bolletta della luce', cover: 'extra-2-it.webp', was: 8.9, price: 3.4 },
-  { name: 'Il multimetro in 15 minuti', cover: 'extra-3-it.webp', was: 9.9, price: 3.9 },
+export const EXTRAS: { name: string; benefit: string; cover: string; was: number; price: number }[] = [
+  { name: 'Calendario di manutenzione in 12 mesi', benefit: '10 minuti al mese e niente più chiamate al tecnico.', cover: 'extra-1-it.webp', was: 7.9, price: 2.9 },
+  { name: 'Risparmia sulla bolletta della luce', benefit: 'Paghi meno luce ogni mese, senza comprare nulla.', cover: 'extra-2-it.webp', was: 8.9, price: 3.4 },
+  { name: 'Il multimetro in 15 minuti', benefit: 'Scopri quale pezzo è rotto prima di comprarne uno nuovo.', cover: 'extra-3-it.webp', was: 9.9, price: 3.9 },
 ];
 // Textos de las dos pantallas post compra.
 export const postTexts = {
@@ -295,6 +295,7 @@ export const texts = {
     title: 'Aspetta! Il tuo ordine è quasi completo',
     confirmed: 'Pagamento confermato. Prima di finire, guarda qui:',
     product: 'Elettrodomestici come nuovi',
+    benefit: 'Durano anni in più, senza guasti per lo sporco.',
     subtitle: 'Elimina cattivi odori, calcare e grasso da lavatrice, lavastoviglie, forno e frigorifero',
     // Imagen opcional: upsell.webp (1000x800). Si no existe, no se muestra nada.
     imageAlt: 'Elettrodomestici come nuovi',

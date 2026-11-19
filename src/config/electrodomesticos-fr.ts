@@ -42,10 +42,10 @@ export const DODO_PRODUCT_EXTRA_2 = 'pdt_0NsFPaqGUp7938JZ0IsRY';
 export const DODO_PRODUCT_EXTRA_3 = 'pdt_0NsFPavdhOqmDgu1okbBk';
 // `was` = precio tachado · `price` = precio que se cobra (debe coincidir con Dodo).
 // `cover` = portada en /public/electrodomesticos/.
-export const EXTRAS: { name: string; cover: string; was: number; price: number }[] = [
-  { name: 'Calendrier d’entretien sur 12 mois', cover: 'extra-1-fr.webp', was: 7.9, price: 2.9 },
-  { name: 'Économise sur ta facture d’électricité', cover: 'extra-2-fr.webp', was: 8.9, price: 3.4 },
-  { name: 'Le multimètre en 15 minutes', cover: 'extra-3-fr.webp', was: 9.9, price: 3.9 },
+export const EXTRAS: { name: string; benefit: string; cover: string; was: number; price: number }[] = [
+  { name: 'Calendrier d’entretien sur 12 mois', benefit: '10 minutes par mois et plus besoin d\'appeler le technicien.', cover: 'extra-1-fr.webp', was: 7.9, price: 2.9 },
+  { name: 'Économise sur ta facture d’électricité', benefit: 'Paie moins d\'électricité chaque mois, sans rien acheter.', cover: 'extra-2-fr.webp', was: 8.9, price: 3.4 },
+  { name: 'Le multimètre en 15 minutes', benefit: 'Sache quelle pièce est cassée avant d\'en acheter une neuve.', cover: 'extra-3-fr.webp', was: 9.9, price: 3.9 },
 ];
 // Textos de las dos pantallas post compra.
 export const postTexts = {
@@ -297,6 +297,7 @@ export const texts = {
     title: 'Attends ! Ta commande est presque prête',
     confirmed: 'Paiement confirmé. Avant de terminer, regarde ceci :',
     product: 'Électroménager comme neuf',
+    benefit: 'Ils durent des années de plus, sans pannes dues à la saleté.',
     subtitle: 'Élimine les mauvaises odeurs, le calcaire et la graisse de ton lave-linge, ton lave-vaisselle, ton four et ton frigo',
     // Imagen opcional: upsell.webp (1000x800). Si no existe, no se muestra nada.
     imageAlt: 'Électroménager comme neuf',

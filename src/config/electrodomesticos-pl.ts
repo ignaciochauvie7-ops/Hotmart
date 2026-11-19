@@ -43,10 +43,10 @@ export const DODO_PRODUCT_EXTRA_2 = 'pdt_0NsFPbNeVSHaaojq3q8El';
 export const DODO_PRODUCT_EXTRA_3 = 'pdt_0NsFPbeqTHZQ93UnAPv16';
 // `was` = precio tachado · `price` = precio que se cobra (debe coincidir con Dodo).
 // `cover` = portada en /public/electrodomesticos/.
-export const EXTRAS: { name: string; cover: string; was: number; price: number }[] = [
-  { name: 'Kalendarz konserwacji na 12 miesięcy', cover: 'extra-1-pl.webp', was: 33.99, price: 12.99 },
-  { name: 'Oszczędzaj na rachunku za prąd', cover: 'extra-2-pl.webp', was: 37.99, price: 14.99 },
-  { name: 'Multimetr w 15 minut', cover: 'extra-3-pl.webp', was: 41.99, price: 16.99 },
+export const EXTRAS: { name: string; benefit: string; cover: string; was: number; price: number }[] = [
+  { name: 'Kalendarz konserwacji na 12 miesięcy', benefit: '10 minut w miesiącu i nie musisz wzywać fachowca.', cover: 'extra-1-pl.webp', was: 33.99, price: 12.99 },
+  { name: 'Oszczędzaj na rachunku za prąd', benefit: 'Płać mniej za prąd co miesiąc, bez kupowania czegokolwiek.', cover: 'extra-2-pl.webp', was: 37.99, price: 14.99 },
+  { name: 'Multimetr w 15 minut', benefit: 'Sprawdź, która część jest zepsuta, zanim kupisz nową.', cover: 'extra-3-pl.webp', was: 41.99, price: 16.99 },
 ];
 // Textos de las dos pantallas post compra.
 export const postTexts = {
@@ -298,6 +298,7 @@ export const texts = {
     title: 'Zaczekaj! Twoje zamówienie jest prawie gotowe',
     confirmed: 'Płatność potwierdzona. Zanim skończysz, zobacz to:',
     product: 'AGD jak nowe',
+    benefit: 'Sprzęt posłuży lata dłużej, bez awarii przez brud.',
     subtitle: 'Usuń nieprzyjemne zapachy, kamień i tłuszcz z pralki, zmywarki, piekarnika i lodówki',
     // Imagen opcional: upsell.webp (1000x800). Si no existe, no se muestra nada.
     imageAlt: 'AGD jak nowe',

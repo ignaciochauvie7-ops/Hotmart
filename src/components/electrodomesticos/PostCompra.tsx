@@ -31,6 +31,8 @@ export interface PostTexts {
 export interface Offer {
   item: Item;
   name: string;
+  /** Línea corta de beneficio bajo el título. */
+  benefit?: string;
   cover?: string;
   price: number;
   priceLabel: string;
@@ -389,6 +391,7 @@ export function PostCompra({ paid, value, paymentId, currency, basePath, apiPath
         {revealed && (
           <div className="rp-pc-deal">
             <h2 className="rp-pc-name">{upsell.name}</h2>
+            {upsell.benefit && <p className="rp-pc-benefit">{upsell.benefit}</p>}
             <p className="rp-pc-prices">
               <s>{upsell.wasLabel}</s>
               <strong>{upsell.priceLabel}</strong>
@@ -439,6 +442,7 @@ export function PostCompra({ paid, value, paymentId, currency, basePath, apiPath
                         <span className="rp-pc-item__name">{o.name}</span>
                         <input type="checkbox" checked={on} onChange={() => toggle(o.item)} />
                       </span>
+                      {o.benefit && <span className="rp-pc-benefit">{o.benefit}</span>}
                       <span className="rp-pc-prices">
                         <s>{o.wasLabel}</s>
                         <strong>{o.priceLabel}</strong>

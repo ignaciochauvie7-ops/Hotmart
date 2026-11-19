@@ -49,13 +49,13 @@ if (preview) {
 }
 
 const upsell: Offer | null = DODO_PRODUCT_UPSELL
-  ? { item: 'upsell', name: texts.upsell.product, price: PRICE_UPSELL, priceLabel: eur(PRICE_UPSELL), wasLabel: eur(PRICE_UPSELL_WAS) }
+  ? { item: 'upsell', name: texts.upsell.product, benefit: texts.upsell.benefit, price: PRICE_UPSELL, priceLabel: eur(PRICE_UPSELL), wasLabel: eur(PRICE_UPSELL_WAS) }
   : null;
 const extraIds = [DODO_PRODUCT_EXTRA_1, DODO_PRODUCT_EXTRA_2, DODO_PRODUCT_EXTRA_3];
 const items = ['extra1', 'extra2', 'extra3'] as const;
 const extras: Offer[] = EXTRAS.flatMap((e, i) =>
   extraIds[i]
-    ? [{ item: items[i], name: e.name, cover: e.cover, price: e.price, priceLabel: eur(e.price), wasLabel: eur(e.was) }]
+    ? [{ item: items[i], name: e.name, benefit: e.benefit, cover: e.cover, price: e.price, priceLabel: eur(e.price), wasLabel: eur(e.was) }]
     : [],
 );
 
